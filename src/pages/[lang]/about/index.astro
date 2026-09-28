@@ -1,4 +1,148 @@
 ---
-import Layout from '../../../layouts/Layout.astro'; import {languages,langCodes} from '../../../data/i18n'; export function getStaticPaths(){return langCodes.map(lang=>({params:{lang},props:{lang}}))} const {lang}=Astro.props; const i=languages[lang];
+import Layout from '../../../layouts/Layout.astro';
+import { langCodes } from '../../../data/i18n';
+
+export function getStaticPaths() {
+  return langCodes.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+
+const siteUrl = 'https://global-tools.pages.dev';
+const canonical = `${siteUrl}/${lang}/about/`;
 ---
-<Layout title={`About ToolAtlas`} description="About ToolAtlas and its browser-first online tools." lang={lang} canonical={`https://YOUR-DOMAIN.com/${lang}/about/`}><main class="doc"><h1>{i.about}</h1><p>ToolAtlas is a global collection of focused online utilities for everyday work. We aim to make common tasks fast, understandable and accessible without unnecessary registration.</p><h2>Privacy-first approach</h2><p>Where possible, tools process files locally in the browser. This reduces uploads and keeps workflows lightweight.</p><h2>Quality</h2><p>Each tool is designed around a specific user task, with clear instructions, accessible controls and responsive layouts.</p></main></Layout><style>.doc{max-width:760px;margin:auto;padding:70px 22px;line-height:1.8}.doc h1{font-size:52px;letter-spacing:-.06em}.doc h2{margin-top:40px}.doc p{color:#667085}</style>
+
+<Layout
+  title="About ToolAtlas — Free Online Tools"
+  description="Learn about ToolAtlas, a collection of free browser-based online tools for everyday digital tasks."
+  lang={lang}
+  canonical={canonical}
+>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">TOOLATLAS</p>
+
+      <h1>Free tools for everyday digital tasks.</h1>
+
+      <p>
+        ToolAtlas is a collection of simple, fast, browser-based tools designed
+        to help people complete common digital tasks without unnecessary
+        complexity.
+      </p>
+    </header>
+
+    <section class="section">
+      <h2>What is ToolAtlas?</h2>
+
+      <p>
+        ToolAtlas brings useful online utilities together in one place. The
+        platform covers areas such as images, PDFs, developer utilities, text,
+        testing, QR codes, colors, and other everyday tasks.
+      </p>
+
+      <p>
+        Our goal is to make these tools easy to discover and simple to use on
+        both desktop and mobile devices.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Browser-based tools</h2>
+
+      <p>
+        Many tools are designed to perform their processing directly in your
+        browser. This can reduce unnecessary transfers of files and make common
+        tasks faster and more convenient.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Simple by design</h2>
+
+      <p>
+        ToolAtlas focuses on clear interfaces, useful functionality, fast
+        loading pages, and accessible experiences across different devices.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Free access</h2>
+
+      <p>
+        ToolAtlas is designed to provide free access to its online tools without
+        requiring an account for ordinary use.
+      </p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page {
+    width: min(820px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 70px 0 90px;
+  }
+
+  .hero {
+    margin-bottom: 60px;
+  }
+
+  .eyebrow {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  h1 {
+    margin: 0;
+    max-width: 760px;
+    font-size: clamp(42px, 7vw, 68px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .hero > p:last-child {
+    max-width: 720px;
+    margin-top: 24px;
+    color: #667085;
+    font-size: 19px;
+    line-height: 1.75;
+  }
+
+  .section {
+    margin-top: 48px;
+  }
+
+  .section h2 {
+    margin: 0 0 14px;
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+  }
+
+  .section p {
+    margin: 0 0 16px;
+    color: #667085;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .page {
+      width: min(100% - 28px, 820px);
+      padding: 48px 0 70px;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    .hero > p:last-child {
+      font-size: 17px;
+    }
+  }
+</style>
