@@ -1,100 +1,82 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { langCodes } from '../../data/i18n';
-
-export function getStaticPaths() {
-  return langCodes.map((lang) => ({
-    params: { lang },
-    props: { lang },
-  }));
-}
-
-const { lang } = Astro.props;
+import Layout from '../layouts/Layout.astro';
 
 const siteUrl = 'https://global-tools.pages.dev';
-const canonical = `${siteUrl}/${lang}/`;
+const canonical = `${siteUrl}/`;
+
+const defaultLang = 'en';
 ---
 
 <Layout
   title="ToolAtlas — Free Online Tools"
-  description="Free online tools for images, PDFs, developers, text, QR codes, security, colors, and more."
-  lang={lang}
+  description="Free online tools for images, PDFs, developers, text, QR codes, testing, colors, and everyday digital tasks."
+  lang={defaultLang}
   canonical={canonical}
 >
-  <main class="home">
+  <main class="page">
     <section class="hero">
       <p class="eyebrow">TOOLATLAS</p>
 
-      <h1>
-        Free online tools.<br />
-        Simple. Fast. Private.
-      </h1>
+      <h1>Free online tools for everyday tasks.</h1>
 
-      <p class="intro">
-        Useful browser-based tools for images, PDFs, text, developers,
-        QR codes, security, colors, and everyday tasks.
+      <p>
+        Fast, simple browser-based tools for images, PDFs, developers, text,
+        testing, QR codes, colors, and more.
       </p>
 
       <div class="actions">
-        <a href={`/${lang}/tools/`} class="primary">
-          Explore all tools
-        </a>
-
-        <a href={`/${lang}/categories/`} class="secondary">
-          Browse categories
-        </a>
+        <a href="/en/" class="primary">Explore tools</a>
+        <a href="/en/tools/" class="secondary">View all tools</a>
       </div>
     </section>
 
-    <section class="features">
-      <article>
-        <h2>Free to use</h2>
-        <p>No registration required for basic tools.</p>
-      </article>
+    <section class="languages" aria-labelledby="languages-title">
+      <h2 id="languages-title">Choose your language</h2>
 
-      <article>
-        <h2>Fast processing</h2>
-        <p>Many tools run directly in your browser.</p>
-      </article>
-
-      <article>
-        <h2>Privacy focused</h2>
-        <p>Browser-based processing can keep files on your device.</p>
-      </article>
+      <div class="language-grid">
+        <a href="/en/">English</a>
+        <a href="/es/">Español</a>
+        <a href="/fr/">Français</a>
+        <a href="/de/">Deutsch</a>
+        <a href="/it/">Italiano</a>
+        <a href="/pt/">Português</a>
+        <a href="/ar/">العربية</a>
+        <a href="/tr/">Türkçe</a>
+        <a href="/hi/">हिन्दी</a>
+        <a href="/ja/">日本語</a>
+      </div>
     </section>
   </main>
 </Layout>
 
 <style>
-  .home {
-    width: min(1180px, calc(100% - 40px));
+  .page {
+    width: min(1100px, calc(100% - 40px));
     margin: 0 auto;
-    padding: 80px 0;
+    padding: 90px 0;
   }
 
   .hero {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
+    max-width: 820px;
   }
 
   .eyebrow {
-    margin: 0 0 18px;
-    font-size: 13px;
+    margin: 0 0 14px;
+    font-size: 12px;
     font-weight: 800;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(44px, 8vw, 82px);
+    font-size: clamp(46px, 8vw, 82px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.065em;
   }
 
-  .intro {
-    max-width: 700px;
-    margin: 28px auto 0;
+  .hero > p:not(.eyebrow) {
+    max-width: 720px;
+    margin: 26px 0 0;
     color: #667085;
     font-size: 19px;
     line-height: 1.7;
@@ -102,73 +84,81 @@ const canonical = `${siteUrl}/${lang}/`;
 
   .actions {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 32px;
+    margin-top: 30px;
   }
 
   .actions a {
-    display: inline-block;
-    padding: 13px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 20px;
     border-radius: 12px;
     text-decoration: none;
     font-weight: 700;
   }
 
   .primary {
-    background: #111827;
-    color: white;
+    background: #101828;
+    color: #fff;
   }
 
   .secondary {
-    border: 1px solid #e4e7ec;
-    color: #111827;
-    background: white;
+    border: 1px solid #d0d5dd;
+    color: #101828;
+    background: #fff;
   }
 
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+  .languages {
     margin-top: 90px;
   }
 
-  .features article {
-    padding: 28px;
+  .languages h2 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    letter-spacing: -0.04em;
+  }
+
+  .language-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .language-grid a {
+    padding: 18px;
     border: 1px solid #e4e7ec;
-    border-radius: 20px;
-    background: white;
+    border-radius: 14px;
+    color: #101828;
+    background: #fff;
+    text-decoration: none;
+    font-weight: 600;
   }
 
-  .features h2 {
-    margin: 0;
-    font-size: 20px;
+  .language-grid a:hover {
+    background: #f8fafc;
   }
 
-  .features p {
-    margin: 10px 0 0;
-    color: #667085;
-    line-height: 1.6;
-  }
-
-  @media (max-width: 700px) {
-    .home {
-      width: min(100% - 28px, 1180px);
-      padding: 50px 0;
+  @media (max-width: 800px) {
+    .page {
+      width: min(100% - 28px, 1100px);
+      padding: 60px 0 70px;
     }
 
-    .features {
-      grid-template-columns: 1fr;
-      margin-top: 55px;
+    .language-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
 
+  @media (max-width: 480px) {
     h1 {
-      font-size: clamp(40px, 13vw, 60px);
+      font-size: 44px;
     }
 
-    .intro {
-      font-size: 17px;
+    .language-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
