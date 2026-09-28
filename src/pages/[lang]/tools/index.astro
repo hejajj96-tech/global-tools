@@ -1,7 +1,249 @@
 ---
-import Layout from '../../../layouts/Layout.astro'; import {tools} from '../../../data/tools'; import {languages,langCodes} from '../../../data/i18n';
-export function getStaticPaths(){return langCodes.map(lang=>({params:{lang},props:{lang}}))} const {lang}=Astro.props; const i=languages[lang];
+import Layout from '../../../layouts/Layout.astro';
+import { langCodes } from '../../../data/i18n';
+import { tools, categories } from '../../../data/tools';
+
+export function getStaticPaths() {
+  return langCodes.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+
+const siteUrl = 'https://global-tools.pages.dev';
+const canonical = `${siteUrl}/${lang}/tools/`;
 ---
-<Layout title={`${i.all} — ToolAtlas`} description={`${i.all}. Free online tools for images, PDF, developers, text, tests and QR codes.`} lang={lang} canonical={`https://YOUR-DOMAIN.com/${lang}/tools/`}><main class="container"><div class="head"><div><div class="eyebrow">ToolAtlas</div><h1>{i.all}</h1><p class="muted">Fast browser-first utilities with no signup.</p></div></div><div class="grid">{tools.map(t=><a class="card" href={`/${lang}/tools/${t.slug}/`}><span class="icon">{t.icon}</span><div><h2>{t.name}</h2><p>{t.description}</p><small>{t.category}</small></div><span>→</span></a>)}</div></main></Layout>
-<style>.container{max-width:1180px;margin:auto;padding:55px 22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#667085}.head h1{font-size:50px;letter-spacing:-.06em;margin:8px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:35px}.card{display:grid;grid-template-columns:46px 1fr 15px;gap:13px;padding:18px;background:#fff;border:1px solid #e4e7ec;border-radius:16px}.card h2{font-size:17px;margin:1px 0 6px}.card p{font-size:13px;color:#667085;line-height:1.5;margin:0 0 8px}.card small{color:#98a2b3}.icon{width:46px;height:46px;border-radius:12px;background:#101828;color:#fff;display:grid;place-items:center;font-weight:800}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+
+<Layout
+  title="Free Online Tools — ToolAtlas"
+  description="Browse all free online tools from ToolAtlas including image, PDF, developer, text, QR, security and testing tools."
+  lang={lang}
+  canonical={canonical}
+>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">TOOLATLAS</p>
+
+      <h1>Free Online Tools</h1>
+
+      <p>
+        Explore our collection of free browser-based tools for images, PDFs,
+        developers, text, testing, QR codes, colors, and everyday tasks.
+      </p>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>All Tools</h2>
+        <span>{tools.length} tools</span>
+      </div>
+
+      <div class="grid">
+        {tools.map((tool) => (
+          <a href={`/${lang}/tools/${tool.slug}/`} class="card">
+            <span class="icon">{tool.icon}</span>
+
+            <span class="info">
+              <strong>{tool.name}</strong>
+              <small>{tool.description}</small>
+              <em>{tool.category}</em>
+            </span>
+
+            <span class="arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="section categories">
+      <h2>Browse by Category</h2>
+
+      <div class="category-grid">
+        {categories.map((category) => (
+          <a href={`/${lang}/categories/`} class="category">
+            <strong>{category}</strong>
+            <span>
+              {tools.filter((tool) => tool.category === category).length}
+              tools →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page {
+    width: min(1150px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 70px 0 90px;
+  }
+
+  .hero {
+    max-width: 800px;
+    margin-bottom: 55px;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(42px, 7vw, 70px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .hero p:last-child {
+    margin-top: 22px;
+    color: #667085;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .section {
+    margin-top: 55px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 30px;
+    letter-spacing: -0.04em;
+  }
+
+  .section-head span {
+    color: #667085;
+    font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 13px;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: 44px 1fr 16px;
+    gap: 12px;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e4e7ec;
+    border-radius: 16px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+  }
+
+  .icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #101828;
+    color: #fff;
+  }
+
+  .info {
+    min-width: 0;
+  }
+
+  .info strong {
+    display: block;
+    font-size: 15px;
+  }
+
+  .info small {
+    display: block;
+    margin-top: 4px;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .info em {
+    display: inline-block;
+    margin-top: 7px;
+    color: #667085;
+    font-size: 11px;
+    font-style: normal;
+  }
+
+  .arrow {
+    color: #667085;
+  }
+
+  .categories {
+    padding-top: 20px;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .category {
+    padding: 20px;
+    border: 1px solid #e4e7ec;
+    border-radius: 15px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .category strong {
+    display: block;
+  }
+
+  .category span {
+    display: block;
+    margin-top: 8px;
+    color: #667085;
+    font-size: 13px;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .category-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .page {
+      width: min(100% - 28px, 1150px);
+      padding: 48px 0 70px;
+    }
+
+    .grid,
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
