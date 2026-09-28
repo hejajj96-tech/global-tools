@@ -1,7 +1,219 @@
 ---
-import Layout from '../../../../layouts/Layout.astro'; import ToolApp from '../../../../components/ToolApp'; import {tools} from '../../../../data/tools'; import {languages,langCodes} from '../../../../data/i18n';
-export function getStaticPaths(){return langCodes.flatMap(lang=>tools.map(tool=>({params:{lang,slug:tool.slug},props:{lang,tool}})))} const {lang,tool}=Astro.props; const i=languages[lang];
+import Layout from '../../../layouts/Layout.astro';
+import { langCodes } from '../../../data/i18n';
+import { tools } from '../../../data/tools';
+
+export function getStaticPaths() {
+  const paths = [];
+
+  for (const lang of langCodes) {
+    for (const tool of tools) {
+      paths.push({
+        params: {
+          lang,
+          slug: tool.slug,
+        },
+        props: {
+          lang,
+          tool,
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { lang, tool } = Astro.props;
+
+const siteUrl = 'https://global-tools.pages.dev';
+const canonical = `${siteUrl}/${lang}/tools/${tool.slug}/`;
+
+const title = `${tool.name} — Free Online Tool | ToolAtlas`;
+const description =
+  tool.description ||
+  `${tool.name} is a free online tool from ToolAtlas. Fast, simple, private, and easy to use.`;
 ---
-<Layout alternates={langCodes.map(l=>({lang:l,href:`https://YOUR-DOMAIN.com/${l}/tools/${tool.slug}/`}))} title={`${tool.name} — Free Online Tool | ToolAtlas`} description={`${tool.description} Free, fast and privacy-first.`} lang={lang} canonical={`https://YOUR-DOMAIN.com/${lang}/tools/${tool.slug}/`}><main class="container"><div class="crumb"><a href={`/${lang}/`}>Home</a> / <a href={`/${lang}/tools/`}>{i.tools}</a> / {tool.name}</div><section class="hero"><div class="icon">{tool.icon}</div><div><h1>{tool.name}</h1><p>{tool.description}</p></div></section><div class="ad"><span>Advertisement</span></div><section class="panel"><ToolApp client:load tool={tool}/></section><article class="content"><h2>How to use {tool.name}</h2><p>Use the tool above directly in your browser. For supported operations, processing happens locally on your device so your files do not need to be uploaded to a server.</p><h2>Why use this online tool?</h2><p>ToolAtlas is designed for quick everyday tasks without registration. The interface is mobile-friendly, lightweight and focused on the task instead of unnecessary steps.</p><h2>Privacy</h2><p>Where technically possible, this tool uses browser APIs and local processing. Always review the privacy information before using any service with sensitive data.</p><h2>Frequently asked questions</h2><h3>Is {tool.name} free?</h3><p>Yes. The basic tool is free to use.</p><h3>Do I need to install software?</h3><p>No. Open the page in a modern browser and use the tool directly.</p><h3>Does it work on mobile?</h3><p>Yes, the interface is responsive and designed for phones, tablets and desktop browsers.</p></article></main></Layout>
-<style>.container{max-width:1040px;margin:auto;padding:28px 22px 65px}.crumb{font-size:13px;color:#667085}.hero{display:flex;gap:18px;align-items:center;padding:45px 0 25px}.hero h1{font-size:clamp(38px,6vw,58px);letter-spacing:-.055em;margin:0 0 8px}.hero p{color:#667085;font-size:17px;margin:0;line-height:1.55}.icon{width:58px;height:58px;flex:none;border-radius:15px;background:#101828;color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px}.panel{background:#fff;border:1px solid #e4e7ec;border-radius:20px;padding:22px;box-shadow:0 18px 55px rgba(16,24,40,.06)}.ad{height:90px;display:grid;place-items:center;color:#98a2b3;font-size:11px;text-transform:uppercase;letter-spacing:.12em}.content{max-width:760px;margin:50px auto}.content h2{font-size:27px;margin-top:38px;letter-spacing:-.035em}.content h3{margin-top:25px}.content p{color:#667085;line-height:1.8}.toolbox{display:grid;gap:14px}.toolbox input,.toolbox select{padding:12px;border:1px solid #d0d5dd;border-radius:11px;background:#fff}.toolrow{display:flex;gap:10px;flex-wrap:wrap}.primary{border:0;background:#101828;color:#fff;padding:12px 17px;border-radius:11px;font-weight:800}.privacy-note{background:#f8fafc;border:1px solid #eaecf0;padding:12px 14px;border-radius:11px;font-size:13px;color:#475467}.result{white-space:pre-wrap;background:#0b1220;color:#f2f4f7;border-radius:13px;padding:18px;overflow:auto}.error{background:#fef3f2;color:#b42318;border:1px solid #fecdca;padding:12px;border-radius:11px}.colorout{font-weight:800;font-size:22px}.testpad{min-height:220px;border:0;border-radius:16px;background:#101828;color:#fff;font-weight:900;font-size:25px}.testpad.go{background:#039855}.keygrid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.keygrid span{padding:14px 8px;background:#f2f4f7;border:1px solid #eaecf0;border-radius:8px;text-align:center;font-size:12px}.keygrid .hit{background:#d1fadf;border-color:#6ce9a6}@media(max-width:650px){.hero{align-items:flex-start;flex-direction:column}.keygrid{grid-template-columns:repeat(4,1fr)}}
+
+<Layout
+  title={title}
+  description={description}
+  lang={lang}
+  canonical={canonical}
+>
+  <main class="tool-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>Home</a>
+      <span>/</span>
+      <a href={`/${lang}/tools/`}>Tools</a>
+      <span>/</span>
+      <span>{tool.name}</span>
+    </nav>
+
+    <header class="hero">
+      <p class="eyebrow">ToolAtlas</p>
+      <h1>{tool.name}</h1>
+
+      <p class="description">
+        {tool.description ||
+          `Use ${tool.name} online for free. No registration required.`}
+      </p>
+    </header>
+
+    <section class="tool-card" aria-label={tool.name}>
+      <div class="tool-placeholder">
+        <h2>{tool.name}</h2>
+
+        <p>
+          This tool is available in ToolAtlas. The interactive tool interface
+          will be loaded here.
+        </p>
+
+        <button type="button">
+          Launch Tool
+        </button>
+      </div>
+    </section>
+
+    <section class="content">
+      <h2>About {tool.name}</h2>
+
+      <p>
+        ToolAtlas provides free online tools designed to be fast, simple, and
+        easy to use. No account is required for basic browser-based tools.
+      </p>
+
+      <h2>How to use this tool</h2>
+
+      <ol>
+        <li>Open the tool on your device.</li>
+        <li>Enter or upload the required information.</li>
+        <li>Run the tool and review the result.</li>
+      </ol>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .tool-page {
+    width: min(1100px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 40px 0 80px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 50px;
+    color: #667085;
+    font-size: 14px;
+  }
+
+  .breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .hero {
+    max-width: 800px;
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #667085;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(38px, 7vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .description {
+    margin-top: 22px;
+    max-width: 720px;
+    color: #667085;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .tool-card {
+    margin-top: 35px;
+    padding: 32px;
+    border: 1px solid #e4e7ec;
+    border-radius: 24px;
+    background: #fff;
+  }
+
+  .tool-placeholder {
+    min-height: 260px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    align-content: center;
+    gap: 12px;
+  }
+
+  .tool-placeholder h2 {
+    margin: 0;
+  }
+
+  .tool-placeholder p {
+    max-width: 600px;
+    color: #667085;
+    line-height: 1.7;
+  }
+
+  button {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .content {
+    max-width: 800px;
+    margin: 55px auto 0;
+    line-height: 1.8;
+  }
+
+  .content h2 {
+    margin-top: 42px;
+    margin-bottom: 12px;
+  }
+
+  .content p,
+  .content li {
+    color: #667085;
+  }
+
+  @media (max-width: 640px) {
+    .tool-page {
+      width: min(100% - 28px, 1100px);
+      padding-top: 25px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 35px;
+    }
+
+    .tool-card {
+      padding: 22px;
+      border-radius: 18px;
+    }
+  }
 </style>
