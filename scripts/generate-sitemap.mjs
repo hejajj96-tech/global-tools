@@ -1,8 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const siteUrl = process.env.SITE_URL || 'https://global-tools.pages.dev';
-
+const siteUrl = process.env.SITE_URL || 'https://global-tools.hejajj96.workers.dev';
 const langs = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ar', 'tr', 'hi', 'ja'];
 
 const tools = [
