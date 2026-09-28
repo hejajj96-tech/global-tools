@@ -1,4 +1,86 @@
 ---
-import Layout from '../../../layouts/Layout.astro'; import {langCodes} from '../../../data/i18n'; export function getStaticPaths(){return langCodes.map(lang=>({params:{lang},props:{lang}}))} const {lang}=Astro.props;
+import Layout from '../../../layouts/Layout.astro';
+import { langCodes } from '../../../data/i18n';
+
+export function getStaticPaths() {
+  return langCodes.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+
+const siteUrl = 'https://global-tools.pages.dev';
+const canonical = `${siteUrl}/${lang}/privacy/`;
 ---
-<Layout title="Privacy Policy — ToolAtlas" description="ToolAtlas privacy policy." lang={lang} canonical={`https://YOUR-DOMAIN.com/${lang}/privacy/`}><main class="doc"><h1>Privacy Policy</h1><p>ToolAtlas is designed to minimize unnecessary data collection. Many tools process data locally in your browser and do not require an account.</p><h2>Files</h2><p>For browser-based file tools, files are intended to remain on your device unless a future feature explicitly states otherwise.</p><h2>Analytics and advertising</h2><p>If analytics or advertising is enabled, this policy must be updated with the exact providers, cookies, consent mechanism and data practices before production launch.</p><h2>Contact</h2><p>Replace this section with your real support email before publishing.</p></main></Layout><style>.doc{max-width:760px;margin:auto;padding:70px 22px;line-height:1.8}.doc h1{font-size:52px;letter-spacing:-.06em}.doc h2{margin-top:40px}.doc p{color:#667085}</style>
+
+<Layout
+  title="Privacy Policy — ToolAtlas"
+  description="ToolAtlas privacy policy and information about data processing, analytics, advertising, and user privacy."
+  lang={lang}
+  canonical={canonical}
+>
+  <main class="doc">
+    <h1>Privacy Policy</h1>
+
+    <p>
+      ToolAtlas is designed to minimize unnecessary data collection. Many tools
+      process data locally in your browser and do not require an account.
+    </p>
+
+    <h2>Files</h2>
+
+    <p>
+      For browser-based file tools, files are intended to remain on your device
+      unless a future feature explicitly states otherwise.
+    </p>
+
+    <h2>Analytics and advertising</h2>
+
+    <p>
+      If analytics or advertising is enabled, this policy will identify the
+      relevant providers, cookies, consent mechanism, and applicable data
+      practices.
+    </p>
+
+    <h2>Contact</h2>
+
+    <p>
+      For privacy-related questions, please use the Contact page provided on
+      this website.
+    </p>
+  </main>
+</Layout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 70px 22px;
+    line-height: 1.8;
+  }
+
+  .doc h1 {
+    font-size: 52px;
+    letter-spacing: -0.06em;
+  }
+
+  .doc h2 {
+    margin-top: 40px;
+  }
+
+  .doc p {
+    color: #667085;
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 18px;
+    }
+
+    .doc h1 {
+      font-size: 38px;
+    }
+  }
+</style>
