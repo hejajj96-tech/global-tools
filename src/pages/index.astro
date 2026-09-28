@@ -1,3 +1,174 @@
 ---
-return Astro.redirect('/en/');
+import Layout from '../../layouts/Layout.astro';
+import { langCodes } from '../../data/i18n';
+
+export function getStaticPaths() {
+  return langCodes.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+
+const siteUrl = 'https://global-tools.pages.dev';
+const canonical = `${siteUrl}/${lang}/`;
 ---
+
+<Layout
+  title="ToolAtlas — Free Online Tools"
+  description="Free online tools for images, PDFs, developers, text, QR codes, security, colors, and more."
+  lang={lang}
+  canonical={canonical}
+>
+  <main class="home">
+    <section class="hero">
+      <p class="eyebrow">TOOLATLAS</p>
+
+      <h1>
+        Free online tools.<br />
+        Simple. Fast. Private.
+      </h1>
+
+      <p class="intro">
+        Useful browser-based tools for images, PDFs, text, developers,
+        QR codes, security, colors, and everyday tasks.
+      </p>
+
+      <div class="actions">
+        <a href={`/${lang}/tools/`} class="primary">
+          Explore all tools
+        </a>
+
+        <a href={`/${lang}/categories/`} class="secondary">
+          Browse categories
+        </a>
+      </div>
+    </section>
+
+    <section class="features">
+      <article>
+        <h2>Free to use</h2>
+        <p>No registration required for basic tools.</p>
+      </article>
+
+      <article>
+        <h2>Fast processing</h2>
+        <p>Many tools run directly in your browser.</p>
+      </article>
+
+      <article>
+        <h2>Privacy focused</h2>
+        <p>Browser-based processing can keep files on your device.</p>
+      </article>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .home {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 80px 0;
+  }
+
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin: 0 0 18px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(44px, 8vw, 82px);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .intro {
+    max-width: 700px;
+    margin: 28px auto 0;
+    color: #667085;
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .actions a {
+    display: inline-block;
+    padding: 13px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .primary {
+    background: #111827;
+    color: white;
+  }
+
+  .secondary {
+    border: 1px solid #e4e7ec;
+    color: #111827;
+    background: white;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 90px;
+  }
+
+  .features article {
+    padding: 28px;
+    border: 1px solid #e4e7ec;
+    border-radius: 20px;
+    background: white;
+  }
+
+  .features h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .features p {
+    margin: 10px 0 0;
+    color: #667085;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 700px) {
+    .home {
+      width: min(100% - 28px, 1180px);
+      padding: 50px 0;
+    }
+
+    .features {
+      grid-template-columns: 1fr;
+      margin-top: 55px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 13vw, 60px);
+    }
+
+    .intro {
+      font-size: 17px;
+    }
+  }
+</style>
