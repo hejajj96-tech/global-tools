@@ -26,13 +26,346 @@ export function getStaticPaths() {
 
 const { lang, tool } = Astro.props;
 
-const siteUrl = 'https://global-tools.pages.dev';
+const siteUrl = 'https://global-tools.hejajj96.workers.dev';
 const canonical = `${siteUrl}/${lang}/tools/${tool.slug}/`;
 
 const title = `${tool.name} — Free Online Tool | ToolAtlas`;
+
 const description =
   tool.description ||
   `${tool.name} is a free online tool from ToolAtlas. Fast, simple, private, and easy to use.`;
+
+const slug = tool.slug;
+
+const toolMeta: Record<
+  string,
+  {
+    intro: string;
+    steps: string[];
+    accept?: string;
+    inputMode?: string;
+  }
+> = {
+  'image-compressor': {
+    intro:
+      'Compress JPG, PNG, and WebP images directly in your browser. Reduce file size while keeping useful image quality.',
+    steps: [
+      'Choose an image from your device.',
+      'Select the output quality.',
+      'Compress the image and download the result.',
+    ],
+    accept: 'image/*',
+  },
+
+  'image-resizer': {
+    intro:
+      'Resize images online in your browser. Set the width and height and download the resized image.',
+    steps: [
+      'Choose an image.',
+      'Enter the desired dimensions.',
+      'Resize and download the image.',
+    ],
+    accept: 'image/*',
+  },
+
+  'jpg-to-png': {
+    intro:
+      'Convert JPG images to PNG format directly in your browser without uploading the image to a server.',
+    steps: [
+      'Choose a JPG image.',
+      'Convert it to PNG.',
+      'Download the PNG file.',
+    ],
+    accept: 'image/jpeg,.jpg,.jpeg',
+  },
+
+  'png-to-jpg': {
+    intro:
+      'Convert PNG images to JPG format directly in your browser.',
+    steps: [
+      'Choose a PNG image.',
+      'Select a background color if transparency is present.',
+      'Download the JPG result.',
+    ],
+    accept: 'image/png,.png',
+  },
+
+  'webp-to-jpg': {
+    intro:
+      'Convert WebP images to JPG directly in your browser.',
+    steps: [
+      'Choose a WebP image.',
+      'Convert it to JPG.',
+      'Download the converted image.',
+    ],
+    accept: 'image/webp,.webp',
+  },
+
+  'remove-exif': {
+    intro:
+      'Create a clean copy of an image without embedded metadata by re-encoding it in your browser.',
+    steps: [
+      'Choose an image.',
+      'Select the output format.',
+      'Download the metadata-cleaned image.',
+    ],
+    accept: 'image/*',
+  },
+
+  'jpg-to-pdf': {
+    intro:
+      'Convert a JPG image into a printable PDF document directly in your browser.',
+    steps: [
+      'Choose a JPG image.',
+      'Create the PDF.',
+      'Download the generated document.',
+    ],
+    accept: 'image/jpeg,.jpg,.jpeg',
+  },
+
+  'merge-pdf': {
+    intro:
+      'Combine PDF files into one document directly in your browser.',
+    steps: [
+      'Select two or more PDF files.',
+      'Arrange them in the selected order.',
+      'Create and download the merged PDF.',
+    ],
+    accept: 'application/pdf,.pdf',
+  },
+
+  'split-pdf': {
+    intro:
+      'Extract selected pages from a PDF document directly in your browser.',
+    steps: [
+      'Choose a PDF file.',
+      'Enter the page numbers to extract.',
+      'Create and download the new PDF.',
+    ],
+    accept: 'application/pdf,.pdf',
+  },
+
+  'rotate-pdf': {
+    intro:
+      'Rotate PDF pages directly in your browser and create a new PDF file.',
+    steps: [
+      'Choose a PDF file.',
+      'Choose the rotation angle.',
+      'Create and download the rotated PDF.',
+    ],
+    accept: 'application/pdf,.pdf',
+  },
+
+  'compress-pdf': {
+    intro:
+      'Create a smaller PDF where browser-side optimization is supported.',
+    steps: [
+      'Choose a PDF file.',
+      'Run the browser-side optimization.',
+      'Download the resulting PDF.',
+    ],
+    accept: 'application/pdf,.pdf',
+  },
+
+  'json-formatter': {
+    intro:
+      'Format JSON into readable, structured JSON directly in your browser.',
+    steps: [
+      'Paste your JSON.',
+      'Click Format JSON.',
+      'Copy the formatted result.',
+    ],
+  },
+
+  'json-validator': {
+    intro:
+      'Validate JSON syntax instantly in your browser.',
+    steps: [
+      'Paste your JSON.',
+      'Click Validate JSON.',
+      'Review the validation result.',
+    ],
+  },
+
+  'base64-encoder-decoder': {
+    intro:
+      'Encode text to Base64 or decode Base64 back to text directly in your browser.',
+    steps: [
+      'Enter text or Base64 data.',
+      'Choose encode or decode.',
+      'Copy the result.',
+    ],
+  },
+
+  'url-encoder-decoder': {
+    intro:
+      'Encode or decode URL text using standard browser URL encoding.',
+    steps: [
+      'Enter a URL or text.',
+      'Choose encode or decode.',
+      'Copy the result.',
+    ],
+  },
+
+  'uuid-generator': {
+    intro:
+      'Generate random UUID values instantly in your browser.',
+    steps: [
+      'Choose how many UUIDs you need.',
+      'Generate them.',
+      'Copy the generated values.',
+    ],
+  },
+
+  'regex-tester': {
+    intro:
+      'Test regular expressions against text directly in your browser.',
+    steps: [
+      'Enter a regular expression.',
+      'Enter test text.',
+      'Review the matches.',
+    ],
+  },
+
+  'timestamp-converter': {
+    intro:
+      'Convert Unix timestamps to dates and dates to Unix timestamps.',
+    steps: [
+      'Enter a timestamp or date.',
+      'Choose the conversion.',
+      'Copy the result.',
+    ],
+  },
+
+  'word-counter': {
+    intro:
+      'Count words, characters, sentences, and lines in your text.',
+    steps: [
+      'Paste or type your text.',
+      'Review the live statistics.',
+      'Copy or edit the text as needed.',
+    ],
+  },
+
+  'case-converter': {
+    intro:
+      'Convert text between uppercase, lowercase, title case, and sentence case.',
+    steps: [
+      'Enter your text.',
+      'Choose the desired case.',
+      'Copy the converted result.',
+    ],
+  },
+
+  'text-cleaner': {
+    intro:
+      'Clean extra spaces, blank lines, and common formatting issues from text.',
+    steps: [
+      'Paste your text.',
+      'Choose the cleaning operation.',
+      'Copy the cleaned result.',
+    ],
+  },
+
+  'typing-test': {
+    intro:
+      'Measure typing speed and accuracy with a browser-based typing test.',
+    steps: [
+      'Start the test.',
+      'Type the displayed text.',
+      'Review your speed and accuracy.',
+    ],
+  },
+
+  'cps-test': {
+    intro:
+      'Measure clicks per second with a simple browser-based CPS test.',
+    steps: [
+      'Choose the test duration.',
+      'Start the test.',
+      'Click as quickly as possible.',
+    ],
+  },
+
+  'keyboard-test': {
+    intro:
+      'Test your keyboard keys directly in your browser.',
+    steps: [
+      'Click inside the keyboard test.',
+      'Press the keys you want to test.',
+      'Check which keys are detected.',
+    ],
+  },
+
+  'qr-code-generator': {
+    intro:
+      'Generate a QR code from text or a URL directly in your browser.',
+    steps: [
+      'Enter text or a URL.',
+      'Generate the QR code.',
+      'Download the generated image.',
+    ],
+  },
+
+  'wifi-qr-code': {
+    intro:
+      'Generate a QR code containing Wi-Fi connection information.',
+    steps: [
+      'Enter the Wi-Fi network name.',
+      'Enter the password and security type.',
+      'Generate and download the QR code.',
+    ],
+  },
+
+  'barcode-generator': {
+    intro:
+      'Generate common barcode formats directly in your browser.',
+    steps: [
+      'Enter the barcode value.',
+      'Choose the barcode format.',
+      'Generate and download the barcode.',
+    ],
+  },
+
+  'password-generator': {
+    intro:
+      'Generate strong random passwords locally in your browser.',
+    steps: [
+      'Choose the password length.',
+      'Select the character types.',
+      'Generate and copy the password.',
+    ],
+  },
+
+  'color-picker': {
+    intro:
+      'Pick a color and copy its HEX, RGB, and HSL values.',
+    steps: [
+      'Choose a color.',
+      'Review the color values.',
+      'Copy the value you need.',
+    ],
+  },
+
+  'reaction-time-test': {
+    intro:
+      'Measure your reaction time with a simple browser-based reaction test.',
+    steps: [
+      'Start the test.',
+      'Wait until the screen changes.',
+      'Click as quickly as possible and review your result.',
+    ],
+  },
+};
+
+const meta = toolMeta[slug] || {
+  intro: description,
+  steps: [
+    'Open the tool.',
+    'Enter or upload the required information.',
+    'Run the tool and review the result.',
+  ],
+};
 ---
 
 <Layout
@@ -40,38 +373,65 @@ const description =
   description={description}
   lang={lang}
   canonical={canonical}
+  webApplication={true}
 >
-  <main class="tool-page">
+  <div
+    class="tool-page"
+    data-tool={slug}
+    data-lang={lang}
+  >
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href={`/${lang}/`}>Home</a>
       <span>/</span>
       <a href={`/${lang}/tools/`}>Tools</a>
       <span>/</span>
-      <span>{tool.name}</span>
+      <span aria-current="page">{tool.name}</span>
     </nav>
 
     <header class="hero">
-      <p class="eyebrow">ToolAtlas</p>
+      <p class="eyebrow">ToolAtlas · Free Online Tool</p>
+
       <h1>{tool.name}</h1>
 
       <p class="description">
-        {tool.description ||
-          `Use ${tool.name} online for free. No registration required.`}
+        {meta.intro}
       </p>
+
+      <div class="trust-row">
+        <span>✓ Free to use</span>
+        <span>✓ No registration</span>
+        <span>✓ Browser-based</span>
+      </div>
     </header>
 
-    <section class="tool-card" aria-label={tool.name}>
-      <div class="tool-placeholder">
-        <h2>{tool.name}</h2>
+    <section
+      class="tool-card"
+      aria-labelledby="tool-interface-title"
+    >
+      <div class="tool-heading">
+        <div>
+          <span class="tool-label">ONLINE TOOL</span>
+          <h2 id="tool-interface-title">{tool.name}</h2>
+        </div>
 
-        <p>
-          This tool is available in ToolAtlas. The interactive tool interface
-          will be loaded here.
-        </p>
+        <span class="privacy-badge">
+          Client-side
+        </span>
+      </div>
 
-        <button type="button">
-          Launch Tool
-        </button>
+      <div
+        id="tool-app"
+        class="tool-app"
+      >
+        <noscript>
+          <p>
+            JavaScript is required to use this online tool.
+          </p>
+        </noscript>
+
+        <div class="loading-state">
+          Loading tool…
+        </div>
       </div>
     </section>
 
@@ -79,20 +439,2006 @@ const description =
       <h2>About {tool.name}</h2>
 
       <p>
-        ToolAtlas provides free online tools designed to be fast, simple, and
-        easy to use. No account is required for basic browser-based tools.
+        {meta.intro}
+        ToolAtlas is designed to provide fast browser-based utilities
+        without requiring an account for basic tools. Whenever technically
+        possible, processing happens directly on your device.
       </p>
 
-      <h2>How to use this tool</h2>
+      <h2>How to use {tool.name}</h2>
 
       <ol>
-        <li>Open the tool on your device.</li>
-        <li>Enter or upload the required information.</li>
-        <li>Run the tool and review the result.</li>
+        {meta.steps.map((step) => (
+          <li>{step}</li>
+        ))}
       </ol>
+
+      <h2>{tool.name} online</h2>
+
+      <p>
+        Use {tool.name} directly from your browser on desktop, tablet, or
+        mobile. The interface is designed to keep the workflow simple and
+        avoid unnecessary registration steps.
+      </p>
     </section>
-  </main>
+  </div>
 </Layout>
+
+<script>
+  const root = document.querySelector('.tool-page');
+  const app = document.querySelector('#tool-app');
+
+  if (root && app) {
+    const slug = root.getAttribute('data-tool') || '';
+
+    const escapeHtml = (value) =>
+      String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+
+    const button = (label, id = '') =>
+      `<button class="action-button" type="button" ${id ? `id="${id}"` : ''}>${label}</button>`;
+
+    const textarea = (id, placeholder = '') =>
+      `<textarea id="${id}" class="tool-textarea" placeholder="${placeholder}"></textarea>`;
+
+    const input = (id, type = 'text', placeholder = '') =>
+      `<input id="${id}" class="tool-input" type="${type}" placeholder="${placeholder}" />`;
+
+    const resultBox = (id) =>
+      `<div id="${id}" class="result-box" aria-live="polite"></div>`;
+
+    const downloadBlob = (blob, filename) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    };
+
+    const copyText = async (value) => {
+      await navigator.clipboard.writeText(value);
+    };
+
+    const imageToCanvas = (file, maxWidth = null, maxHeight = null) =>
+      new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.onload = () => {
+          let width = image.naturalWidth;
+          let height = image.naturalHeight;
+
+          if (maxWidth && width > maxWidth) {
+            const ratio = maxWidth / width;
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+
+          if (maxHeight && height > maxHeight) {
+            const ratio = maxHeight / height;
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            reject(new Error('Canvas is not supported.'));
+            return;
+          }
+
+          ctx.drawImage(image, 0, 0, width, height);
+          resolve(canvas);
+
+          URL.revokeObjectURL(image.src);
+        };
+
+        image.onerror = () =>
+          reject(new Error('Unable to read this image.'));
+
+        image.src = URL.createObjectURL(file);
+      });
+
+    const canvasBlob = (canvas, type, quality = undefined) =>
+      new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error('Unable to create the output file.'));
+              return;
+            }
+
+            resolve(blob);
+          },
+          type,
+          quality
+        );
+      });
+
+    const renderImageTool = (mode) => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label class="file-label">
+            <span>Choose an image</span>
+            <input id="image-file" type="file" accept="image/*" />
+          </label>
+
+          ${
+            mode === 'image-compressor'
+              ? `
+                <label>
+                  <span>Quality: <strong id="quality-value">80%</strong></span>
+                  <input id="quality" type="range" min="10" max="100" value="80" />
+                </label>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'image-resizer'
+              ? `
+                <div class="field-grid">
+                  <label>
+                    <span>Width</span>
+                    <input id="resize-width" class="tool-input" type="number" min="1" placeholder="Width" />
+                  </label>
+                  <label>
+                    <span>Height</span>
+                    <input id="resize-height" class="tool-input" type="number" min="1" placeholder="Height" />
+                  </label>
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'png-to-jpg'
+              ? `
+                <label>
+                  <span>Background color</span>
+                  <input id="bg-color" type="color" value="#ffffff" />
+                </label>
+              `
+              : ''
+          }
+
+          <div class="button-row">
+            ${button(
+              mode === 'image-compressor'
+                ? 'Compress image'
+                : mode === 'image-resizer'
+                  ? 'Resize image'
+                  : mode === 'remove-exif'
+                    ? 'Clean metadata'
+                    : 'Convert image',
+              'process-image'
+            )}
+          </div>
+
+          ${resultBox('image-result')}
+        </div>
+      `;
+
+      const quality = document.querySelector('#quality');
+      const qualityValue = document.querySelector('#quality-value');
+
+      if (quality && qualityValue) {
+        quality.addEventListener('input', () => {
+          qualityValue.textContent = `${quality.value}%`;
+        });
+      }
+
+      document
+        .querySelector('#process-image')
+        ?.addEventListener('click', async () => {
+          const fileInput = document.querySelector('#image-file');
+          const result = document.querySelector('#image-result');
+
+          if (!fileInput?.files?.[0]) {
+            result.innerHTML =
+              '<p class="error">Please choose an image first.</p>';
+            return;
+          }
+
+          const file = fileInput.files[0];
+
+          try {
+            let canvas;
+
+            if (mode === 'image-resizer') {
+              const width = Number(
+                document.querySelector('#resize-width')?.value
+              );
+              const height = Number(
+                document.querySelector('#resize-height')?.value
+              );
+
+              if (!width || !height) {
+                throw new Error('Enter both width and height.');
+              }
+
+              canvas = await imageToCanvas(file);
+
+              const resized = document.createElement('canvas');
+              resized.width = width;
+              resized.height = height;
+
+              const ctx = resized.getContext('2d');
+
+              if (!ctx) {
+                throw new Error('Canvas is not supported.');
+              }
+
+              ctx.drawImage(canvas, 0, 0, width, height);
+              canvas = resized;
+            } else {
+              canvas = await imageToCanvas(file);
+            }
+
+            if (mode === 'png-to-jpg') {
+              const ctx = canvas.getContext('2d');
+
+              if (!ctx) {
+                throw new Error('Canvas is not supported.');
+              }
+
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle =
+                document.querySelector('#bg-color')?.value || '#ffffff';
+
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            const type =
+              mode === 'jpg-to-png'
+                ? 'image/png'
+                : mode === 'webp-to-jpg' ||
+                    mode === 'png-to-jpg' ||
+                    mode === 'remove-exif'
+                  ? 'image/jpeg'
+                  : file.type || 'image/jpeg';
+
+            const qualityValueNumber =
+              Number(
+                document.querySelector('#quality')?.value || 80
+              ) / 100;
+
+            const blob = await canvasBlob(
+              canvas,
+              type,
+              mode === 'image-compressor'
+                ? qualityValueNumber
+                : 0.92
+            );
+
+            const extension =
+              type === 'image/png' ? 'png' : 'jpg';
+
+            const outputName =
+              file.name.replace(/\.[^/.]+$/, '') +
+              `-toolatlas.${extension}`;
+
+            downloadBlob(blob, outputName);
+
+            result.innerHTML = `
+              <div class="success">
+                <strong>Done.</strong>
+                <span>${escapeHtml(outputName)}</span>
+                <span>${Math.round(blob.size / 1024)} KB</span>
+              </div>
+            `;
+          } catch (error) {
+            result.innerHTML = `
+              <p class="error">
+                ${escapeHtml(error?.message || 'Something went wrong.')}
+              </p>
+            `;
+          }
+        });
+    };
+
+    const renderTextTool = (mode) => {
+      const initial = mode === 'json-formatter' || mode === 'json-validator'
+        ? '{\n  "hello": "world"\n}'
+        : '';
+
+      app.innerHTML = `
+        <div class="tool-form">
+          <label>
+            <span>Input</span>
+            <textarea id="main-input" class="tool-textarea" placeholder="Enter or paste your text here...">${escapeHtml(initial)}</textarea>
+          </label>
+
+          ${
+            mode === 'case-converter'
+              ? `
+                <div class="button-row">
+                  ${button('UPPERCASE', 'upper')}
+                  ${button('lowercase', 'lower')}
+                  ${button('Title Case', 'title-case')}
+                  ${button('Sentence case', 'sentence-case')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'base64-encoder-decoder'
+              ? `
+                <div class="button-row">
+                  ${button('Encode Base64', 'encode')}
+                  ${button('Decode Base64', 'decode')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'url-encoder-decoder'
+              ? `
+                <div class="button-row">
+                  ${button('Encode URL', 'encode')}
+                  ${button('Decode URL', 'decode')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'text-cleaner'
+              ? `
+                <div class="button-row">
+                  ${button('Clean text', 'clean')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'json-formatter'
+              ? `
+                <div class="button-row">
+                  ${button('Format JSON', 'format')}
+                  ${button('Minify JSON', 'minify')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'json-validator'
+              ? `
+                <div class="button-row">
+                  ${button('Validate JSON', 'validate')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'word-counter'
+              ? `
+                <div id="live-stats" class="stats-grid"></div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'regex-tester'
+              ? `
+                <label>
+                  <span>Regular expression</span>
+                  <input id="regex-input" class="tool-input" placeholder="\\bhello\\b" />
+                </label>
+
+                <label class="checkbox-row">
+                  <input id="regex-global" type="checkbox" checked />
+                  Global
+                </label>
+
+                <div class="button-row">
+                  ${button('Test expression', 'test-regex')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode !== 'word-counter' &&
+            mode !== 'case-converter' &&
+            mode !== 'base64-encoder-decoder' &&
+            mode !== 'url-encoder-decoder' &&
+            mode !== 'text-cleaner' &&
+            mode !== 'json-formatter' &&
+            mode !== 'json-validator' &&
+            mode !== 'regex-tester'
+              ? `
+                <div class="button-row">
+                  ${button('Process', 'process-text')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'case-converter' ||
+            mode === 'base64-encoder-decoder' ||
+            mode === 'url-encoder-decoder' ||
+            mode === 'text-cleaner' ||
+            mode === 'json-formatter'
+              ? `
+                <label>
+                  <span>Result</span>
+                  <textarea id="main-output" class="tool-textarea" readonly></textarea>
+                </label>
+
+                <div class="button-row">
+                  ${button('Copy result', 'copy-result')}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'json-validator' || mode === 'regex-tester'
+              ? resultBox('text-result')
+              : ''
+          }
+        </div>
+      `;
+
+      const mainInput = document.querySelector('#main-input');
+
+      if (mode === 'word-counter' && mainInput) {
+        const stats = document.querySelector('#live-stats');
+
+        const update = () => {
+          const value = mainInput.value;
+          const words = value.trim()
+            ? value.trim().split(/\s+/).length
+            : 0;
+
+          const chars = value.length;
+          const charsNoSpaces = value.replace(/\s/g, '').length;
+          const lines = value ? value.split(/\r?\n/).length : 0;
+          const sentences = value
+            .split(/[.!?]+/)
+            .filter((item) => item.trim()).length;
+
+          stats.innerHTML = `
+            <div><strong>${words}</strong><span>Words</span></div>
+            <div><strong>${chars}</strong><span>Characters</span></div>
+            <div><strong>${charsNoSpaces}</strong><span>No spaces</span></div>
+            <div><strong>${lines}</strong><span>Lines</span></div>
+            <div><strong>${sentences}</strong><span>Sentences</span></div>
+          `;
+        };
+
+        mainInput.addEventListener('input', update);
+        update();
+      }
+
+      const output = document.querySelector('#main-output');
+
+      const setOutput = (value) => {
+        if (output) {
+          output.value = value;
+        }
+      };
+
+      document.querySelector('#upper')?.addEventListener('click', () => {
+        setOutput(mainInput?.value.toUpperCase() || '');
+      });
+
+      document.querySelector('#lower')?.addEventListener('click', () => {
+        setOutput(mainInput?.value.toLowerCase() || '');
+      });
+
+      document
+        .querySelector('#title-case')
+        ?.addEventListener('click', () => {
+          setOutput(
+            (mainInput?.value || '')
+              .toLowerCase()
+              .replace(/\b\w/g, (letter) => letter.toUpperCase())
+          );
+        });
+
+      document
+        .querySelector('#sentence-case')
+        ?.addEventListener('click', () => {
+          const value = (mainInput?.value || '').toLowerCase();
+
+          setOutput(
+            value.replace(
+              /(^\s*\w|[.!?]\s+\w)/g,
+              (match) => match.toUpperCase()
+            )
+          );
+        });
+
+      document
+        .querySelector('#encode')
+        ?.addEventListener('click', () => {
+          if (mode === 'base64-encoder-decoder') {
+            try {
+              setOutput(
+                btoa(
+                  unescape(
+                    encodeURIComponent(mainInput?.value || '')
+                  )
+                )
+              );
+            } catch {
+              setOutput('Unable to encode this text.');
+            }
+          } else {
+            setOutput(
+              encodeURIComponent(mainInput?.value || '')
+            );
+          }
+        });
+
+      document
+        .querySelector('#decode')
+        ?.addEventListener('click', () => {
+          if (mode === 'base64-encoder-decoder') {
+            try {
+              setOutput(
+                decodeURIComponent(
+                  escape(
+                    atob(mainInput?.value || '')
+                  )
+                )
+              );
+            } catch {
+              setOutput('Invalid Base64 input.');
+            }
+          } else {
+            try {
+              setOutput(
+                decodeURIComponent(mainInput?.value || '')
+              );
+            } catch {
+              setOutput('Invalid encoded URL.');
+            }
+          }
+        });
+
+      document
+        .querySelector('#clean')
+        ?.addEventListener('click', () => {
+          setOutput(
+            (mainInput?.value || '')
+              .replace(/[ \t]+/g, ' ')
+              .replace(/\n{3,}/g, '\n\n')
+              .split('\n')
+              .map((line) => line.trim())
+              .join('\n')
+              .trim()
+          );
+        });
+
+      document
+        .querySelector('#format')
+        ?.addEventListener('click', () => {
+          try {
+            setOutput(
+              JSON.stringify(
+                JSON.parse(mainInput?.value || ''),
+                null,
+                2
+              )
+            );
+          } catch {
+            setOutput('Invalid JSON.');
+          }
+        });
+
+      document
+        .querySelector('#minify')
+        ?.addEventListener('click', () => {
+          try {
+            setOutput(
+              JSON.stringify(
+                JSON.parse(mainInput?.value || '')
+              )
+            );
+          } catch {
+            setOutput('Invalid JSON.');
+          }
+        });
+
+      document
+        .querySelector('#validate')
+        ?.addEventListener('click', () => {
+          const result = document.querySelector('#text-result');
+
+          try {
+            JSON.parse(mainInput?.value || '');
+
+            result.innerHTML = `
+              <div class="success">
+                <strong>Valid JSON</strong>
+                <span>The JSON syntax is valid.</span>
+              </div>
+            `;
+          } catch (error) {
+            result.innerHTML = `
+              <div class="error">
+                <strong>Invalid JSON</strong>
+                <span>${escapeHtml(error?.message || 'Invalid JSON.')}</span>
+              </div>
+            `;
+          }
+        });
+
+      document
+        .querySelector('#test-regex')
+        ?.addEventListener('click', () => {
+          const result = document.querySelector('#text-result');
+          const pattern =
+            document.querySelector('#regex-input')?.value || '';
+
+          try {
+            const flags =
+              document.querySelector('#regex-global')?.checked
+                ? 'g'
+                : '';
+
+            const regex = new RegExp(pattern, flags);
+            const text = mainInput?.value || '';
+
+            const matches = text.match(regex) || [];
+
+            result.innerHTML = `
+              <div class="success">
+                <strong>${matches.length} match${matches.length === 1 ? '' : 'es'}</strong>
+                <pre>${escapeHtml(matches.join('\n'))}</pre>
+              </div>
+            `;
+          } catch (error) {
+            result.innerHTML = `
+              <p class="error">
+                ${escapeHtml(error?.message || 'Invalid regular expression.')}
+              </p>
+            `;
+          }
+        });
+
+      document
+        .querySelector('#copy-result')
+        ?.addEventListener('click', async () => {
+          try {
+            await copyText(output?.value || '');
+
+            const resultButton =
+              document.querySelector('#copy-result');
+
+            if (resultButton) {
+              resultButton.textContent = 'Copied ✓';
+
+              setTimeout(() => {
+                resultButton.textContent = 'Copy result';
+              }, 1500);
+            }
+          } catch {
+            alert('Copy failed.');
+          }
+        });
+    };
+
+    const renderUuidTool = () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label>
+            <span>Number of UUIDs</span>
+            <input id="uuid-count" class="tool-input" type="number" min="1" max="100" value="5" />
+          </label>
+
+          <div class="button-row">
+            ${button('Generate UUIDs', 'generate-uuid')}
+          </div>
+
+          <textarea id="uuid-output" class="tool-textarea" readonly></textarea>
+
+          <div class="button-row">
+            ${button('Copy UUIDs', 'copy-uuid')}
+          </div>
+        </div>
+      `;
+
+      document
+        .querySelector('#generate-uuid')
+        ?.addEventListener('click', () => {
+          const count = Math.min(
+            100,
+            Math.max(
+              1,
+              Number(
+                document.querySelector('#uuid-count')?.value || 5
+              )
+            )
+          );
+
+          const values = [];
+
+          for (let i = 0; i < count; i++) {
+            values.push(crypto.randomUUID());
+          }
+
+          document.querySelector('#uuid-output').value =
+            values.join('\n');
+        });
+
+      document
+        .querySelector('#copy-uuid')
+        ?.addEventListener('click', async () => {
+          await copyText(
+            document.querySelector('#uuid-output')?.value || ''
+          );
+        });
+    };
+
+    const renderPasswordTool = () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label>
+            <span>Password length</span>
+            <input id="password-length" class="tool-input" type="range" min="8" max="128" value="20" />
+          </label>
+
+          <div class="range-value">
+            <strong id="password-length-value">20</strong> characters
+          </div>
+
+          <div class="checkbox-list">
+            <label class="checkbox-row">
+              <input id="pw-upper" type="checkbox" checked />
+              Uppercase letters
+            </label>
+
+            <label class="checkbox-row">
+              <input id="pw-lower" type="checkbox" checked />
+              Lowercase letters
+            </label>
+
+            <label class="checkbox-row">
+              <input id="pw-numbers" type="checkbox" checked />
+              Numbers
+            </label>
+
+            <label class="checkbox-row">
+              <input id="pw-symbols" type="checkbox" checked />
+              Symbols
+            </label>
+          </div>
+
+          <div class="button-row">
+            ${button('Generate password', 'generate-password')}
+          </div>
+
+          <div class="password-result">
+            <input id="password-output" class="tool-input" readonly />
+            ${button('Copy', 'copy-password')}
+          </div>
+        </div>
+      `;
+
+      const length = document.querySelector('#password-length');
+      const lengthValue =
+        document.querySelector('#password-length-value');
+
+      length?.addEventListener('input', () => {
+        lengthValue.textContent = length.value;
+      });
+
+      document
+        .querySelector('#generate-password')
+        ?.addEventListener('click', () => {
+          let chars = '';
+
+          if (document.querySelector('#pw-upper')?.checked) {
+            chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          }
+
+          if (document.querySelector('#pw-lower')?.checked) {
+            chars += 'abcdefghijklmnopqrstuvwxyz';
+          }
+
+          if (document.querySelector('#pw-numbers')?.checked) {
+            chars += '0123456789';
+          }
+
+          if (document.querySelector('#pw-symbols')?.checked) {
+            chars += '!@#$%^&*()-_=+[]{};:,.?';
+          }
+
+          if (!chars) {
+            alert('Select at least one character type.');
+            return;
+          }
+
+          const count = Number(length?.value || 20);
+          const values = new Uint32Array(count);
+
+          crypto.getRandomValues(values);
+
+          let password = '';
+
+          for (let i = 0; i < count; i++) {
+            password += chars[values[i] % chars.length];
+          }
+
+          document.querySelector('#password-output').value =
+            password;
+        });
+
+      document
+        .querySelector('#copy-password')
+        ?.addEventListener('click', async () => {
+          await copyText(
+            document.querySelector('#password-output')?.value || ''
+          );
+        });
+    };
+
+    const renderTimestampTool = () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <div class="field-grid">
+            <label>
+              <span>Unix timestamp</span>
+              <input id="timestamp" class="tool-input" type="text" placeholder="1750000000" />
+            </label>
+
+            <label>
+              <span>Date</span>
+              <input id="date-input" class="tool-input" type="datetime-local" />
+            </label>
+          </div>
+
+          <div class="button-row">
+            ${button('Timestamp → Date', 'timestamp-to-date')}
+            ${button('Date → Timestamp', 'date-to-timestamp')}
+            ${button('Use current time', 'current-time')}
+          </div>
+
+          ${resultBox('timestamp-result')}
+        </div>
+      `;
+
+      const result = document.querySelector('#timestamp-result');
+
+      document
+        .querySelector('#timestamp-to-date')
+        ?.addEventListener('click', () => {
+          const value = Number(
+            document.querySelector('#timestamp')?.value
+          );
+
+          if (!Number.isFinite(value)) {
+            result.innerHTML =
+              '<p class="error">Enter a valid timestamp.</p>';
+            return;
+          }
+
+          const milliseconds =
+            String(Math.trunc(value)).length <= 10
+              ? value * 1000
+              : value;
+
+          const date = new Date(milliseconds);
+
+          result.innerHTML = `
+            <div class="success">
+              <strong>${escapeHtml(date.toISOString())}</strong>
+            </div>
+          `;
+        });
+
+      document
+        .querySelector('#date-to-timestamp')
+        ?.addEventListener('click', () => {
+          const value =
+            document.querySelector('#date-input')?.value;
+
+          if (!value) {
+            result.innerHTML =
+              '<p class="error">Choose a date first.</p>';
+            return;
+          }
+
+          const timestamp = Math.floor(
+            new Date(value).getTime() / 1000
+          );
+
+          result.innerHTML = `
+            <div class="success">
+              <strong>${timestamp}</strong>
+            </div>
+          `;
+        });
+
+      document
+        .querySelector('#current-time')
+        ?.addEventListener('click', () => {
+          const now = Date.now();
+
+          document.querySelector('#timestamp').value =
+            String(Math.floor(now / 1000));
+
+          const dateInput =
+            document.querySelector('#date-input');
+
+          const date = new Date(now);
+          dateInput.value =
+            new Date(
+              date.getTime() - date.getTimezoneOffset() * 60000
+            )
+              .toISOString()
+              .slice(0, 16);
+        });
+    };
+
+    const renderColorTool = () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label>
+            <span>Choose a color</span>
+            <input id="color" class="color-picker" type="color" value="#2563eb" />
+          </label>
+
+          ${resultBox('color-result')}
+        </div>
+      `;
+
+      const color = document.querySelector('#color');
+      const result = document.querySelector('#color-result');
+
+      const update = () => {
+        const hex = color.value;
+
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+
+        const max = Math.max(r, g, b) / 255;
+        const min = Math.min(r, g, b) / 255;
+
+        let h = 0;
+        let s = 0;
+        const l = (max + min) / 2;
+
+        if (max !== min) {
+          const d = max - min;
+
+          s =
+            l > 0.5
+              ? d / (2 - max - min)
+              : d / (max + min);
+
+          switch (max) {
+            case r / 255:
+              h =
+                ((g - b) / 255 / d +
+                  (g < b ? 6 : 0)) /
+                6;
+              break;
+
+            case g / 255:
+              h =
+                ((b - r) / 255 / d + 2) /
+                6;
+              break;
+
+            case b / 255:
+              h =
+                ((r - g) / 255 / d + 4) /
+                6;
+              break;
+          }
+        }
+
+        result.innerHTML = `
+          <div class="color-preview" style="background:${hex}"></div>
+
+          <div class="stats-grid">
+            <div>
+              <strong>${hex.toUpperCase()}</strong>
+              <span>HEX</span>
+            </div>
+
+            <div>
+              <strong>rgb(${r}, ${g}, ${b})</strong>
+              <span>RGB</span>
+            </div>
+
+            <div>
+              <strong>${Math.round(h * 360)}° ${Math.round(s * 100)}% ${Math.round(l * 100)}%</strong>
+              <span>HSL</span>
+            </div>
+          </div>
+        `;
+      };
+
+      color.addEventListener('input', update);
+      update();
+    };
+
+    const renderCpsTool = () => {
+      app.innerHTML = `
+        <div class="test-panel">
+          <div class="test-number" id="cps-score">0</div>
+          <p>Clicks per second</p>
+
+          <label>
+            <span>Duration</span>
+            <select id="cps-duration" class="tool-input">
+              <option value="1">1 second</option>
+              <option value="5" selected>5 seconds</option>
+              <option value="10">10 seconds</option>
+              <option value="15">15 seconds</option>
+            </select>
+          </label>
+
+          <button id="cps-button" class="test-button" type="button">
+            Start clicking
+          </button>
+
+          <p id="cps-status" class="muted">Ready</p>
+        </div>
+      `;
+
+      const score = document.querySelector('#cps-score');
+      const buttonElement =
+        document.querySelector('#cps-button');
+      const status = document.querySelector('#cps-status');
+
+      let clicks = 0;
+      let start = 0;
+      let running = false;
+      let timer;
+
+      buttonElement.addEventListener('click', () => {
+        if (!running) {
+          clicks = 1;
+          start = performance.now();
+          running = true;
+
+          const duration =
+            Number(
+              document.querySelector('#cps-duration').value
+            ) * 1000;
+
+          buttonElement.textContent = 'Click!';
+          status.textContent = 'Test running…';
+
+          timer = setTimeout(() => {
+            running = false;
+
+            const seconds =
+              (performance.now() - start) / 1000;
+
+            const cps = clicks / seconds;
+
+            score.textContent = cps.toFixed(2);
+            buttonElement.textContent = 'Start again';
+            status.textContent =
+              `Finished — ${clicks} clicks in ${seconds.toFixed(2)} seconds.`;
+          }, duration);
+
+          score.textContent = '1';
+        } else {
+          clicks++;
+          score.textContent = (
+            clicks /
+            ((performance.now() - start) / 1000)
+          ).toFixed(2);
+        }
+      });
+    };
+
+    const renderReactionTool = () => {
+      app.innerHTML = `
+        <div class="test-panel">
+          <div class="test-number" id="reaction-score">—</div>
+          <p>Reaction time in milliseconds</p>
+
+          <button id="reaction-button" class="reaction-button ready" type="button">
+            Click to start
+          </button>
+
+          <p id="reaction-status" class="muted">
+            Wait for the button to change.
+          </p>
+        </div>
+      `;
+
+      const buttonElement =
+        document.querySelector('#reaction-button');
+
+      const score =
+        document.querySelector('#reaction-score');
+
+      const status =
+        document.querySelector('#reaction-status');
+
+      let timeout;
+      let start = 0;
+      let waiting = false;
+      let active = false;
+
+      buttonElement.addEventListener('click', () => {
+        if (!waiting && !active) {
+          waiting = true;
+          buttonElement.textContent = 'Wait…';
+          status.textContent =
+            'Do not click until the button changes.';
+
+          timeout = setTimeout(() => {
+            waiting = false;
+            active = true;
+            start = performance.now();
+
+            buttonElement.textContent = 'CLICK NOW';
+            buttonElement.className =
+              'reaction-button go';
+
+            status.textContent =
+              'Click as quickly as possible!';
+          }, 1200 + Math.random() * 3000);
+
+          return;
+        }
+
+        if (waiting) {
+          clearTimeout(timeout);
+          waiting = false;
+
+          buttonElement.textContent =
+            'Too early — try again';
+
+          status.textContent =
+            'You clicked before the signal.';
+          return;
+        }
+
+        if (active) {
+          const reaction =
+            performance.now() - start;
+
+          active = false;
+
+          score.textContent =
+            `${Math.round(reaction)} ms`;
+
+          buttonElement.textContent =
+            'Try again';
+
+          buttonElement.className =
+            'reaction-button ready';
+
+          status.textContent =
+            'Test complete.';
+        }
+      });
+    };
+
+    const renderKeyboardTool = () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <p class="muted">
+            Press any key on your keyboard. Detected keys will appear below.
+          </p>
+
+          <div id="keyboard-output" class="key-display">
+            Waiting for keyboard input…
+          </div>
+
+          <div id="key-history" class="key-history"></div>
+        </div>
+      `;
+
+      const output =
+        document.querySelector('#keyboard-output');
+
+      const history =
+        document.querySelector('#key-history');
+
+      const pressed = [];
+
+      window.addEventListener('keydown', (event) => {
+        event.preventDefault();
+
+        output.innerHTML = `
+          <strong>${escapeHtml(event.key)}</strong>
+          <span>Code: ${escapeHtml(event.code)}</span>
+        `;
+
+        pressed.unshift(event.key);
+
+        if (pressed.length > 20) {
+          pressed.pop();
+        }
+
+        history.innerHTML = pressed
+          .map(
+            (key) =>
+              `<span class="key-chip">${escapeHtml(key)}</span>`
+          )
+          .join('');
+      });
+    };
+
+    const renderTypingTool = () => {
+      const samples = [
+        'Fast typing starts with accuracy. Keep your hands relaxed and focus on the text.',
+        'Good typing speed comes from consistent practice and correct finger placement.',
+        'Simple daily practice can improve typing accuracy, rhythm, and confidence.',
+      ];
+
+      const sample =
+        samples[Math.floor(Math.random() * samples.length)];
+
+      app.innerHTML = `
+        <div class="typing-test">
+          <p class="typing-target">${escapeHtml(sample)}</p>
+
+          <textarea
+            id="typing-input"
+            class="tool-textarea"
+            placeholder="Start typing the text above..."
+            disabled
+          ></textarea>
+
+          <div class="button-row">
+            ${button('Start test', 'typing-start')}
+            ${button('Reset', 'typing-reset')}
+          </div>
+
+          <div id="typing-stats" class="stats-grid"></div>
+        </div>
+      `;
+
+      const input =
+        document.querySelector('#typing-input');
+
+      const stats =
+        document.querySelector('#typing-stats');
+
+      let startTime = 0;
+      let active = false;
+
+      document
+        .querySelector('#typing-start')
+        ?.addEventListener('click', () => {
+          active = true;
+          startTime = performance.now();
+
+          input.disabled = false;
+          input.value = '';
+          input.focus();
+
+          stats.innerHTML = `
+            <div><strong>0</strong><span>WPM</span></div>
+            <div><strong>0%</strong><span>Accuracy</span></div>
+          `;
+        });
+
+      input.addEventListener('input', () => {
+        if (!active) return;
+
+        const value = input.value;
+        const elapsed =
+          (performance.now() - startTime) / 60000;
+
+        const correct = [...value].filter(
+          (char, index) =>
+            char === sample[index]
+        ).length;
+
+        const accuracy =
+          value.length > 0
+            ? (correct / value.length) * 100
+            : 0;
+
+        const words =
+          value.trim().length / 5;
+
+        const wpm =
+          elapsed > 0 ? words / elapsed : 0;
+
+        stats.innerHTML = `
+          <div>
+            <strong>${Math.round(wpm)}</strong>
+            <span>WPM</span>
+          </div>
+
+          <div>
+            <strong>${Math.round(accuracy)}%</strong>
+            <span>Accuracy</span>
+          </div>
+
+          <div>
+            <strong>${value.length}</strong>
+            <span>Characters</span>
+          </div>
+        `;
+
+        if (value === sample) {
+          active = false;
+          input.disabled = true;
+        }
+      });
+
+      document
+        .querySelector('#typing-reset')
+        ?.addEventListener('click', () => {
+          active = false;
+          input.disabled = true;
+          input.value = '';
+
+          stats.innerHTML = '';
+        });
+    };
+
+    const renderQrTool = async (wifi = false) => {
+      app.innerHTML = `
+        <div class="tool-form">
+          ${
+            wifi
+              ? `
+                <label>
+                  <span>Wi-Fi network name</span>
+                  ${input('wifi-ssid', 'text', 'Network name')}
+                </label>
+
+                <label>
+                  <span>Password</span>
+                  ${input('wifi-password', 'text', 'Wi-Fi password')}
+                </label>
+
+                <label>
+                  <span>Security</span>
+                  <select id="wifi-security" class="tool-input">
+                    <option value="WPA">WPA/WPA2</option>
+                    <option value="WEP">WEP</option>
+                    <option value="nopass">No password</option>
+                  </select>
+                </label>
+              `
+              : `
+                <label>
+                  <span>Text or URL</span>
+                  ${input('qr-text', 'text', 'https://example.com')}
+                </label>
+              `
+          }
+
+          <div class="button-row">
+            ${button('Generate QR code', 'generate-qr')}
+          </div>
+
+          <div id="qr-output" class="qr-output"></div>
+        </div>
+      `;
+
+      document
+        .querySelector('#generate-qr')
+        ?.addEventListener('click', async () => {
+          const output =
+            document.querySelector('#qr-output');
+
+          try {
+            const module =
+              await import(
+                'https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm'
+              );
+
+            let value = '';
+
+            if (wifi) {
+              const ssid =
+                document.querySelector('#wifi-ssid')?.value ||
+                '';
+
+              const password =
+                document.querySelector('#wifi-password')?.value ||
+                '';
+
+              const security =
+                document.querySelector('#wifi-security')?.value ||
+                'WPA';
+
+              value =
+                security === 'nopass'
+                  ? `WIFI:T:nopass;S:${ssid};;`
+                  : `WIFI:T:${security};S:${ssid};P:${password};;`;
+            } else {
+              value =
+                document.querySelector('#qr-text')?.value ||
+                '';
+            }
+
+            if (!value) {
+              output.innerHTML =
+                '<p class="error">Enter some content first.</p>';
+              return;
+            }
+
+            const canvas =
+              document.createElement('canvas');
+
+            await module.toCanvas(canvas, value, {
+              width: 300,
+              margin: 2,
+            });
+
+            output.innerHTML = '';
+            output.appendChild(canvas);
+
+            const download =
+              document.createElement('button');
+
+            download.className = 'action-button';
+            download.textContent =
+              'Download QR code';
+
+            download.onclick = () => {
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  downloadBlob(
+                    blob,
+                    'toolatlas-qr-code.png'
+                  );
+                }
+              }, 'image/png');
+            };
+
+            output.appendChild(download);
+          } catch {
+            output.innerHTML = `
+              <p class="error">
+                QR generation could not be loaded. Please check your connection and try again.
+              </p>
+            `;
+          }
+        });
+    };
+
+    const renderBarcodeTool = async () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label>
+            <span>Barcode value</span>
+            ${input('barcode-value', 'text', '123456789012')}
+          </label>
+
+          <label>
+            <span>Format</span>
+            <select id="barcode-format" class="tool-input">
+              <option value="CODE128">CODE128</option>
+              <option value="EAN13">EAN-13</option>
+              <option value="UPC">UPC</option>
+            </select>
+          </label>
+
+          <div class="button-row">
+            ${button('Generate barcode', 'generate-barcode')}
+          </div>
+
+          <div id="barcode-output" class="barcode-output"></div>
+        </div>
+      `;
+
+      document
+        .querySelector('#generate-barcode')
+        ?.addEventListener('click', async () => {
+          const output =
+            document.querySelector('#barcode-output');
+
+          try {
+            const module =
+              await import(
+                'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/+esm'
+              );
+
+            const value =
+              document.querySelector('#barcode-value')?.value ||
+              '';
+
+            const format =
+              document.querySelector('#barcode-format')?.value ||
+              'CODE128';
+
+            if (!value) {
+              output.innerHTML =
+                '<p class="error">Enter a barcode value.</p>';
+              return;
+            }
+
+            const svg =
+              document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'svg'
+              );
+
+            output.innerHTML = '';
+            output.appendChild(svg);
+
+            module.default(svg, value, {
+              format,
+              displayValue: true,
+              margin: 10,
+            });
+
+            const download =
+              document.createElement('button');
+
+            download.className = 'action-button';
+            download.textContent =
+              'Download SVG';
+
+            download.onclick = () => {
+              const serializer =
+                new XMLSerializer();
+
+              const source =
+                serializer.serializeToString(svg);
+
+              const blob = new Blob(
+                [source],
+                {
+                  type: 'image/svg+xml',
+                }
+              );
+
+              downloadBlob(
+                blob,
+                'toolatlas-barcode.svg'
+              );
+            };
+
+            output.appendChild(download);
+          } catch {
+            output.innerHTML = `
+              <p class="error">
+                Barcode generation could not be loaded.
+              </p>
+            `;
+          }
+        });
+    };
+
+    const renderPdfTool = async (mode) => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label class="file-label">
+            <span>Select PDF file${mode === 'merge-pdf' ? 's' : ''}</span>
+            <input
+              id="pdf-files"
+              type="file"
+              accept="application/pdf,.pdf"
+              ${mode === 'merge-pdf' ? 'multiple' : ''}
+            />
+          </label>
+
+          ${
+            mode === 'split-pdf'
+              ? `
+                <label>
+                  <span>Pages to extract</span>
+                  ${input(
+                    'pdf-pages',
+                    'text',
+                    'Example: 1,3,5'
+                  )}
+                </label>
+              `
+              : ''
+          }
+
+          ${
+            mode === 'rotate-pdf'
+              ? `
+                <label>
+                  <span>Rotation</span>
+                  <select id="pdf-rotation" class="tool-input">
+                    <option value="90">90°</option>
+                    <option value="180">180°</option>
+                    <option value="270">270°</option>
+                  </select>
+                </label>
+              `
+              : ''
+          }
+
+          <div class="button-row">
+            ${button('Process PDF', 'process-pdf')}
+          </div>
+
+          ${resultBox('pdf-result')}
+        </div>
+      `;
+
+      document
+        .querySelector('#process-pdf')
+        ?.addEventListener('click', async () => {
+          const files =
+            document.querySelector('#pdf-files')?.files;
+
+          const result =
+            document.querySelector('#pdf-result');
+
+          if (!files?.length) {
+            result.innerHTML =
+              '<p class="error">Choose a PDF file first.</p>';
+            return;
+          }
+
+          try {
+            const module =
+              await import(
+                'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+              );
+
+            const {
+              PDFDocument,
+              degrees,
+            } = module;
+
+            if (mode === 'merge-pdf') {
+              const outputPdf =
+                await PDFDocument.create();
+
+              for (const file of files) {
+                const bytes =
+                  await file.arrayBuffer();
+
+                const sourcePdf =
+                  await PDFDocument.load(bytes);
+
+                const pages =
+                  await outputPdf.copyPages(
+                    sourcePdf,
+                    sourcePdf.getPageIndices()
+                  );
+
+                pages.forEach((page) =>
+                  outputPdf.addPage(page)
+                );
+              }
+
+              const bytes =
+                await outputPdf.save();
+
+              downloadBlob(
+                new Blob([bytes], {
+                  type: 'application/pdf',
+                }),
+                'toolatlas-merged.pdf'
+              );
+
+              result.innerHTML =
+                '<div class="success"><strong>PDFs merged successfully.</strong></div>';
+
+              return;
+            }
+
+            const file = files[0];
+
+            const source =
+              await PDFDocument.load(
+                await file.arrayBuffer()
+              );
+
+            if (mode === 'split-pdf') {
+              const pageText =
+                document.querySelector('#pdf-pages')?.value ||
+                '';
+
+              const indexes = pageText
+                .split(',')
+                .map((value) => Number(value.trim()) - 1)
+                .filter(
+                  (value) =>
+                    Number.isInteger(value) &&
+                    value >= 0 &&
+                    value < source.getPageCount()
+                );
+
+              if (!indexes.length) {
+                throw new Error(
+                  'Enter valid page numbers.'
+                );
+              }
+
+              const outputPdf =
+                await PDFDocument.create();
+
+              const pages =
+                await outputPdf.copyPages(
+                  source,
+                  indexes
+                );
+
+              pages.forEach((page) =>
+                outputPdf.addPage(page)
+              );
+
+              const bytes =
+                await outputPdf.save();
+
+              downloadBlob(
+                new Blob([bytes], {
+                  type: 'application/pdf',
+                }),
+                'toolatlas-pages.pdf'
+              );
+
+              result.innerHTML =
+                '<div class="success"><strong>Selected pages extracted.</strong></div>';
+
+              return;
+            }
+
+            if (mode === 'rotate-pdf') {
+              const rotation =
+                Number(
+                  document.querySelector(
+                    '#pdf-rotation'
+                  )?.value || 90
+                );
+
+              for (const page of source.getPages()) {
+                page.setRotation(
+                  degrees(rotation)
+                );
+              }
+
+              const bytes =
+                await source.save();
+
+              downloadBlob(
+                new Blob([bytes], {
+                  type: 'application/pdf',
+                }),
+                'toolatlas-rotated.pdf'
+              );
+
+              result.innerHTML =
+                '<div class="success"><strong>PDF rotated successfully.</strong></div>';
+
+              return;
+            }
+
+            if (mode === 'compress-pdf') {
+              const bytes =
+                await source.save({
+                  useObjectStreams: true,
+                  addDefaultPage: false,
+                });
+
+              downloadBlob(
+                new Blob([bytes], {
+                  type: 'application/pdf',
+                }),
+                'toolatlas-optimized.pdf'
+              );
+
+              result.innerHTML =
+                '<div class="success"><strong>Optimized PDF created.</strong><span>PDF optimization depends on the original document.</span></div>';
+            }
+          } catch (error) {
+            result.innerHTML = `
+              <p class="error">
+                ${escapeHtml(
+                  error?.message ||
+                    'Unable to process this PDF.'
+                )}
+              </p>
+            `;
+          }
+        });
+    };
+
+    const renderJpgPdf = async () => {
+      app.innerHTML = `
+        <div class="tool-form">
+          <label class="file-label">
+            <span>Choose JPG images</span>
+            <input
+              id="jpg-files"
+              type="file"
+              accept="image/jpeg,.jpg,.jpeg"
+              multiple
+            />
+          </label>
+
+          <div class="button-row">
+            ${button('Create PDF', 'create-jpg-pdf')}
+          </div>
+
+          ${resultBox('jpg-pdf-result')}
+        </div>
+      `;
+
+      document
+        .querySelector('#create-jpg-pdf')
+        ?.addEventListener('click', async () => {
+          const files =
+            document.querySelector('#jpg-files')?.files;
+
+          const result =
+            document.querySelector('#jpg-pdf-result');
+
+          if (!files?.length) {
+            result.innerHTML =
+              '<p class="error">Choose at least one JPG image.</p>';
+            return;
+          }
+
+          try {
+            const module =
+              await import(
+                'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+              );
+
+            const pdf =
+              await module.PDFDocument.create();
+
+            for (const file of files) {
+              const bytes =
+                new Uint8Array(
+                  await file.arrayBuffer()
+                );
+
+              const image =
+                await pdf.embedJpg(bytes);
+
+              const page =
+                pdf.addPage([
+                  image.width,
+                  image.height,
+                ]);
+
+              page.drawImage(image, {
+                x: 0,
+                y: 0,
+                width: image.width,
+                height: image.height,
+              });
+            }
+
+            const bytes =
+              await pdf.save();
+
+            downloadBlob(
+              new Blob([bytes], {
+                type: 'application/pdf',
+              }),
+              'toolatlas-images.pdf'
+            );
+
+            result.innerHTML =
+              '<div class="success"><strong>PDF created successfully.</strong></div>';
+          } catch (error) {
+            result.innerHTML = `
+              <p class="error">
+                ${escapeHtml(
+                  error?.message ||
+                    'Unable to create the PDF.'
+                )}
+              </p>
+            `;
+          }
+        });
+    };
+
+    const renderTool = async () => {
+      switch (slug) {
+        case 'image-compressor':
+        case 'image-resizer':
+        case 'jpg-to-png':
+        case 'png-to-jpg':
+        case 'webp-to-jpg':
+        case 'remove-exif':
+          renderImageTool(slug);
+          break;
+
+        case 'jpg-to-pdf':
+          await renderJpgPdf();
+          break;
+
+        case 'merge-pdf':
+        case 'split-pdf':
+        case 'rotate-pdf':
+        case 'compress-pdf':
+          await renderPdfTool(slug);
+          break;
+
+        case 'json-formatter':
+        case 'json-validator':
+        case 'base64-encoder-decoder':
+        case 'url-encoder-decoder':
+        case 'regex-tester':
+        case 'word-counter':
+        case 'case-converter':
+        case 'text-cleaner':
+          renderTextTool(slug);
+          break;
+
+        case 'uuid-generator':
+          renderUuidTool();
+          break;
+
+        case 'timestamp-converter':
+          renderTimestampTool();
+          break;
+
+        case 'password-generator':
+          renderPasswordTool();
+          break;
+
+        case 'color-picker':
+          renderColorTool();
+          break;
+
+        case 'cps-test':
+          renderCpsTool();
+          break;
+
+        case 'reaction-time-test':
+          renderReactionTool();
+          break;
+
+        case 'keyboard-test':
+          renderKeyboardTool();
+          break;
+
+        case 'typing-test':
+          renderTypingTool();
+          break;
+
+        case 'qr-code-generator':
+          await renderQrTool(false);
+          break;
+
+        case 'wifi-qr-code':
+          await renderQrTool(true);
+          break;
+
+        case 'barcode-generator':
+          await renderBarcodeTool();
+          break;
+
+        default:
+          app.innerHTML = `
+            <div class="tool-form">
+              <h3>${escapeHtml(tool.name)}</h3>
+              <p>
+                This ToolAtlas utility is being prepared for this browser
+                environment.
+              </p>
+            </div>
+          `;
+      }
+    };
+
+    renderTool();
+  }
+</script>
 
 <style>
   .tool-page {
@@ -106,7 +2452,7 @@ const description =
     flex-wrap: wrap;
     gap: 8px;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 46px;
     color: #667085;
     font-size: 14px;
   }
@@ -121,68 +2467,378 @@ const description =
   }
 
   .hero {
-    max-width: 800px;
-    margin-bottom: 40px;
+    max-width: 850px;
+    margin-bottom: 38px;
   }
 
   .eyebrow {
-    margin: 0 0 10px;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    margin: 0 0 12px;
     color: #667085;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(38px, 7vw, 64px);
-    line-height: 1;
-    letter-spacing: -0.05em;
+    font-size: clamp(38px, 7vw, 68px);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
   }
 
   .description {
-    margin-top: 22px;
-    max-width: 720px;
+    max-width: 780px;
+    margin: 22px 0 0;
     color: #667085;
     font-size: 18px;
     line-height: 1.7;
   }
 
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .trust-row span {
+    padding: 7px 11px;
+    border: 1px solid #eaecf0;
+    border-radius: 999px;
+    background: #f9fafb;
+    color: #475467;
+    font-size: 13px;
+    font-weight: 650;
+  }
+
   .tool-card {
-    margin-top: 35px;
-    padding: 32px;
+    overflow: hidden;
     border: 1px solid #e4e7ec;
     border-radius: 24px;
     background: #fff;
+    box-shadow:
+      0 16px 45px rgba(16, 24, 40, 0.06);
   }
 
-  .tool-placeholder {
-    min-height: 260px;
+  .tool-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 28px;
+    border-bottom: 1px solid #eaecf0;
+    background: #fcfcfd;
+  }
+
+  .tool-heading h2 {
+    margin: 4px 0 0;
+    font-size: 21px;
+  }
+
+  .tool-label {
+    color: #667085;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .privacy-badge {
+    padding: 7px 11px;
+    border: 1px solid #d0d5dd;
+    border-radius: 999px;
+    color: #344054;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .tool-app {
+    min-height: 300px;
+    padding: 32px;
+  }
+
+  .loading-state {
+    min-height: 220px;
     display: grid;
     place-items: center;
+    color: #667085;
+  }
+
+  .tool-form {
+    display: grid;
+    gap: 20px;
+    max-width: 850px;
+    margin: 0 auto;
+  }
+
+  .tool-form label {
+    display: grid;
+    gap: 8px;
+    color: #344054;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .tool-input,
+  .tool-textarea,
+  .tool-form select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d0d5dd;
+    border-radius: 12px;
+    background: #fff;
+    color: #101828;
+    font: inherit;
+    outline: none;
+  }
+
+  .tool-input,
+  .tool-form select {
+    min-height: 46px;
+    padding: 10px 13px;
+  }
+
+  .tool-textarea {
+    min-height: 220px;
+    padding: 14px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .tool-input:focus,
+  .tool-textarea:focus,
+  .tool-form select:focus {
+    border-color: #98a2b3;
+    box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.06);
+  }
+
+  .file-label {
+    padding: 28px;
+    border: 2px dashed #d0d5dd;
+    border-radius: 18px;
     text-align: center;
-    align-content: center;
+    background: #fcfcfd;
+  }
+
+  .file-label input {
+    margin-top: 12px;
+    max-width: 100%;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .action-button,
+  .test-button,
+  .reaction-button {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 18px;
+    background: #101828;
+    color: #fff;
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+      transform 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  .action-button:hover,
+  .test-button:hover,
+  .reaction-button:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+
+  .result-box {
+    min-height: 20px;
+  }
+
+  .success {
+    display: grid;
+    gap: 5px;
+    padding: 16px;
+    border: 1px solid #abefc6;
+    border-radius: 14px;
+    background: #ecfdf3;
+    color: #067647;
+  }
+
+  .error {
+    padding: 14px;
+    border: 1px solid #fecdca;
+    border-radius: 14px;
+    background: #fef3f2;
+    color: #b42318;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
   }
 
-  .tool-placeholder h2 {
-    margin: 0;
+  .stats-grid > div {
+    display: grid;
+    gap: 4px;
+    padding: 18px;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    background: #fcfcfd;
   }
 
-  .tool-placeholder p {
-    max-width: 600px;
+  .stats-grid strong {
+    font-size: 20px;
+    color: #101828;
+  }
+
+  .stats-grid span {
     color: #667085;
-    line-height: 1.7;
+    font-size: 12px;
   }
 
-  button {
-    border: 0;
-    border-radius: 12px;
-    padding: 12px 20px;
-    font: inherit;
-    font-weight: 700;
+  .checkbox-row {
+    display: flex !important;
+    grid-template-columns: none !important;
+    align-items: center;
+    gap: 9px !important;
+  }
+
+  .checkbox-row input {
+    width: auto;
+  }
+
+  .checkbox-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .password-result {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .range-value {
+    color: #475467;
+  }
+
+  .color-picker {
+    width: 100%;
+    height: 90px;
+    padding: 5px;
+    border: 1px solid #d0d5dd;
+    border-radius: 14px;
+    background: #fff;
     cursor: pointer;
+  }
+
+  .color-preview {
+    width: 100%;
+    height: 110px;
+    border-radius: 16px;
+    border: 1px solid #eaecf0;
+  }
+
+  .test-panel {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .test-number {
+    font-size: clamp(46px, 10vw, 90px);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+  }
+
+  .test-button,
+  .reaction-button {
+    min-width: 240px;
+    min-height: 120px;
+    font-size: 20px;
+  }
+
+  .reaction-button.go {
+    background: #067647;
+  }
+
+  .key-display {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    min-height: 120px;
+    place-content: center;
+    border: 1px solid #eaecf0;
+    border-radius: 18px;
+    background: #fcfcfd;
+    text-align: center;
+  }
+
+  .key-display strong {
+    font-size: 32px;
+  }
+
+  .key-display span {
+    color: #667085;
+  }
+
+  .key-history {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .key-chip {
+    padding: 8px 11px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    font-family: monospace;
+  }
+
+  .typing-target {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid #eaecf0;
+    border-radius: 16px;
+    background: #fcfcfd;
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+  .qr-output,
+  .barcode-output {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    padding: 20px;
+  }
+
+  .qr-output canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+  }
+
+  .barcode-output svg {
+    max-width: 100%;
+    height: auto;
   }
 
   .content {
@@ -194,6 +2850,8 @@ const description =
   .content h2 {
     margin-top: 42px;
     margin-bottom: 12px;
+    color: #101828;
+    font-size: 25px;
   }
 
   .content p,
@@ -201,19 +2859,56 @@ const description =
     color: #667085;
   }
 
-  @media (max-width: 640px) {
+  .content ol {
+    padding-left: 22px;
+  }
+
+  .muted {
+    color: #667085;
+  }
+
+  pre {
+    overflow-x: auto;
+    margin: 12px 0 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.04);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  @media (max-width: 700px) {
     .tool-page {
       width: min(100% - 28px, 1100px);
       padding-top: 25px;
     }
 
-    .breadcrumb {
-      margin-bottom: 35px;
+    .tool-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 20px;
     }
 
-    .tool-card {
-      padding: 22px;
-      border-radius: 18px;
+    .tool-app {
+      padding: 20px;
+    }
+
+    .field-grid,
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .password-result {
+      grid-template-columns: 1fr;
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .trust-row span {
+      text-align: center;
     }
   }
 </style>
