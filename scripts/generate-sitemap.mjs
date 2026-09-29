@@ -59,65 +59,110 @@ const STATIC_PAGES = [
   'contact/',
 ];
 
+function normalizeSiteUrl(url) {
+  return url.replace(/\/+$/, '');
+}
+
+function escapeXml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+const siteUrl = normalizeSiteUrl(SITE_URL);
+
 const urls = [];
 
-for (const lang of LANGUAGES) {
+for (const language of LANGUAGES) {
   for (const page of STATIC_PAGES) {
-    urls.push(`${SITE_URL}/${lang}/${page}`);
+    urls.push(`${siteUrl}/${language}/${page}`);
   }
 
   for (const tool of TOOLS) {
-    urls.push(`${SITE_URL}/${lang}/tools/${tool}/`);
+    urls.push(`${siteUrl}/${language}/tools/${tool}/`);
   }
 }
 
 const uniqueUrls = [...new Set(urls)];
 
-const xml = [
-  '<?xml version="1.0" encoding="UTF-8"?>',
-  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...uniqueUrls.map((url) => `  <url><loc>${url}</loc></url>`),
-  '</urlset>',
-  '',
-].join('\n');
-
-const publicDir = resolve(process.cwd(), 'public');
-const outputPath = resolve(publicDir, 'sitemap.xml');
-
-await mkdir(publicDir, { recursive: true });
-await writeFile(outputPath, xml, 'utf8');
-
-console.log('========================================');
-console.log('Global Tools Sitemap');
-console.log('========================================');
-console.log(`Site: ${SITE_URL}`);
-console.log(`Languages: ${LANGUAGES.length}`);
-console.log(`Tools: ${TOOLS.length}`);
-console.log(`Static pages per language: ${STATIC_PAGES.length}`);
-console.log(`Total URLs: ${uniqueUrls.length}`);
-console.log(`Output: ${outputPath}`);
-console.log('========================================');
-
-if (uniqueUrls.length !== 370) {
+if (uniqueUrls.length !== urls.length) {
   throw new Error(
-    `Sitemap validation failed: expected 370 URLs, got ${uniqueUrls.length}`
+    `Sitemap generation failed: duplicate URLs detected. Total: ${urls.length}, unique: ${uniqueUrls.length}`
   );
 }
+
+const expectedUrlCount =
+  LANGUAGES.length * (STATIC_PAGES.length + TOOLS.length);
+
+if (uniqueUrls.length !== expectedUrlCount) {
+  throw new Error(
+    `Sitemap generation failed: expected ${expectedUrlCount} URLs, got ${uniqueUrls.length}`
+  );
+}
+
+for (const url of uniqueUrls) {
+  if (!url.startsWith(`${siteUrl}/`)) {
+    throw new Error(`Sitemap validation failed: invalid URL: ${url}`);
+  }
+
+  if (url.includes('YOUR-DOMAIN.com')) {
+    throw new Error('Sitemap validation failed: placeholder domain detected');
+  }
+
+  if (url.startsWith('http://')) {
+    throw new Error(`Sitemap validation failed: HTTP URL detected: ${url}`);
+  }
+}
+
+const xmlLines = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+];
+
+for (const url of uniqueUrls) {
+  xmlLines.push('  <url>');
+  xmlLines.push(`    <loc>${escapeXml(url)}</loc>`);
+  xmlLines.push('  </url>');
+}
+
+xmlLines.push('</urlset>');
+xmlLines.push('');
+
+const xml = xmlLines.join('\n');
 
 if (!xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')) {
   throw new Error('Sitemap validation failed: missing XML declaration');
 }
 
-if (!xml.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')) {
+if (
+  !xml.includes(
+    'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+  )
+) {
   throw new Error('Sitemap validation failed: missing sitemap namespace');
 }
 
-if (xml.includes('YOUR-DOMAIN.com')) {
-  throw new Error('Sitemap validation failed: placeholder domain detected');
-}
+const publicDir = resolve(process.cwd(), 'public');
+const outputPath = resolve(publicDir, 'sitemap.xml');
 
-if (xml.includes('http://') && !xml.includes('http://www.sitemaps.org')) {
-  throw new Error('Sitemap validation failed: unexpected HTTP URL detected');
-}
+await mkdir(publicDir, { recursive: true });
+
+await writeFile(outputPath, xml, 'utf8');
+
+console.log('========================================');
+console.log('Global Tools Sitemap');
+console.log('========================================');
+console.log(`Site: ${siteUrl}`);
+console.log(`Languages: ${LANGUAGES.length}`);
+console.log(`Tools: ${TOOLS.length}`);
+console.log(`Static pages per language: ${STATIC_PAGES.length}`);
+console.log(`URLs per language: ${STATIC_PAGES.length + TOOLS.length}`);
+console.log(`Total URLs: ${uniqueUrls.length}`);
+console.log(`Output: ${outputPath}`);
+console.log('========================================');
 
 console.log('Sitemap validation: PASSED');
+console.log('Sitemap generation: PASSED');
