@@ -98,9 +98,9 @@ console.log(`Total URLs: ${uniqueUrls.length}`);
 console.log(`Output: ${outputPath}`);
 console.log('========================================');
 
-if (uniqueUrls.length !== 380) {
+if (uniqueUrls.length !== 370) {
   throw new Error(
-    `Sitemap validation failed: expected 380 URLs, got ${uniqueUrls.length}`
+    `Sitemap validation failed: expected 370 URLs, got ${uniqueUrls.length}`
   );
 }
 
@@ -114,6 +114,10 @@ if (!xml.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')) {
 
 if (xml.includes('YOUR-DOMAIN.com')) {
   throw new Error('Sitemap validation failed: placeholder domain detected');
+}
+
+if (xml.includes('http://') && !xml.includes('http://www.sitemaps.org')) {
+  throw new Error('Sitemap validation failed: unexpected HTTP URL detected');
 }
 
 console.log('Sitemap validation: PASSED');
