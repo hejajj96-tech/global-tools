@@ -9,123 +9,381 @@ const {
   lang = 'en',
   canonical = `${siteUrl}/${lang}/`,
   noindex = false,
-  alternates = []
+  alternates = [],
+  breadcrumbs = [],
+  webApplication = false
 } = Astro.props;
 
 const langs = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ar', 'tr', 'hi', 'ja'];
 
-const cleanCanonical = canonical
-  .replace('https://global-tools.pages.dev', siteUrl)
-  .replace('https://global-tools.pages.dev/', siteUrl + '/')
-  .replace('https://YOUR-DOMAIN.com', siteUrl);
+const cleanUrl = (url: string) =>
+  url
+    .replace('https://global-tools.pages.dev', siteUrl)
+    .replace('https://YOUR-DOMAIN.com', siteUrl)
+    .replace(/([^:]\/)\/+/g, '$1');
+
+const cleanCanonical = cleanUrl(canonical);
+
+const currentPath = new URL(cleanCanonical).pathname;
 
 const generatedAlternates = langs.map((language) => ({
   lang: language,
-  href: cleanCanonical.replace(`/${lang}/`, `/${language}/`)
+  href: cleanUrl(
+    currentPath.replace(
+      new RegExp(`^/${lang}(?=/|$)`),
+      `/${language}`
+    )
+  )
 }));
 
-const finalAlternates = alternates.length > 0
-  ? alternates.map((a: any) => ({
-      lang: a.lang,
-      href: a.href
-        .replace('https://global-tools.pages.dev', siteUrl)
-        .replace('https://YOUR-DOMAIN.com', siteUrl)
-    }))
-  : generatedAlternates;
+const finalAlternates =
+  alternates.length > 0
+    ? alternates.map((a: any) => ({
+        lang: a.lang,
+        href: cleanUrl(a.href)
+      }))
+    : generatedAlternates;
+
+const xDefault =
+  finalAlternates.find((a: any) => a.lang === 'en')?.href ||
+  cleanUrl(
+    currentPath.replace(
+      new RegExp(`^/${lang}(?=/|$)`),
+      '/en'
+    )
+  );
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ToolAtlas',
+  url: siteUrl,
+  description,
+  inLanguage: lang
+};
+
+const applicationSchema = webApplication
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: title,
+      url: cleanCanonical,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires a modern web browser',
+      isAccessibleForFree: true,
+      inLanguage: lang
+    }
+  : null;
+
+const breadcrumbSchema =
+  breadcrumbs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map(
+          (item: any, index: number) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.name,
+            item: cleanUrl(item.url)
+          })
+        )
+      }
+    : null;
+
+const schemas = [
+  websiteSchema,
+  ...(applicationSchema ? [applicationSchema] : []),
+  ...(breadcrumbSchema ? [breadcrumbSchema] : [])
+];
 ---
 
 <!doctype html>
 <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
 
     <title>{title}</title>
 
-    <meta name="description" content={description} />
+    <meta
+      name="description"
+      content={description}
+    />
 
-    <link rel="canonical" href={cleanCanonical} />
+    <link
+      rel="canonical"
+      href={cleanCanonical}
+    />
 
-    {noindex && <meta name="robots" content="noindex,follow" />}
+    {noindex && (
+      <meta
+        name="robots"
+        content="noindex,follow"
+      />
+    )}
 
-    <meta name="theme-color" content="#101828" />
+    {!noindex && (
+      <meta
+        name="robots"
+        content="index,follow,max-image-preview:large"
+      />
+    )}
 
-    <link rel="icon" href="data:," />
+    <meta
+      name="theme-color"
+      content="#101828"
+    />
+
+    <meta
+      name="application-name"
+      content="ToolAtlas"
+    />
+
+    <meta
+      property="og:title"
+      content={title}
+    />
+
+    <meta
+      property="og:description"
+      content={description}
+    />
+
+    <meta
+      property="og:url"
+      content={cleanCanonical}
+    />
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:site_name"
+      content="ToolAtlas"
+    />
+
+    <meta
+      property="og:locale"
+      content={lang}
+    />
+
+    <meta
+      name="twitter:card"
+      content="summary"
+    />
+
+    <meta
+      name="twitter:title"
+      content={title}
+    />
+
+    <meta
+      name="twitter:description"
+      content={description}
+    />
+
+    <link
+      rel="icon"
+      href="data:,"
+    />
 
     {finalAlternates.map((a: any) => (
-      <link rel="alternate" hreflang={a.lang} href={a.href} />
+      <link
+        rel="alternate"
+        hreflang={a.lang}
+        href={a.href}
+      />
     ))}
 
     <link
       rel="alternate"
       hreflang="x-default"
-      href={cleanCanonical.replace(`/${lang}/`, '/en/')}
+      href={xDefault}
     />
+
+    {schemas.map((schema) => (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(schema)}
+      />
+    ))}
   </head>
 
   <body>
     <header
-      style="background:#fff;border-bottom:1px solid #eaecf0;position:sticky;top:0;z-index:20"
+      style="
+        background:#fff;
+        border-bottom:1px solid #eaecf0;
+        position:sticky;
+        top:0;
+        z-index:20
+      "
     >
       <div
         class="container"
-        style="height:70px;display:flex;align-items:center;gap:26px"
+        style="
+          min-height:70px;
+          display:flex;
+          align-items:center;
+          gap:26px;
+          flex-wrap:wrap
+        "
       >
         <a
           href={`/${lang}/`}
-          style="font-size:21px;font-weight:900;letter-spacing:-.04em"
+          aria-label="ToolAtlas home"
+          style="
+            font-size:21px;
+            font-weight:900;
+            letter-spacing:-.04em;
+            text-decoration:none
+          "
         >
           Tool<span style="color:#667085">Atlas</span>
         </a>
 
         <nav
-          style="display:flex;gap:20px;font-size:14px;font-weight:650;flex:1"
+          aria-label="Main navigation"
+          style="
+            display:flex;
+            gap:20px;
+            font-size:14px;
+            font-weight:650;
+            flex:1
+          "
         >
-          <a href={`/${lang}/tools/`}>Tools</a>
-          <a href={`/${lang}/categories/`}>Categories</a>
-          <a href={`/${lang}/about/`}>About</a>
+          <a href={`/${lang}/tools/`}>
+            Tools
+          </a>
+
+          <a href={`/${lang}/categories/`}>
+            Categories
+          </a>
+
+          <a href={`/${lang}/about/`}>
+            About
+          </a>
         </nav>
 
-        <select
-          aria-label="Language"
-          onchange="location.href='/' + this.value + '/'"
+        <label
+          for="language-selector"
+          style="
+            position:absolute;
+            width:1px;
+            height:1px;
+            padding:0;
+            margin:-1px;
+            overflow:hidden;
+            clip:rect(0,0,0,0);
+            white-space:nowrap;
+            border:0
+          "
         >
-          <option value={lang}>{lang.toUpperCase()}</option>
+          Language
+        </label>
+
+        <select
+          id="language-selector"
+          aria-label="Language"
+          onchange="
+            const target = this.value;
+            const current = window.location.pathname;
+            const translated = current.replace(
+              /^\/[^/]+/,
+              '/' + target
+            );
+            window.location.href =
+              translated.endsWith('/')
+                ? translated
+                : translated + '/';
+          "
+        >
+          <option
+            value={lang}
+            selected
+          >
+            {lang.toUpperCase()}
+          </option>
 
           {langs
-            .filter((x) => x !== lang)
-            .map((x) => <option value={x}>{x.toUpperCase()}</option>)}
+            .filter((language) => language !== lang)
+            .map((language) => (
+              <option value={language}>
+                {language.toUpperCase()}
+              </option>
+            ))}
         </select>
 
-        <a class="btn primary" href={`/${lang}/tools/`}>
+        <a
+          class="btn primary"
+          href={`/${lang}/tools/`}
+        >
           Explore tools
         </a>
       </div>
     </header>
 
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     <footer
-      style="margin-top:70px;border-top:1px solid #eaecf0;background:#fff"
+      style="
+        margin-top:70px;
+        border-top:1px solid #eaecf0;
+        background:#fff
+      "
     >
       <div
         class="container"
-        style="padding:38px 22px;display:flex;gap:25px;justify-content:space-between;flex-wrap:wrap"
+        style="
+          padding:38px 22px;
+          display:flex;
+          gap:25px;
+          justify-content:space-between;
+          flex-wrap:wrap
+        "
       >
         <div>
           <strong>ToolAtlas</strong>
 
-          <p class="muted" style="max-width:440px">
-            Fast, privacy-first online tools for everyday work. Built to
-            process data locally whenever technically possible.
+          <p
+            class="muted"
+            style="max-width:440px"
+          >
+            Fast, privacy-first online tools for everyday work.
+            Built to process data locally whenever technically possible.
           </p>
         </div>
 
-        <div style="display:flex;gap:18px;font-size:14px">
-          <a href={`/${lang}/privacy/`}>Privacy</a>
-          <a href={`/${lang}/terms/`}>Terms</a>
-          <a href={`/${lang}/contact/`}>Contact</a>
-        </div>
+        <nav
+          aria-label="Footer navigation"
+          style="
+            display:flex;
+            gap:18px;
+            font-size:14px
+          "
+        >
+          <a href={`/${lang}/privacy/`}>
+            Privacy
+          </a>
+
+          <a href={`/${lang}/terms/`}>
+            Terms
+          </a>
+
+          <a href={`/${lang}/contact/`}>
+            Contact
+          </a>
+        </nav>
       </div>
     </footer>
   </body>
