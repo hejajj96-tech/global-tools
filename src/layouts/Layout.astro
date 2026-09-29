@@ -1,3 +1,4 @@
+```astro
 ---
 import '../styles/global.css';
 
@@ -14,7 +15,18 @@ const {
   webApplication = false
 } = Astro.props;
 
-const langs = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ar', 'tr', 'hi', 'ja'];
+const langs = [
+  'en',
+  'es',
+  'fr',
+  'de',
+  'it',
+  'pt',
+  'ar',
+  'tr',
+  'hi',
+  'ja'
+];
 
 const cleanUrl = (url: string) =>
   url
@@ -70,7 +82,8 @@ const applicationSchema = webApplication
       url: cleanCanonical,
       applicationCategory: 'UtilitiesApplication',
       operatingSystem: 'Any',
-      browserRequirements: 'Requires a modern web browser',
+      browserRequirements:
+        'Requires a modern web browser',
       isAccessibleForFree: true,
       inLanguage: lang
     }
@@ -100,9 +113,18 @@ const schemas = [
 ---
 
 <!doctype html>
-<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+<html
+  lang={lang}
+  dir={lang === 'ar' ? 'rtl' : 'ltr'}
+>
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Google Search Console verification -->
+    <meta
+      name="google-site-verification"
+      content="QYadnpR-zqV0v5eyf2IsFG-DbYOMsXPgLvbsjwi-FuE"
+    />
 
     <meta
       name="viewport"
@@ -121,23 +143,18 @@ const schemas = [
       href={cleanCanonical}
     />
 
-    {noindex && (
-      <meta
-        name="robots"
-        content="noindex,follow"
-      />
-    )}
-
-    {!noindex && (
-      <meta
-        name="robots"
-        content="index,follow,max-image-preview:large"
-      />
-    )}
+    <meta
+      name="robots"
+      content={
+        noindex
+          ? 'noindex,follow'
+          : 'index,follow,max-image-preview:large'
+      }
+    />
 
     <meta
       name="theme-color"
-      content="#101828"
+      content="#080b12"
     />
 
     <meta
@@ -218,47 +235,22 @@ const schemas = [
   </head>
 
   <body>
-    <header
-      style="
-        background:#fff;
-        border-bottom:1px solid #eaecf0;
-        position:sticky;
-        top:0;
-        z-index:20
-      "
-    >
-      <div
-        class="container"
-        style="
-          min-height:70px;
-          display:flex;
-          align-items:center;
-          gap:26px;
-          flex-wrap:wrap
-        "
-      >
+    <header class="site-header">
+      <div class="header-inner">
         <a
           href={`/${lang}/`}
+          class="brand"
           aria-label="ToolAtlas home"
-          style="
-            font-size:21px;
-            font-weight:900;
-            letter-spacing:-.04em;
-            text-decoration:none
-          "
         >
-          Tool<span style="color:#667085">Atlas</span>
+          <span class="brand-mark">T</span>
+          <span>
+            Tool<span class="brand-muted">Atlas</span>
+          </span>
         </a>
 
         <nav
+          class="main-nav"
           aria-label="Main navigation"
-          style="
-            display:flex;
-            gap:20px;
-            font-size:14px;
-            font-weight:650;
-            flex:1
-          "
         >
           <a href={`/${lang}/tools/`}>
             Tools
@@ -273,61 +265,53 @@ const schemas = [
           </a>
         </nav>
 
-        <label
-          for="language-selector"
-          style="
-            position:absolute;
-            width:1px;
-            height:1px;
-            padding:0;
-            margin:-1px;
-            overflow:hidden;
-            clip:rect(0,0,0,0);
-            white-space:nowrap;
-            border:0
-          "
-        >
-          Language
-        </label>
-
-        <select
-          id="language-selector"
-          aria-label="Language"
-          onchange="
-            const target = this.value;
-            const current = window.location.pathname;
-            const translated = current.replace(
-              /^\/[^/]+/,
-              '/' + target
-            );
-            window.location.href =
-              translated.endsWith('/')
-                ? translated
-                : translated + '/';
-          "
-        >
-          <option
-            value={lang}
-            selected
+        <div class="header-actions">
+          <label
+            for="language-selector"
+            class="sr-only"
           >
-            {lang.toUpperCase()}
-          </option>
+            Language
+          </label>
 
-          {langs
-            .filter((language) => language !== lang)
-            .map((language) => (
-              <option value={language}>
-                {language.toUpperCase()}
-              </option>
-            ))}
-        </select>
+          <select
+            id="language-selector"
+            aria-label="Language"
+            onchange="
+              const target = this.value;
+              const current = window.location.pathname;
+              const translated = current.replace(
+                /^\/[^/]+/,
+                '/' + target
+              );
+              window.location.href =
+                translated.endsWith('/')
+                  ? translated
+                  : translated + '/';
+            "
+          >
+            <option
+              value={lang}
+              selected
+            >
+              {lang.toUpperCase()}
+            </option>
 
-        <a
-          class="btn primary"
-          href={`/${lang}/tools/`}
-        >
-          Explore tools
-        </a>
+            {langs
+              .filter((language) => language !== lang)
+              .map((language) => (
+                <option value={language}>
+                  {language.toUpperCase()}
+                </option>
+              ))}
+          </select>
+
+          <a
+            class="header-cta"
+            href={`/${lang}/tools/`}
+          >
+            Explore tools
+          </a>
+        </div>
       </div>
     </header>
 
@@ -335,43 +319,28 @@ const schemas = [
       <slot />
     </main>
 
-    <footer
-      style="
-        margin-top:70px;
-        border-top:1px solid #eaecf0;
-        background:#fff
-      "
-    >
-      <div
-        class="container"
-        style="
-          padding:38px 22px;
-          display:flex;
-          gap:25px;
-          justify-content:space-between;
-          flex-wrap:wrap
-        "
-      >
-        <div>
-          <strong>ToolAtlas</strong>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="brand-mark small">T</span>
+            <strong>ToolAtlas</strong>
+          </div>
 
-          <p
-            class="muted"
-            style="max-width:440px"
-          >
+          <p>
             Fast, privacy-first online tools for everyday work.
             Built to process data locally whenever technically possible.
           </p>
         </div>
 
         <nav
+          class="footer-nav"
           aria-label="Footer navigation"
-          style="
-            display:flex;
-            gap:18px;
-            font-size:14px
-          "
         >
+          <a href={`/${lang}/tools/`}>
+            Tools
+          </a>
+
           <a href={`/${lang}/privacy/`}>
             Privacy
           </a>
@@ -385,6 +354,294 @@ const schemas = [
           </a>
         </nav>
       </div>
+
+      <div class="footer-bottom">
+        <span>
+          © {new Date().getFullYear()} ToolAtlas
+        </span>
+
+        <span>
+          Free online tools
+        </span>
+      </div>
     </footer>
   </body>
 </html>
+
+<style>
+  :global(html) {
+    background: #080b12;
+  }
+
+  :global(body) {
+    margin: 0;
+    background:
+      radial-gradient(
+        circle at 15% 0%,
+        rgba(0, 229, 255, 0.08),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 85% 10%,
+        rgba(124, 58, 237, 0.1),
+        transparent 30%
+      ),
+      #080b12;
+    color: #f8fafc;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(8, 11, 18, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .header-inner {
+    width: min(1180px, calc(100% - 32px));
+    min-height: 72px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      #00e5ff,
+      #7c3aed
+    );
+    color: #fff;
+    box-shadow:
+      0 0 24px rgba(0, 229, 255, 0.25),
+      0 0 30px rgba(124, 58, 237, 0.18);
+  }
+
+  .brand-mark.small {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  .brand-muted {
+    color: #94a3b8;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+  }
+
+  .main-nav a,
+  .footer-nav a {
+    color: #aab4c5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 650;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .main-nav a:hover,
+  .footer-nav a:hover {
+    color: #fff;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #language-selector {
+    min-height: 38px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    outline: none;
+  }
+
+  .header-cta {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      #00c6ff,
+      #7c3aed
+    );
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 8px 26px rgba(0, 198, 255, 0.12);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .header-cta:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 30px rgba(0, 198, 255, 0.2);
+  }
+
+  .site-footer {
+    margin-top: 80px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(3, 6, 12, 0.75);
+  }
+
+  .footer-inner {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 42px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    max-width: 470px;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+  }
+
+  .footer-brand p {
+    margin: 14px 0 0;
+    color: #8792a5;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 18px 0 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #667085;
+    font-size: 12px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 760px) {
+    .header-inner {
+      min-height: auto;
+      padding: 13px 0;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .main-nav {
+      order: 3;
+      width: 100%;
+      justify-content: center;
+      gap: 18px;
+      padding-bottom: 3px;
+    }
+
+    .header-actions {
+      margin-left: auto;
+    }
+
+    .header-cta {
+      display: none;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      padding-top: 34px;
+    }
+
+    .footer-nav {
+      gap: 16px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 7px;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .header-inner,
+    .footer-inner,
+    .footer-bottom {
+      width: min(100% - 22px, 1180px);
+    }
+
+    .brand {
+      font-size: 19px;
+    }
+
+    .brand-mark {
+      width: 31px;
+      height: 31px;
+    }
+
+    .main-nav {
+      font-size: 13px;
+    }
+
+    .main-nav a {
+      font-size: 13px;
+    }
+  }
+</style>
+```
