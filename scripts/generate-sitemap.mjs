@@ -1,10 +1,22 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const siteUrl = process.env.SITE_URL || 'https://global-tools.hejajj96.workers.dev';
-const langs = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ar', 'tr', 'hi', 'ja'];
+const SITE_URL = 'https://global-tools.hejajj96.workers.dev';
 
-const tools = [
+const LANGUAGES = [
+  'en',
+  'es',
+  'fr',
+  'de',
+  'it',
+  'pt',
+  'ar',
+  'tr',
+  'hi',
+  'ja',
+];
+
+const TOOLS = [
   'image-compressor',
   'image-resizer',
   'jpg-to-png',
@@ -34,37 +46,74 @@ const tools = [
   'barcode-generator',
   'password-generator',
   'color-picker',
-  'reaction-time-test'
+  'reaction-time-test',
 ];
 
-const pages = [];
+const STATIC_PAGES = [
+  '',
+  'tools/',
+  'categories/',
+  'about/',
+  'privacy/',
+  'terms/',
+  'contact/',
+];
 
-for (const lang of langs) {
-  pages.push(
-    `${siteUrl}/${lang}/`,
-    `${siteUrl}/${lang}/tools/`,
-    `${siteUrl}/${lang}/categories/`,
-    `${siteUrl}/${lang}/about/`,
-    `${siteUrl}/${lang}/privacy/`,
-    `${siteUrl}/${lang}/terms/`,
-    `${siteUrl}/${lang}/contact/`
-  );
+const urls = [];
 
-  for (const tool of tools) {
-    pages.push(`${siteUrl}/${lang}/tools/${tool}/`);
+for (const lang of LANGUAGES) {
+  for (const page of STATIC_PAGES) {
+    urls.push(`${SITE_URL}/${lang}/${page}`);
+  }
+
+  for (const tool of TOOLS) {
+    urls.push(`${SITE_URL}/${lang}/tools/${tool}/`);
   }
 }
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}
-</urlset>
-`;
+const uniqueUrls = [...new Set(urls)];
 
-const outputPath = resolve(process.cwd(), 'public', 'sitemap.xml');
+const xml = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...uniqueUrls.map((url) => `  <url><loc>${url}</loc></url>`),
+  '</urlset>',
+  '',
+].join('\n');
 
-await mkdir(resolve(process.cwd(), 'public'), { recursive: true });
+const publicDir = resolve(process.cwd(), 'public');
+const outputPath = resolve(publicDir, 'sitemap.xml');
+
+await mkdir(publicDir, { recursive: true });
 await writeFile(outputPath, xml, 'utf8');
 
-console.log(`Sitemap generated: ${outputPath}`);
-console.log(`URLs: ${pages.length}`);
+console.log('========================================');
+console.log('Global Tools Sitemap');
+console.log('========================================');
+console.log(`Site: ${SITE_URL}`);
+console.log(`Languages: ${LANGUAGES.length}`);
+console.log(`Tools: ${TOOLS.length}`);
+console.log(`Static pages per language: ${STATIC_PAGES.length}`);
+console.log(`Total URLs: ${uniqueUrls.length}`);
+console.log(`Output: ${outputPath}`);
+console.log('========================================');
+
+if (uniqueUrls.length !== 380) {
+  throw new Error(
+    `Sitemap validation failed: expected 380 URLs, got ${uniqueUrls.length}`
+  );
+}
+
+if (!xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')) {
+  throw new Error('Sitemap validation failed: missing XML declaration');
+}
+
+if (!xml.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')) {
+  throw new Error('Sitemap validation failed: missing sitemap namespace');
+}
+
+if (xml.includes('YOUR-DOMAIN.com')) {
+  throw new Error('Sitemap validation failed: placeholder domain detected');
+}
+
+console.log('Sitemap validation: PASSED');
