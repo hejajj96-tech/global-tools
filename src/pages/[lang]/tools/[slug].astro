@@ -43,7 +43,6 @@ const toolMeta: Record<
     intro: string;
     steps: string[];
     accept?: string;
-    inputMode?: string;
   }
 > = {
   'image-compressor': {
@@ -106,7 +105,7 @@ const toolMeta: Record<
       'Create a clean copy of an image without embedded metadata by re-encoding it in your browser.',
     steps: [
       'Choose an image.',
-      'Select the output format.',
+      'Process the image.',
       'Download the metadata-cleaned image.',
     ],
     accept: 'image/*',
@@ -114,9 +113,9 @@ const toolMeta: Record<
 
   'jpg-to-pdf': {
     intro:
-      'Convert a JPG image into a printable PDF document directly in your browser.',
+      'Convert JPG images into a printable PDF document directly in your browser.',
     steps: [
-      'Choose a JPG image.',
+      'Choose one or more JPG images.',
       'Create the PDF.',
       'Download the generated document.',
     ],
@@ -128,8 +127,8 @@ const toolMeta: Record<
       'Combine PDF files into one document directly in your browser.',
     steps: [
       'Select two or more PDF files.',
-      'Arrange them in the selected order.',
-      'Create and download the merged PDF.',
+      'Process the files.',
+      'Download the merged PDF.',
     ],
     accept: 'application/pdf,.pdf',
   },
@@ -140,7 +139,7 @@ const toolMeta: Record<
     steps: [
       'Choose a PDF file.',
       'Enter the page numbers to extract.',
-      'Create and download the new PDF.',
+      'Download the new PDF.',
     ],
     accept: 'application/pdf,.pdf',
   },
@@ -151,17 +150,17 @@ const toolMeta: Record<
     steps: [
       'Choose a PDF file.',
       'Choose the rotation angle.',
-      'Create and download the rotated PDF.',
+      'Download the rotated PDF.',
     ],
     accept: 'application/pdf,.pdf',
   },
 
   'compress-pdf': {
     intro:
-      'Create a smaller PDF where browser-side optimization is supported.',
+      'Create an optimized PDF where browser-side optimization is supported.',
     steps: [
       'Choose a PDF file.',
-      'Run the browser-side optimization.',
+      'Run the optimization.',
       'Download the resulting PDF.',
     ],
     accept: 'application/pdf,.pdf',
@@ -243,7 +242,7 @@ const toolMeta: Record<
     steps: [
       'Paste or type your text.',
       'Review the live statistics.',
-      'Copy or edit the text as needed.',
+      'Edit or copy your text.',
     ],
   },
 
@@ -262,7 +261,7 @@ const toolMeta: Record<
       'Clean extra spaces, blank lines, and common formatting issues from text.',
     steps: [
       'Paste your text.',
-      'Choose the cleaning operation.',
+      'Clean the formatting.',
       'Copy the cleaned result.',
     ],
   },
@@ -353,7 +352,7 @@ const toolMeta: Record<
     steps: [
       'Start the test.',
       'Wait until the screen changes.',
-      'Click as quickly as possible and review your result.',
+      'Click as quickly as possible.',
     ],
   },
 };
@@ -380,16 +379,22 @@ const meta = toolMeta[slug] || {
     data-tool={slug}
     data-lang={lang}
   >
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href={`/${lang}/`}>Home</a>
-      <span>/</span>
+      <span>›</span>
       <a href={`/${lang}/tools/`}>Tools</a>
-      <span>/</span>
-      <span aria-current="page">{tool.name}</span>
+      <span>›</span>
+      <strong>{tool.name}</strong>
     </nav>
 
     <header class="hero">
-      <p class="eyebrow">ToolAtlas · Free Online Tool</p>
+      <div class="hero-badge">
+        <span class="live-dot"></span>
+        FREE ONLINE TOOL
+      </div>
 
       <h1>{tool.name}</h1>
 
@@ -398,9 +403,21 @@ const meta = toolMeta[slug] || {
       </p>
 
       <div class="trust-row">
-        <span>✓ Free to use</span>
-        <span>✓ No registration</span>
-        <span>✓ Browser-based</span>
+        <span>
+          <b>✓</b> Free
+        </span>
+
+        <span>
+          <b>✓</b> No registration
+        </span>
+
+        <span>
+          <b>✓</b> Browser-based
+        </span>
+
+        <span>
+          <b>✓</b> Privacy-first
+        </span>
       </div>
     </header>
 
@@ -408,15 +425,31 @@ const meta = toolMeta[slug] || {
       class="tool-card"
       aria-labelledby="tool-interface-title"
     >
-      <div class="tool-heading">
-        <div>
-          <span class="tool-label">ONLINE TOOL</span>
-          <h2 id="tool-interface-title">{tool.name}</h2>
+      <div class="tool-card-top">
+        <div class="tool-title-wrap">
+          <div class="tool-icon">
+            {slug === 'password-generator' ? '🔐' :
+             slug === 'qr-code-generator' || slug === 'wifi-qr-code' ? '▦' :
+             slug === 'barcode-generator' ? '▥' :
+             slug.includes('pdf') ? '▤' :
+             slug.includes('image') || slug.includes('jpg') || slug.includes('png') || slug.includes('webp') ? '◈' :
+             slug.includes('json') || slug.includes('regex') || slug.includes('base64') ? '</>' :
+             slug.includes('typing') || slug.includes('keyboard') ? '⌨' :
+             slug.includes('color') ? '●' :
+             slug.includes('time') || slug.includes('timestamp') ? '◷' :
+             '✦'}
+          </div>
+
+          <div>
+            <span class="tool-label">TOOL WORKSPACE</span>
+            <h2 id="tool-interface-title">{tool.name}</h2>
+          </div>
         </div>
 
-        <span class="privacy-badge">
-          Client-side
-        </span>
+        <div class="privacy-badge">
+          <span>●</span>
+          Runs in your browser
+        </div>
       </div>
 
       <div
@@ -430,36 +463,76 @@ const meta = toolMeta[slug] || {
         </noscript>
 
         <div class="loading-state">
-          Loading tool…
+          <div class="loader"></div>
+          <span>Loading tool…</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefit-strip">
+      <div>
+        <span class="benefit-icon">⚡</span>
+        <div>
+          <strong>Fast</strong>
+          <small>Instant browser processing</small>
+        </div>
+      </div>
+
+      <div>
+        <span class="benefit-icon">◉</span>
+        <div>
+          <strong>Private</strong>
+          <small>Your data stays on your device</small>
+        </div>
+      </div>
+
+      <div>
+        <span class="benefit-icon">∞</span>
+        <div>
+          <strong>Free</strong>
+          <small>No account required</small>
         </div>
       </div>
     </section>
 
     <section class="content">
-      <h2>About {tool.name}</h2>
-
-      <p>
-        {meta.intro}
-        ToolAtlas is designed to provide fast browser-based utilities
-        without requiring an account for basic tools. Whenever technically
-        possible, processing happens directly on your device.
-      </p>
-
-      <h2>How to use {tool.name}</h2>
-
-      <ol>
-        {meta.steps.map((step) => (
-          <li>{step}</li>
-        ))}
-      </ol>
+      <div class="section-kicker">ABOUT THIS TOOL</div>
 
       <h2>{tool.name} online</h2>
 
       <p>
-        Use {tool.name} directly from your browser on desktop, tablet, or
-        mobile. The interface is designed to keep the workflow simple and
-        avoid unnecessary registration steps.
+        {meta.intro}
+        ToolAtlas provides fast browser-based utilities designed for
+        everyday work, development, productivity, file conversion and
+        testing.
       </p>
+
+      <div class="content-divider"></div>
+
+      <div class="section-kicker">HOW IT WORKS</div>
+
+      <h2>How to use {tool.name}</h2>
+
+      <ol>
+        {meta.steps.map((step, index) => (
+          <li>
+            <span>{index + 1}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="privacy-note">
+        <span>🛡</span>
+        <div>
+          <strong>Privacy-first processing</strong>
+          <p>
+            Whenever technically possible, your files and input are
+            processed directly inside your browser instead of being
+            uploaded to a remote server.
+          </p>
+        </div>
+      </div>
     </section>
   </div>
 </Layout>
@@ -482,9 +555,6 @@ const meta = toolMeta[slug] || {
     const button = (label, id = '') =>
       `<button class="action-button" type="button" ${id ? `id="${id}"` : ''}>${label}</button>`;
 
-    const textarea = (id, placeholder = '') =>
-      `<textarea id="${id}" class="tool-textarea" placeholder="${placeholder}"></textarea>`;
-
     const input = (id, type = 'text', placeholder = '') =>
       `<input id="${id}" class="tool-input" type="${type}" placeholder="${placeholder}" />`;
 
@@ -494,11 +564,14 @@ const meta = toolMeta[slug] || {
     const downloadBlob = (blob, filename) => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
+
       link.href = url;
       link.download = filename;
+
       document.body.appendChild(link);
       link.click();
       link.remove();
+
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
@@ -506,7 +579,11 @@ const meta = toolMeta[slug] || {
       await navigator.clipboard.writeText(value);
     };
 
-    const imageToCanvas = (file, maxWidth = null, maxHeight = null) =>
+    const imageToCanvas = (
+      file,
+      maxWidth = null,
+      maxHeight = null
+    ) =>
       new Promise((resolve, reject) => {
         const image = new Image();
 
@@ -527,6 +604,7 @@ const meta = toolMeta[slug] || {
           }
 
           const canvas = document.createElement('canvas');
+
           canvas.width = width;
           canvas.height = height;
 
@@ -538,6 +616,7 @@ const meta = toolMeta[slug] || {
           }
 
           ctx.drawImage(image, 0, 0, width, height);
+
           resolve(canvas);
 
           URL.revokeObjectURL(image.src);
@@ -549,12 +628,18 @@ const meta = toolMeta[slug] || {
         image.src = URL.createObjectURL(file);
       });
 
-    const canvasBlob = (canvas, type, quality = undefined) =>
+    const canvasBlob = (
+      canvas,
+      type,
+      quality = undefined
+    ) =>
       new Promise((resolve, reject) => {
         canvas.toBlob(
           (blob) => {
             if (!blob) {
-              reject(new Error('Unable to create the output file.'));
+              reject(
+                new Error('Unable to create the output file.')
+              );
               return;
             }
 
@@ -568,17 +653,36 @@ const meta = toolMeta[slug] || {
     const renderImageTool = (mode) => {
       app.innerHTML = `
         <div class="tool-form">
-          <label class="file-label">
-            <span>Choose an image</span>
-            <input id="image-file" type="file" accept="image/*" />
+
+          <label class="upload-zone">
+            <span class="upload-symbol">↑</span>
+            <strong>Choose your image</strong>
+            <small>JPG, PNG or WebP · processed locally</small>
+
+            <input
+              id="image-file"
+              type="file"
+              accept="image/*"
+            />
           </label>
 
           ${
             mode === 'image-compressor'
               ? `
                 <label>
-                  <span>Quality: <strong id="quality-value">80%</strong></span>
-                  <input id="quality" type="range" min="10" max="100" value="80" />
+                  <span class="field-title">
+                    Quality
+                    <strong id="quality-value">80%</strong>
+                  </span>
+
+                  <input
+                    id="quality"
+                    class="range-input"
+                    type="range"
+                    min="10"
+                    max="100"
+                    value="80"
+                  />
                 </label>
               `
               : ''
@@ -589,12 +693,25 @@ const meta = toolMeta[slug] || {
               ? `
                 <div class="field-grid">
                   <label>
-                    <span>Width</span>
-                    <input id="resize-width" class="tool-input" type="number" min="1" placeholder="Width" />
+                    <span class="field-title">Width</span>
+                    <input
+                      id="resize-width"
+                      class="tool-input"
+                      type="number"
+                      min="1"
+                      placeholder="Width"
+                    />
                   </label>
+
                   <label>
-                    <span>Height</span>
-                    <input id="resize-height" class="tool-input" type="number" min="1" placeholder="Height" />
+                    <span class="field-title">Height</span>
+                    <input
+                      id="resize-height"
+                      class="tool-input"
+                      type="number"
+                      min="1"
+                      placeholder="Height"
+                    />
                   </label>
                 </div>
               `
@@ -605,8 +722,13 @@ const meta = toolMeta[slug] || {
             mode === 'png-to-jpg'
               ? `
                 <label>
-                  <span>Background color</span>
-                  <input id="bg-color" type="color" value="#ffffff" />
+                  <span class="field-title">Background color</span>
+                  <input
+                    id="bg-color"
+                    class="color-picker-small"
+                    type="color"
+                    value="#ffffff"
+                  />
                 </label>
               `
               : ''
@@ -615,12 +737,12 @@ const meta = toolMeta[slug] || {
           <div class="button-row">
             ${button(
               mode === 'image-compressor'
-                ? 'Compress image'
+                ? 'Compress image →'
                 : mode === 'image-resizer'
-                  ? 'Resize image'
+                  ? 'Resize image →'
                   : mode === 'remove-exif'
-                    ? 'Clean metadata'
-                    : 'Convert image',
+                    ? 'Clean metadata →'
+                    : 'Convert image →',
               'process-image'
             )}
           </div>
@@ -630,7 +752,8 @@ const meta = toolMeta[slug] || {
       `;
 
       const quality = document.querySelector('#quality');
-      const qualityValue = document.querySelector('#quality-value');
+      const qualityValue =
+        document.querySelector('#quality-value');
 
       if (quality && qualityValue) {
         quality.addEventListener('input', () => {
@@ -641,8 +764,11 @@ const meta = toolMeta[slug] || {
       document
         .querySelector('#process-image')
         ?.addEventListener('click', async () => {
-          const fileInput = document.querySelector('#image-file');
-          const result = document.querySelector('#image-result');
+          const fileInput =
+            document.querySelector('#image-file');
+
+          const result =
+            document.querySelector('#image-result');
 
           if (!fileInput?.files?.[0]) {
             result.innerHTML =
@@ -659,44 +785,71 @@ const meta = toolMeta[slug] || {
               const width = Number(
                 document.querySelector('#resize-width')?.value
               );
+
               const height = Number(
                 document.querySelector('#resize-height')?.value
               );
 
               if (!width || !height) {
-                throw new Error('Enter both width and height.');
+                throw new Error(
+                  'Enter both width and height.'
+                );
               }
 
               canvas = await imageToCanvas(file);
 
-              const resized = document.createElement('canvas');
+              const resized =
+                document.createElement('canvas');
+
               resized.width = width;
               resized.height = height;
 
-              const ctx = resized.getContext('2d');
+              const ctx =
+                resized.getContext('2d');
 
               if (!ctx) {
-                throw new Error('Canvas is not supported.');
+                throw new Error(
+                  'Canvas is not supported.'
+                );
               }
 
-              ctx.drawImage(canvas, 0, 0, width, height);
+              ctx.drawImage(
+                canvas,
+                0,
+                0,
+                width,
+                height
+              );
+
               canvas = resized;
             } else {
               canvas = await imageToCanvas(file);
             }
 
             if (mode === 'png-to-jpg') {
-              const ctx = canvas.getContext('2d');
+              const ctx =
+                canvas.getContext('2d');
 
               if (!ctx) {
-                throw new Error('Canvas is not supported.');
+                throw new Error(
+                  'Canvas is not supported.'
+                );
               }
 
-              ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle =
-                document.querySelector('#bg-color')?.value || '#ffffff';
+              ctx.globalCompositeOperation =
+                'destination-over';
 
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.fillStyle =
+                document.querySelector(
+                  '#bg-color'
+                )?.value || '#ffffff';
+
+              ctx.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
             }
 
             const type =
@@ -710,7 +863,9 @@ const meta = toolMeta[slug] || {
 
             const qualityValueNumber =
               Number(
-                document.querySelector('#quality')?.value || 80
+                document.querySelector(
+                  '#quality'
+                )?.value || 80
               ) / 100;
 
             const blob = await canvasBlob(
@@ -722,17 +877,22 @@ const meta = toolMeta[slug] || {
             );
 
             const extension =
-              type === 'image/png' ? 'png' : 'jpg';
+              type === 'image/png'
+                ? 'png'
+                : 'jpg';
 
             const outputName =
               file.name.replace(/\.[^/.]+$/, '') +
               `-toolatlas.${extension}`;
 
-            downloadBlob(blob, outputName);
+            downloadBlob(
+              blob,
+              outputName
+            );
 
             result.innerHTML = `
               <div class="success">
-                <strong>Done.</strong>
+                <strong>✓ Done — your file is ready.</strong>
                 <span>${escapeHtml(outputName)}</span>
                 <span>${Math.round(blob.size / 1024)} KB</span>
               </div>
@@ -740,7 +900,10 @@ const meta = toolMeta[slug] || {
           } catch (error) {
             result.innerHTML = `
               <p class="error">
-                ${escapeHtml(error?.message || 'Something went wrong.')}
+                ${escapeHtml(
+                  error?.message ||
+                    'Something went wrong.'
+                )}
               </p>
             `;
           }
@@ -748,15 +911,23 @@ const meta = toolMeta[slug] || {
     };
 
     const renderTextTool = (mode) => {
-      const initial = mode === 'json-formatter' || mode === 'json-validator'
-        ? '{\n  "hello": "world"\n}'
-        : '';
+      const initial =
+        mode === 'json-formatter' ||
+        mode === 'json-validator'
+          ? '{\n  "hello": "world"\n}'
+          : '';
 
       app.innerHTML = `
         <div class="tool-form">
+
           <label>
-            <span>Input</span>
-            <textarea id="main-input" class="tool-textarea" placeholder="Enter or paste your text here...">${escapeHtml(initial)}</textarea>
+            <span class="field-title">Input</span>
+
+            <textarea
+              id="main-input"
+              class="tool-textarea"
+              placeholder="Enter or paste your text here..."
+            >${escapeHtml(initial)}</textarea>
           </label>
 
           ${
@@ -798,7 +969,7 @@ const meta = toolMeta[slug] || {
             mode === 'text-cleaner'
               ? `
                 <div class="button-row">
-                  ${button('Clean text', 'clean')}
+                  ${button('Clean text →', 'clean')}
                 </div>
               `
               : ''
@@ -808,7 +979,7 @@ const meta = toolMeta[slug] || {
             mode === 'json-formatter'
               ? `
                 <div class="button-row">
-                  ${button('Format JSON', 'format')}
+                  ${button('Format JSON →', 'format')}
                   ${button('Minify JSON', 'minify')}
                 </div>
               `
@@ -819,7 +990,7 @@ const meta = toolMeta[slug] || {
             mode === 'json-validator'
               ? `
                 <div class="button-row">
-                  ${button('Validate JSON', 'validate')}
+                  ${button('Validate JSON →', 'validate')}
                 </div>
               `
               : ''
@@ -828,7 +999,10 @@ const meta = toolMeta[slug] || {
           ${
             mode === 'word-counter'
               ? `
-                <div id="live-stats" class="stats-grid"></div>
+                <div
+                  id="live-stats"
+                  class="stats-grid"
+                ></div>
               `
               : ''
           }
@@ -837,17 +1011,31 @@ const meta = toolMeta[slug] || {
             mode === 'regex-tester'
               ? `
                 <label>
-                  <span>Regular expression</span>
-                  <input id="regex-input" class="tool-input" placeholder="\\bhello\\b" />
+                  <span class="field-title">
+                    Regular expression
+                  </span>
+
+                  <input
+                    id="regex-input"
+                    class="tool-input"
+                    placeholder="\\bhello\\b"
+                  />
                 </label>
 
                 <label class="checkbox-row">
-                  <input id="regex-global" type="checkbox" checked />
+                  <input
+                    id="regex-global"
+                    type="checkbox"
+                    checked
+                  />
                   Global
                 </label>
 
                 <div class="button-row">
-                  ${button('Test expression', 'test-regex')}
+                  ${button(
+                    'Test expression →',
+                    'test-regex'
+                  )}
                 </div>
               `
               : ''
@@ -864,7 +1052,7 @@ const meta = toolMeta[slug] || {
             mode !== 'regex-tester'
               ? `
                 <div class="button-row">
-                  ${button('Process', 'process-text')}
+                  ${button('Process →', 'process-text')}
                 </div>
               `
               : ''
@@ -878,57 +1066,111 @@ const meta = toolMeta[slug] || {
             mode === 'json-formatter'
               ? `
                 <label>
-                  <span>Result</span>
-                  <textarea id="main-output" class="tool-textarea" readonly></textarea>
+                  <span class="field-title">Result</span>
+
+                  <textarea
+                    id="main-output"
+                    class="tool-textarea"
+                    readonly
+                  ></textarea>
                 </label>
 
                 <div class="button-row">
-                  ${button('Copy result', 'copy-result')}
+                  ${button(
+                    'Copy result',
+                    'copy-result'
+                  )}
                 </div>
               `
               : ''
           }
 
           ${
-            mode === 'json-validator' || mode === 'regex-tester'
+            mode === 'json-validator' ||
+            mode === 'regex-tester'
               ? resultBox('text-result')
               : ''
           }
+
         </div>
       `;
 
-      const mainInput = document.querySelector('#main-input');
+      const mainInput =
+        document.querySelector('#main-input');
 
-      if (mode === 'word-counter' && mainInput) {
-        const stats = document.querySelector('#live-stats');
+      if (
+        mode === 'word-counter' &&
+        mainInput
+      ) {
+        const stats =
+          document.querySelector(
+            '#live-stats'
+          );
 
         const update = () => {
-          const value = mainInput.value;
-          const words = value.trim()
-            ? value.trim().split(/\s+/).length
-            : 0;
+          const value =
+            mainInput.value;
+
+          const words =
+            value.trim()
+              ? value.trim().split(/\s+/).length
+              : 0;
 
           const chars = value.length;
-          const charsNoSpaces = value.replace(/\s/g, '').length;
-          const lines = value ? value.split(/\r?\n/).length : 0;
-          const sentences = value
-            .split(/[.!?]+/)
-            .filter((item) => item.trim()).length;
+
+          const charsNoSpaces =
+            value.replace(/\s/g, '').length;
+
+          const lines =
+            value
+              ? value.split(/\r?\n/).length
+              : 0;
+
+          const sentences =
+            value
+              .split(/[.!?]+/)
+              .filter(
+                (item) => item.trim()
+              ).length;
 
           stats.innerHTML = `
-            <div><strong>${words}</strong><span>Words</span></div>
-            <div><strong>${chars}</strong><span>Characters</span></div>
-            <div><strong>${charsNoSpaces}</strong><span>No spaces</span></div>
-            <div><strong>${lines}</strong><span>Lines</span></div>
-            <div><strong>${sentences}</strong><span>Sentences</span></div>
+            <div>
+              <strong>${words}</strong>
+              <span>Words</span>
+            </div>
+
+            <div>
+              <strong>${chars}</strong>
+              <span>Characters</span>
+            </div>
+
+            <div>
+              <strong>${charsNoSpaces}</strong>
+              <span>No spaces</span>
+            </div>
+
+            <div>
+              <strong>${lines}</strong>
+              <span>Lines</span>
+            </div>
+
+            <div>
+              <strong>${sentences}</strong>
+              <span>Sentences</span>
+            </div>
           `;
         };
 
-        mainInput.addEventListener('input', update);
+        mainInput.addEventListener(
+          'input',
+          update
+        );
+
         update();
       }
 
-      const output = document.querySelector('#main-output');
+      const output =
+        document.querySelector('#main-output');
 
       const setOutput = (value) => {
         if (output) {
@@ -936,749 +1178,1366 @@ const meta = toolMeta[slug] || {
         }
       };
 
-      document.querySelector('#upper')?.addEventListener('click', () => {
-        setOutput(mainInput?.value.toUpperCase() || '');
-      });
+      document
+        .querySelector('#upper')
+        ?.addEventListener(
+          'click',
+          () => {
+            setOutput(
+              mainInput?.value.toUpperCase() ||
+                ''
+            );
+          }
+        );
 
-      document.querySelector('#lower')?.addEventListener('click', () => {
-        setOutput(mainInput?.value.toLowerCase() || '');
-      });
+      document
+        .querySelector('#lower')
+        ?.addEventListener(
+          'click',
+          () => {
+            setOutput(
+              mainInput?.value.toLowerCase() ||
+                ''
+            );
+          }
+        );
 
       document
         .querySelector('#title-case')
-        ?.addEventListener('click', () => {
-          setOutput(
-            (mainInput?.value || '')
-              .toLowerCase()
-              .replace(/\b\w/g, (letter) => letter.toUpperCase())
-          );
-        });
+        ?.addEventListener(
+          'click',
+          () => {
+            setOutput(
+              (
+                mainInput?.value || ''
+              )
+                .toLowerCase()
+                .replace(
+                  /\b\w/g,
+                  (letter) =>
+                    letter.toUpperCase()
+                )
+            );
+          }
+        );
 
       document
         .querySelector('#sentence-case')
-        ?.addEventListener('click', () => {
-          const value = (mainInput?.value || '').toLowerCase();
+        ?.addEventListener(
+          'click',
+          () => {
+            const value =
+              (
+                mainInput?.value || ''
+              ).toLowerCase();
 
-          setOutput(
-            value.replace(
-              /(^\s*\w|[.!?]\s+\w)/g,
-              (match) => match.toUpperCase()
-            )
-          );
-        });
+            setOutput(
+              value.replace(
+                /(^\s*\w|[.!?]\s+\w)/g,
+                (match) =>
+                  match.toUpperCase()
+              )
+            );
+          }
+        );
 
       document
         .querySelector('#encode')
-        ?.addEventListener('click', () => {
-          if (mode === 'base64-encoder-decoder') {
-            try {
-              setOutput(
-                btoa(
-                  unescape(
-                    encodeURIComponent(mainInput?.value || '')
+        ?.addEventListener(
+          'click',
+          () => {
+            if (
+              mode ===
+              'base64-encoder-decoder'
+            ) {
+              try {
+                setOutput(
+                  btoa(
+                    unescape(
+                      encodeURIComponent(
+                        mainInput?.value ||
+                          ''
+                      )
+                    )
                   )
+                );
+              } catch {
+                setOutput(
+                  'Unable to encode this text.'
+                );
+              }
+            } else {
+              setOutput(
+                encodeURIComponent(
+                  mainInput?.value || ''
                 )
               );
-            } catch {
-              setOutput('Unable to encode this text.');
             }
-          } else {
-            setOutput(
-              encodeURIComponent(mainInput?.value || '')
-            );
           }
-        });
+        );
 
       document
         .querySelector('#decode')
-        ?.addEventListener('click', () => {
-          if (mode === 'base64-encoder-decoder') {
+        ?.addEventListener(
+          'click',
+          () => {
+            if (
+              mode ===
+              'base64-encoder-decoder'
+            ) {
+              try {
+                setOutput(
+                  decodeURIComponent(
+                    escape(
+                      atob(
+                        mainInput?.value ||
+                          ''
+                      )
+                    )
+                  )
+                );
+              } catch {
+                setOutput(
+                  'Invalid Base64 input.'
+                );
+              }
+            } else {
+              try {
+                setOutput(
+                  decodeURIComponent(
+                    mainInput?.value || ''
+                  )
+                );
+              } catch {
+                setOutput(
+                  'Invalid encoded URL.'
+                );
+              }
+            }
+          }
+        );
+
+      document
+        .querySelector('#clean')
+        ?.addEventListener(
+          'click',
+          () => {
+            setOutput(
+              (
+                mainInput?.value || ''
+              )
+                .replace(
+                  /[ \t]+/g,
+                  ' '
+                )
+                .replace(
+                  /\n{3,}/g,
+                  '\n\n'
+                )
+                .split('\n')
+                .map(
+                  (line) =>
+                    line.trim()
+                )
+                .join('\n')
+                .trim()
+            );
+          }
+        );
+
+      document
+        .querySelector('#format')
+        ?.addEventListener(
+          'click',
+          () => {
             try {
               setOutput(
-                decodeURIComponent(
-                  escape(
-                    atob(mainInput?.value || '')
+                JSON.stringify(
+                  JSON.parse(
+                    mainInput?.value ||
+                      ''
+                  ),
+                  null,
+                  2
+                )
+              );
+            } catch {
+              setOutput(
+                'Invalid JSON.'
+              );
+            }
+          }
+        );
+
+      document
+        .querySelector('#minify')
+        ?.addEventListener(
+          'click',
+          () => {
+            try {
+              setOutput(
+                JSON.stringify(
+                  JSON.parse(
+                    mainInput?.value ||
+                      ''
                   )
                 )
               );
             } catch {
-              setOutput('Invalid Base64 input.');
-            }
-          } else {
-            try {
               setOutput(
-                decodeURIComponent(mainInput?.value || '')
+                'Invalid JSON.'
               );
-            } catch {
-              setOutput('Invalid encoded URL.');
             }
           }
-        });
-
-      document
-        .querySelector('#clean')
-        ?.addEventListener('click', () => {
-          setOutput(
-            (mainInput?.value || '')
-              .replace(/[ \t]+/g, ' ')
-              .replace(/\n{3,}/g, '\n\n')
-              .split('\n')
-              .map((line) => line.trim())
-              .join('\n')
-              .trim()
-          );
-        });
-
-      document
-        .querySelector('#format')
-        ?.addEventListener('click', () => {
-          try {
-            setOutput(
-              JSON.stringify(
-                JSON.parse(mainInput?.value || ''),
-                null,
-                2
-              )
-            );
-          } catch {
-            setOutput('Invalid JSON.');
-          }
-        });
-
-      document
-        .querySelector('#minify')
-        ?.addEventListener('click', () => {
-          try {
-            setOutput(
-              JSON.stringify(
-                JSON.parse(mainInput?.value || '')
-              )
-            );
-          } catch {
-            setOutput('Invalid JSON.');
-          }
-        });
+        );
 
       document
         .querySelector('#validate')
-        ?.addEventListener('click', () => {
-          const result = document.querySelector('#text-result');
+        ?.addEventListener(
+          'click',
+          () => {
+            const result =
+              document.querySelector(
+                '#text-result'
+              );
 
-          try {
-            JSON.parse(mainInput?.value || '');
+            try {
+              JSON.parse(
+                mainInput?.value || ''
+              );
 
-            result.innerHTML = `
-              <div class="success">
-                <strong>Valid JSON</strong>
-                <span>The JSON syntax is valid.</span>
-              </div>
-            `;
-          } catch (error) {
-            result.innerHTML = `
-              <div class="error">
-                <strong>Invalid JSON</strong>
-                <span>${escapeHtml(error?.message || 'Invalid JSON.')}</span>
-              </div>
-            `;
+              result.innerHTML = `
+                <div class="success">
+                  <strong>✓ Valid JSON</strong>
+                  <span>
+                    The JSON syntax is valid.
+                  </span>
+                </div>
+              `;
+            } catch (error) {
+              result.innerHTML = `
+                <div class="error">
+                  <strong>Invalid JSON</strong>
+                  <span>
+                    ${escapeHtml(
+                      error?.message ||
+                        'Invalid JSON.'
+                    )}
+                  </span>
+                </div>
+              `;
+            }
           }
-        });
+        );
 
       document
         .querySelector('#test-regex')
-        ?.addEventListener('click', () => {
-          const result = document.querySelector('#text-result');
-          const pattern =
-            document.querySelector('#regex-input')?.value || '';
+        ?.addEventListener(
+          'click',
+          () => {
+            const result =
+              document.querySelector(
+                '#text-result'
+              );
 
-          try {
-            const flags =
-              document.querySelector('#regex-global')?.checked
-                ? 'g'
-                : '';
+            const pattern =
+              document.querySelector(
+                '#regex-input'
+              )?.value || '';
 
-            const regex = new RegExp(pattern, flags);
-            const text = mainInput?.value || '';
+            try {
+              const flags =
+                document.querySelector(
+                  '#regex-global'
+                )?.checked
+                  ? 'g'
+                  : '';
 
-            const matches = text.match(regex) || [];
+              const regex =
+                new RegExp(
+                  pattern,
+                  flags
+                );
 
-            result.innerHTML = `
-              <div class="success">
-                <strong>${matches.length} match${matches.length === 1 ? '' : 'es'}</strong>
-                <pre>${escapeHtml(matches.join('\n'))}</pre>
-              </div>
-            `;
-          } catch (error) {
-            result.innerHTML = `
-              <p class="error">
-                ${escapeHtml(error?.message || 'Invalid regular expression.')}
-              </p>
-            `;
+              const text =
+                mainInput?.value || '';
+
+              const matches =
+                text.match(regex) || [];
+
+              result.innerHTML = `
+                <div class="success">
+                  <strong>
+                    ${matches.length}
+                    match${matches.length === 1 ? '' : 'es'}
+                  </strong>
+
+                  <pre>
+${escapeHtml(
+  matches.join('\n')
+)}
+                  </pre>
+                </div>
+              `;
+            } catch (error) {
+              result.innerHTML = `
+                <p class="error">
+                  ${escapeHtml(
+                    error?.message ||
+                      'Invalid regular expression.'
+                  )}
+                </p>
+              `;
+            }
           }
-        });
+        );
 
       document
         .querySelector('#copy-result')
-        ?.addEventListener('click', async () => {
-          try {
-            await copyText(output?.value || '');
+        ?.addEventListener(
+          'click',
+          async () => {
+            try {
+              await copyText(
+                output?.value || ''
+              );
 
-            const resultButton =
-              document.querySelector('#copy-result');
+              const resultButton =
+                document.querySelector(
+                  '#copy-result'
+                );
 
-            if (resultButton) {
-              resultButton.textContent = 'Copied ✓';
+              if (resultButton) {
+                resultButton.textContent =
+                  'Copied ✓';
 
-              setTimeout(() => {
-                resultButton.textContent = 'Copy result';
-              }, 1500);
+                setTimeout(() => {
+                  resultButton.textContent =
+                    'Copy result';
+                }, 1500);
+              }
+            } catch {
+              alert(
+                'Copy failed.'
+              );
             }
-          } catch {
-            alert('Copy failed.');
           }
-        });
+        );
     };
 
     const renderUuidTool = () => {
       app.innerHTML = `
         <div class="tool-form">
+
           <label>
-            <span>Number of UUIDs</span>
-            <input id="uuid-count" class="tool-input" type="number" min="1" max="100" value="5" />
+            <span class="field-title">
+              Number of UUIDs
+            </span>
+
+            <input
+              id="uuid-count"
+              class="tool-input"
+              type="number"
+              min="1"
+              max="100"
+              value="5"
+            />
           </label>
 
           <div class="button-row">
-            ${button('Generate UUIDs', 'generate-uuid')}
+            ${button(
+              'Generate UUIDs →',
+              'generate-uuid'
+            )}
           </div>
 
-          <textarea id="uuid-output" class="tool-textarea" readonly></textarea>
+          <textarea
+            id="uuid-output"
+            class="tool-textarea"
+            readonly
+          ></textarea>
 
           <div class="button-row">
-            ${button('Copy UUIDs', 'copy-uuid')}
+            ${button(
+              'Copy UUIDs',
+              'copy-uuid'
+            )}
           </div>
+
         </div>
       `;
 
       document
         .querySelector('#generate-uuid')
-        ?.addEventListener('click', () => {
-          const count = Math.min(
-            100,
-            Math.max(
-              1,
-              Number(
-                document.querySelector('#uuid-count')?.value || 5
-              )
-            )
-          );
+        ?.addEventListener(
+          'click',
+          () => {
+            const count =
+              Math.min(
+                100,
+                Math.max(
+                  1,
+                  Number(
+                    document.querySelector(
+                      '#uuid-count'
+                    )?.value || 5
+                  )
+                )
+              );
 
-          const values = [];
+            const values = [];
 
-          for (let i = 0; i < count; i++) {
-            values.push(crypto.randomUUID());
+            for (
+              let i = 0;
+              i < count;
+              i++
+            ) {
+              values.push(
+                crypto.randomUUID()
+              );
+            }
+
+            document.querySelector(
+              '#uuid-output'
+            ).value =
+              values.join('\n');
           }
-
-          document.querySelector('#uuid-output').value =
-            values.join('\n');
-        });
+        );
 
       document
         .querySelector('#copy-uuid')
-        ?.addEventListener('click', async () => {
-          await copyText(
-            document.querySelector('#uuid-output')?.value || ''
-          );
-        });
+        ?.addEventListener(
+          'click',
+          async () => {
+            await copyText(
+              document.querySelector(
+                '#uuid-output'
+              )?.value || ''
+            );
+          }
+        );
     };
 
     const renderPasswordTool = () => {
       app.innerHTML = `
         <div class="tool-form">
+
           <label>
-            <span>Password length</span>
-            <input id="password-length" class="tool-input" type="range" min="8" max="128" value="20" />
+            <span class="field-title">
+              Password length
+            </span>
+
+            <input
+              id="password-length"
+              class="range-input"
+              type="range"
+              min="8"
+              max="128"
+              value="20"
+            />
           </label>
 
           <div class="range-value">
-            <strong id="password-length-value">20</strong> characters
+            <strong id="password-length-value">
+              20
+            </strong>
+            characters
           </div>
 
           <div class="checkbox-list">
+
             <label class="checkbox-row">
-              <input id="pw-upper" type="checkbox" checked />
+              <input
+                id="pw-upper"
+                type="checkbox"
+                checked
+              />
               Uppercase letters
             </label>
 
             <label class="checkbox-row">
-              <input id="pw-lower" type="checkbox" checked />
+              <input
+                id="pw-lower"
+                type="checkbox"
+                checked
+              />
               Lowercase letters
             </label>
 
             <label class="checkbox-row">
-              <input id="pw-numbers" type="checkbox" checked />
+              <input
+                id="pw-numbers"
+                type="checkbox"
+                checked
+              />
               Numbers
             </label>
 
             <label class="checkbox-row">
-              <input id="pw-symbols" type="checkbox" checked />
+              <input
+                id="pw-symbols"
+                type="checkbox"
+                checked
+              />
               Symbols
             </label>
+
           </div>
 
           <div class="button-row">
-            ${button('Generate password', 'generate-password')}
+            ${button(
+              'Generate password →',
+              'generate-password'
+            )}
           </div>
 
           <div class="password-result">
-            <input id="password-output" class="tool-input" readonly />
-            ${button('Copy', 'copy-password')}
+            <input
+              id="password-output"
+              class="tool-input"
+              readonly
+            />
+
+            ${button(
+              'Copy',
+              'copy-password'
+            )}
           </div>
+
         </div>
       `;
 
-      const length = document.querySelector('#password-length');
+      const length =
+        document.querySelector(
+          '#password-length'
+        );
+
       const lengthValue =
-        document.querySelector('#password-length-value');
+        document.querySelector(
+          '#password-length-value'
+        );
 
-      length?.addEventListener('input', () => {
-        lengthValue.textContent = length.value;
-      });
-
-      document
-        .querySelector('#generate-password')
-        ?.addEventListener('click', () => {
-          let chars = '';
-
-          if (document.querySelector('#pw-upper')?.checked) {
-            chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          }
-
-          if (document.querySelector('#pw-lower')?.checked) {
-            chars += 'abcdefghijklmnopqrstuvwxyz';
-          }
-
-          if (document.querySelector('#pw-numbers')?.checked) {
-            chars += '0123456789';
-          }
-
-          if (document.querySelector('#pw-symbols')?.checked) {
-            chars += '!@#$%^&*()-_=+[]{};:,.?';
-          }
-
-          if (!chars) {
-            alert('Select at least one character type.');
-            return;
-          }
-
-          const count = Number(length?.value || 20);
-          const values = new Uint32Array(count);
-
-          crypto.getRandomValues(values);
-
-          let password = '';
-
-          for (let i = 0; i < count; i++) {
-            password += chars[values[i] % chars.length];
-          }
-
-          document.querySelector('#password-output').value =
-            password;
-        });
+      length?.addEventListener(
+        'input',
+        () => {
+          lengthValue.textContent =
+            length.value;
+        }
+      );
 
       document
-        .querySelector('#copy-password')
-        ?.addEventListener('click', async () => {
-          await copyText(
-            document.querySelector('#password-output')?.value || ''
-          );
-        });
+        .querySelector(
+          '#generate-password'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            let chars = '';
+
+            if (
+              document.querySelector(
+                '#pw-upper'
+              )?.checked
+            ) {
+              chars +=
+                'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            }
+
+            if (
+              document.querySelector(
+                '#pw-lower'
+              )?.checked
+            ) {
+              chars +=
+                'abcdefghijklmnopqrstuvwxyz';
+            }
+
+            if (
+              document.querySelector(
+                '#pw-numbers'
+              )?.checked
+            ) {
+              chars +=
+                '0123456789';
+            }
+
+            if (
+              document.querySelector(
+                '#pw-symbols'
+              )?.checked
+            ) {
+              chars +=
+                '!@#$%^&*()-_=+[]{};:,.?';
+            }
+
+            if (!chars) {
+              alert(
+                'Select at least one character type.'
+              );
+              return;
+            }
+
+            const count =
+              Number(
+                length?.value || 20
+              );
+
+            const values =
+              new Uint32Array(
+                count
+              );
+
+            crypto.getRandomValues(
+              values
+            );
+
+            let password = '';
+
+            for (
+              let i = 0;
+              i < count;
+              i++
+            ) {
+              password +=
+                chars[
+                  values[i] %
+                    chars.length
+                ];
+            }
+
+            document.querySelector(
+              '#password-output'
+            ).value =
+              password;
+          }
+        );
+
+      document
+        .querySelector(
+          '#copy-password'
+        )
+        ?.addEventListener(
+          'click',
+          async () => {
+            await copyText(
+              document.querySelector(
+                '#password-output'
+              )?.value || ''
+            );
+          }
+        );
     };
 
     const renderTimestampTool = () => {
       app.innerHTML = `
         <div class="tool-form">
+
           <div class="field-grid">
+
             <label>
-              <span>Unix timestamp</span>
-              <input id="timestamp" class="tool-input" type="text" placeholder="1750000000" />
+              <span class="field-title">
+                Unix timestamp
+              </span>
+
+              <input
+                id="timestamp"
+                class="tool-input"
+                type="text"
+                placeholder="1750000000"
+              />
             </label>
 
             <label>
-              <span>Date</span>
-              <input id="date-input" class="tool-input" type="datetime-local" />
+              <span class="field-title">
+                Date
+              </span>
+
+              <input
+                id="date-input"
+                class="tool-input"
+                type="datetime-local"
+              />
             </label>
+
           </div>
 
           <div class="button-row">
-            ${button('Timestamp → Date', 'timestamp-to-date')}
-            ${button('Date → Timestamp', 'date-to-timestamp')}
-            ${button('Use current time', 'current-time')}
+            ${button(
+              'Timestamp → Date',
+              'timestamp-to-date'
+            )}
+
+            ${button(
+              'Date → Timestamp',
+              'date-to-timestamp'
+            )}
+
+            ${button(
+              'Use current time',
+              'current-time'
+            )}
           </div>
 
-          ${resultBox('timestamp-result')}
+          ${resultBox(
+            'timestamp-result'
+          )}
+
         </div>
       `;
 
-      const result = document.querySelector('#timestamp-result');
+      const result =
+        document.querySelector(
+          '#timestamp-result'
+        );
 
       document
-        .querySelector('#timestamp-to-date')
-        ?.addEventListener('click', () => {
-          const value = Number(
-            document.querySelector('#timestamp')?.value
-          );
+        .querySelector(
+          '#timestamp-to-date'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            const value =
+              Number(
+                document.querySelector(
+                  '#timestamp'
+                )?.value
+              );
 
-          if (!Number.isFinite(value)) {
-            result.innerHTML =
-              '<p class="error">Enter a valid timestamp.</p>';
-            return;
+            if (
+              !Number.isFinite(value)
+            ) {
+              result.innerHTML =
+                '<p class="error">Enter a valid timestamp.</p>';
+              return;
+            }
+
+            const milliseconds =
+              String(
+                Math.trunc(value)
+              ).length <= 10
+                ? value * 1000
+                : value;
+
+            const date =
+              new Date(
+                milliseconds
+              );
+
+            result.innerHTML = `
+              <div class="success">
+                <strong>
+                  ${escapeHtml(
+                    date.toISOString()
+                  )}
+                </strong>
+              </div>
+            `;
           }
-
-          const milliseconds =
-            String(Math.trunc(value)).length <= 10
-              ? value * 1000
-              : value;
-
-          const date = new Date(milliseconds);
-
-          result.innerHTML = `
-            <div class="success">
-              <strong>${escapeHtml(date.toISOString())}</strong>
-            </div>
-          `;
-        });
+        );
 
       document
-        .querySelector('#date-to-timestamp')
-        ?.addEventListener('click', () => {
-          const value =
-            document.querySelector('#date-input')?.value;
+        .querySelector(
+          '#date-to-timestamp'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            const value =
+              document.querySelector(
+                '#date-input'
+              )?.value;
 
-          if (!value) {
-            result.innerHTML =
-              '<p class="error">Choose a date first.</p>';
-            return;
+            if (!value) {
+              result.innerHTML =
+                '<p class="error">Choose a date first.</p>';
+              return;
+            }
+
+            const timestamp =
+              Math.floor(
+                new Date(
+                  value
+                ).getTime() / 1000
+              );
+
+            result.innerHTML = `
+              <div class="success">
+                <strong>
+                  ${timestamp}
+                </strong>
+              </div>
+            `;
           }
-
-          const timestamp = Math.floor(
-            new Date(value).getTime() / 1000
-          );
-
-          result.innerHTML = `
-            <div class="success">
-              <strong>${timestamp}</strong>
-            </div>
-          `;
-        });
+        );
 
       document
-        .querySelector('#current-time')
-        ?.addEventListener('click', () => {
-          const now = Date.now();
+        .querySelector(
+          '#current-time'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            const now =
+              Date.now();
 
-          document.querySelector('#timestamp').value =
-            String(Math.floor(now / 1000));
+            document.querySelector(
+              '#timestamp'
+            ).value =
+              String(
+                Math.floor(
+                  now / 1000
+                )
+              );
 
-          const dateInput =
-            document.querySelector('#date-input');
+            const dateInput =
+              document.querySelector(
+                '#date-input'
+              );
 
-          const date = new Date(now);
-          dateInput.value =
-            new Date(
-              date.getTime() - date.getTimezoneOffset() * 60000
-            )
-              .toISOString()
-              .slice(0, 16);
-        });
+            const date =
+              new Date(now);
+
+            dateInput.value =
+              new Date(
+                date.getTime() -
+                  date.getTimezoneOffset() *
+                    60000
+              )
+                .toISOString()
+                .slice(0, 16);
+          }
+        );
     };
 
     const renderColorTool = () => {
       app.innerHTML = `
         <div class="tool-form">
+
           <label>
-            <span>Choose a color</span>
-            <input id="color" class="color-picker" type="color" value="#2563eb" />
+            <span class="field-title">
+              Choose a color
+            </span>
+
+            <input
+              id="color"
+              class="color-picker"
+              type="color"
+              value="#7c3aed"
+            />
           </label>
 
-          ${resultBox('color-result')}
+          ${resultBox(
+            'color-result'
+          )}
+
         </div>
       `;
 
-      const color = document.querySelector('#color');
-      const result = document.querySelector('#color-result');
+      const color =
+        document.querySelector(
+          '#color'
+        );
+
+      const result =
+        document.querySelector(
+          '#color-result'
+        );
 
       const update = () => {
-        const hex = color.value;
+        const hex =
+          color.value;
 
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
+        const r =
+          parseInt(
+            hex.slice(1, 3),
+            16
+          );
 
-        const max = Math.max(r, g, b) / 255;
-        const min = Math.min(r, g, b) / 255;
+        const g =
+          parseInt(
+            hex.slice(3, 5),
+            16
+          );
+
+        const b =
+          parseInt(
+            hex.slice(5, 7),
+            16
+          );
+
+        const max =
+          Math.max(
+            r,
+            g,
+            b
+          ) / 255;
+
+        const min =
+          Math.min(
+            r,
+            g,
+            b
+          ) / 255;
 
         let h = 0;
         let s = 0;
-        const l = (max + min) / 2;
+
+        const l =
+          (max + min) / 2;
 
         if (max !== min) {
-          const d = max - min;
+          const d =
+            max - min;
 
           s =
             l > 0.5
-              ? d / (2 - max - min)
-              : d / (max + min);
+              ? d /
+                (2 - max - min)
+              : d /
+                (max + min);
 
           switch (max) {
             case r / 255:
               h =
-                ((g - b) / 255 / d +
+                ((g - b) /
+                  255 /
+                  d +
                   (g < b ? 6 : 0)) /
                 6;
               break;
 
             case g / 255:
               h =
-                ((b - r) / 255 / d + 2) /
+                ((b - r) /
+                  255 /
+                  d +
+                  2) /
                 6;
               break;
 
             case b / 255:
               h =
-                ((r - g) / 255 / d + 4) /
+                ((r - g) /
+                  255 /
+                  d +
+                  4) /
                 6;
               break;
           }
         }
 
         result.innerHTML = `
-          <div class="color-preview" style="background:${hex}"></div>
+          <div
+            class="color-preview"
+            style="background:${hex}"
+          ></div>
 
           <div class="stats-grid">
+
             <div>
-              <strong>${hex.toUpperCase()}</strong>
+              <strong>
+                ${hex.toUpperCase()}
+              </strong>
               <span>HEX</span>
             </div>
 
             <div>
-              <strong>rgb(${r}, ${g}, ${b})</strong>
+              <strong>
+                rgb(${r}, ${g}, ${b})
+              </strong>
               <span>RGB</span>
             </div>
 
             <div>
-              <strong>${Math.round(h * 360)}° ${Math.round(s * 100)}% ${Math.round(l * 100)}%</strong>
+              <strong>
+                ${Math.round(h * 360)}°
+                ${Math.round(s * 100)}%
+                ${Math.round(l * 100)}%
+              </strong>
               <span>HSL</span>
             </div>
+
           </div>
         `;
       };
 
-      color.addEventListener('input', update);
+      color.addEventListener(
+        'input',
+        update
+      );
+
       update();
     };
 
     const renderCpsTool = () => {
       app.innerHTML = `
         <div class="test-panel">
-          <div class="test-number" id="cps-score">0</div>
+
+          <div
+            class="test-number"
+            id="cps-score"
+          >
+            0
+          </div>
+
           <p>Clicks per second</p>
 
           <label>
-            <span>Duration</span>
-            <select id="cps-duration" class="tool-input">
-              <option value="1">1 second</option>
-              <option value="5" selected>5 seconds</option>
-              <option value="10">10 seconds</option>
-              <option value="15">15 seconds</option>
+            <span class="field-title">
+              Duration
+            </span>
+
+            <select
+              id="cps-duration"
+              class="tool-input"
+            >
+              <option value="1">
+                1 second
+              </option>
+
+              <option
+                value="5"
+                selected
+              >
+                5 seconds
+              </option>
+
+              <option value="10">
+                10 seconds
+              </option>
+
+              <option value="15">
+                15 seconds
+              </option>
             </select>
           </label>
 
-          <button id="cps-button" class="test-button" type="button">
+          <button
+            id="cps-button"
+            class="test-button"
+            type="button"
+          >
             Start clicking
           </button>
 
-          <p id="cps-status" class="muted">Ready</p>
+          <p
+            id="cps-status"
+            class="muted"
+          >
+            Ready
+          </p>
+
         </div>
       `;
 
-      const score = document.querySelector('#cps-score');
+      const score =
+        document.querySelector(
+          '#cps-score'
+        );
+
       const buttonElement =
-        document.querySelector('#cps-button');
-      const status = document.querySelector('#cps-status');
+        document.querySelector(
+          '#cps-button'
+        );
+
+      const status =
+        document.querySelector(
+          '#cps-status'
+        );
 
       let clicks = 0;
       let start = 0;
       let running = false;
       let timer;
 
-      buttonElement.addEventListener('click', () => {
-        if (!running) {
-          clicks = 1;
-          start = performance.now();
-          running = true;
+      buttonElement.addEventListener(
+        'click',
+        () => {
+          if (!running) {
+            clicks = 1;
+            start =
+              performance.now();
 
-          const duration =
-            Number(
-              document.querySelector('#cps-duration').value
-            ) * 1000;
+            running = true;
 
-          buttonElement.textContent = 'Click!';
-          status.textContent = 'Test running…';
+            const duration =
+              Number(
+                document.querySelector(
+                  '#cps-duration'
+                ).value
+              ) * 1000;
 
-          timer = setTimeout(() => {
-            running = false;
+            buttonElement.textContent =
+              'Click!';
 
-            const seconds =
-              (performance.now() - start) / 1000;
-
-            const cps = clicks / seconds;
-
-            score.textContent = cps.toFixed(2);
-            buttonElement.textContent = 'Start again';
             status.textContent =
-              `Finished — ${clicks} clicks in ${seconds.toFixed(2)} seconds.`;
-          }, duration);
+              'Test running…';
 
-          score.textContent = '1';
-        } else {
-          clicks++;
-          score.textContent = (
-            clicks /
-            ((performance.now() - start) / 1000)
-          ).toFixed(2);
+            timer =
+              setTimeout(
+                () => {
+                  running =
+                    false;
+
+                  const seconds =
+                    (performance.now() -
+                      start) /
+                    1000;
+
+                  const cps =
+                    clicks /
+                    seconds;
+
+                  score.textContent =
+                    cps.toFixed(2);
+
+                  buttonElement.textContent =
+                    'Start again';
+
+                  status.textContent =
+                    `Finished — ${clicks} clicks in ${seconds.toFixed(2)} seconds.`;
+                },
+                duration
+              );
+
+            score.textContent =
+              '1';
+          } else {
+            clicks++;
+
+            score.textContent =
+              (
+                clicks /
+                (
+                  (performance.now() -
+                    start) /
+                  1000
+                )
+              ).toFixed(2);
+          }
         }
-      });
+      );
     };
 
     const renderReactionTool = () => {
       app.innerHTML = `
         <div class="test-panel">
-          <div class="test-number" id="reaction-score">—</div>
-          <p>Reaction time in milliseconds</p>
 
-          <button id="reaction-button" class="reaction-button ready" type="button">
+          <div
+            class="test-number"
+            id="reaction-score"
+          >
+            —
+          </div>
+
+          <p>
+            Reaction time in milliseconds
+          </p>
+
+          <button
+            id="reaction-button"
+            class="reaction-button ready"
+            type="button"
+          >
             Click to start
           </button>
 
-          <p id="reaction-status" class="muted">
+          <p
+            id="reaction-status"
+            class="muted"
+          >
             Wait for the button to change.
           </p>
+
         </div>
       `;
 
       const buttonElement =
-        document.querySelector('#reaction-button');
+        document.querySelector(
+          '#reaction-button'
+        );
 
       const score =
-        document.querySelector('#reaction-score');
+        document.querySelector(
+          '#reaction-score'
+        );
 
       const status =
-        document.querySelector('#reaction-status');
+        document.querySelector(
+          '#reaction-status'
+        );
 
       let timeout;
       let start = 0;
       let waiting = false;
       let active = false;
 
-      buttonElement.addEventListener('click', () => {
-        if (!waiting && !active) {
-          waiting = true;
-          buttonElement.textContent = 'Wait…';
-          status.textContent =
-            'Do not click until the button changes.';
+      buttonElement.addEventListener(
+        'click',
+        () => {
+          if (
+            !waiting &&
+            !active
+          ) {
+            waiting = true;
 
-          timeout = setTimeout(() => {
-            waiting = false;
-            active = true;
-            start = performance.now();
-
-            buttonElement.textContent = 'CLICK NOW';
-            buttonElement.className =
-              'reaction-button go';
+            buttonElement.textContent =
+              'Wait…';
 
             status.textContent =
-              'Click as quickly as possible!';
-          }, 1200 + Math.random() * 3000);
+              'Do not click until the button changes.';
 
-          return;
+            timeout =
+              setTimeout(
+                () => {
+                  waiting = false;
+                  active = true;
+
+                  start =
+                    performance.now();
+
+                  buttonElement.textContent =
+                    'CLICK NOW';
+
+                  buttonElement.className =
+                    'reaction-button go';
+
+                  status.textContent =
+                    'Click as quickly as possible!';
+                },
+                1200 +
+                  Math.random() *
+                    3000
+              );
+
+            return;
+          }
+
+          if (waiting) {
+            clearTimeout(
+              timeout
+            );
+
+            waiting = false;
+
+            buttonElement.textContent =
+              'Too early — try again';
+
+            status.textContent =
+              'You clicked before the signal.';
+
+            return;
+          }
+
+          if (active) {
+            const reaction =
+              performance.now() -
+              start;
+
+            active = false;
+
+            score.textContent =
+              `${Math.round(reaction)} ms`;
+
+            buttonElement.textContent =
+              'Try again';
+
+            buttonElement.className =
+              'reaction-button ready';
+
+            status.textContent =
+              'Test complete.';
+          }
         }
-
-        if (waiting) {
-          clearTimeout(timeout);
-          waiting = false;
-
-          buttonElement.textContent =
-            'Too early — try again';
-
-          status.textContent =
-            'You clicked before the signal.';
-          return;
-        }
-
-        if (active) {
-          const reaction =
-            performance.now() - start;
-
-          active = false;
-
-          score.textContent =
-            `${Math.round(reaction)} ms`;
-
-          buttonElement.textContent =
-            'Try again';
-
-          buttonElement.className =
-            'reaction-button ready';
-
-          status.textContent =
-            'Test complete.';
-        }
-      });
+      );
     };
 
     const renderKeyboardTool = () => {
       app.innerHTML = `
         <div class="tool-form">
-          <p class="muted">
-            Press any key on your keyboard. Detected keys will appear below.
-          </p>
 
-          <div id="keyboard-output" class="key-display">
+          <div class="keyboard-info">
+            <span class="info-icon">⌨</span>
+
+            <div>
+              <strong>
+                Keyboard tester
+              </strong>
+
+              <p>
+                Press any key and see it detected instantly.
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="keyboard-output"
+            class="key-display"
+          >
             Waiting for keyboard input…
           </div>
 
-          <div id="key-history" class="key-history"></div>
+          <div
+            id="key-history"
+            class="key-history"
+          ></div>
+
         </div>
       `;
 
       const output =
-        document.querySelector('#keyboard-output');
+        document.querySelector(
+          '#keyboard-output'
+        );
 
       const history =
-        document.querySelector('#key-history');
+        document.querySelector(
+          '#key-history'
+        );
 
       const pressed = [];
 
-      window.addEventListener('keydown', (event) => {
-        event.preventDefault();
+      window.addEventListener(
+        'keydown',
+        (event) => {
+          event.preventDefault();
 
-        output.innerHTML = `
-          <strong>${escapeHtml(event.key)}</strong>
-          <span>Code: ${escapeHtml(event.code)}</span>
-        `;
+          output.innerHTML = `
+            <strong>
+              ${escapeHtml(
+                event.key
+              )}
+            </strong>
 
-        pressed.unshift(event.key);
+            <span>
+              Code:
+              ${escapeHtml(
+                event.code
+              )}
+            </span>
+          `;
 
-        if (pressed.length > 20) {
-          pressed.pop();
+          pressed.unshift(
+            event.key
+          );
+
+          if (
+            pressed.length >
+            20
+          ) {
+            pressed.pop();
+          }
+
+          history.innerHTML =
+            pressed
+              .map(
+                (key) =>
+                  `<span class="key-chip">${escapeHtml(key)}</span>`
+              )
+              .join('');
         }
-
-        history.innerHTML = pressed
-          .map(
-            (key) =>
-              `<span class="key-chip">${escapeHtml(key)}</span>`
-          )
-          .join('');
-      });
+      );
     };
 
     const renderTypingTool = () => {
@@ -1689,11 +2548,19 @@ const meta = toolMeta[slug] || {
       ];
 
       const sample =
-        samples[Math.floor(Math.random() * samples.length)];
+        samples[
+          Math.floor(
+            Math.random() *
+              samples.length
+          )
+        ];
 
       app.innerHTML = `
         <div class="typing-test">
-          <p class="typing-target">${escapeHtml(sample)}</p>
+
+          <div class="typing-target">
+            ${escapeHtml(sample)}
+          </div>
 
           <textarea
             id="typing-input"
@@ -1703,881 +2570,1414 @@ const meta = toolMeta[slug] || {
           ></textarea>
 
           <div class="button-row">
-            ${button('Start test', 'typing-start')}
-            ${button('Reset', 'typing-reset')}
+            ${button(
+              'Start test →',
+              'typing-start'
+            )}
+
+            ${button(
+              'Reset',
+              'typing-reset'
+            )}
           </div>
 
-          <div id="typing-stats" class="stats-grid"></div>
+          <div
+            id="typing-stats"
+            class="stats-grid"
+          ></div>
+
         </div>
       `;
 
       const input =
-        document.querySelector('#typing-input');
+        document.querySelector(
+          '#typing-input'
+        );
 
       const stats =
-        document.querySelector('#typing-stats');
+        document.querySelector(
+          '#typing-stats'
+        );
 
       let startTime = 0;
       let active = false;
 
       document
-        .querySelector('#typing-start')
-        ?.addEventListener('click', () => {
-          active = true;
-          startTime = performance.now();
+        .querySelector(
+          '#typing-start'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            active = true;
 
-          input.disabled = false;
-          input.value = '';
-          input.focus();
+            startTime =
+              performance.now();
+
+            input.disabled =
+              false;
+
+            input.value = '';
+
+            input.focus();
+
+            stats.innerHTML = `
+              <div>
+                <strong>0</strong>
+                <span>WPM</span>
+              </div>
+
+              <div>
+                <strong>0%</strong>
+                <span>Accuracy</span>
+              </div>
+            `;
+          }
+        );
+
+      input.addEventListener(
+        'input',
+        () => {
+          if (!active) return;
+
+          const value =
+            input.value;
+
+          const elapsed =
+            (
+              performance.now() -
+              startTime
+            ) / 60000;
+
+          const correct =
+            [
+              ...value,
+            ].filter(
+              (char, index) =>
+                char ===
+                sample[index]
+            ).length;
+
+          const accuracy =
+            value.length > 0
+              ? (
+                  correct /
+                  value.length
+                ) * 100
+              : 0;
+
+          const words =
+            value.trim()
+              .length / 5;
+
+          const wpm =
+            elapsed > 0
+              ? words / elapsed
+              : 0;
 
           stats.innerHTML = `
-            <div><strong>0</strong><span>WPM</span></div>
-            <div><strong>0%</strong><span>Accuracy</span></div>
+            <div>
+              <strong>
+                ${Math.round(wpm)}
+              </strong>
+              <span>WPM</span>
+            </div>
+
+            <div>
+              <strong>
+                ${Math.round(accuracy)}%
+              </strong>
+              <span>Accuracy</span>
+            </div>
+
+            <div>
+              <strong>
+                ${value.length}
+              </strong>
+              <span>Characters</span>
+            </div>
           `;
-        });
 
-      input.addEventListener('input', () => {
-        if (!active) return;
-
-        const value = input.value;
-        const elapsed =
-          (performance.now() - startTime) / 60000;
-
-        const correct = [...value].filter(
-          (char, index) =>
-            char === sample[index]
-        ).length;
-
-        const accuracy =
-          value.length > 0
-            ? (correct / value.length) * 100
-            : 0;
-
-        const words =
-          value.trim().length / 5;
-
-        const wpm =
-          elapsed > 0 ? words / elapsed : 0;
-
-        stats.innerHTML = `
-          <div>
-            <strong>${Math.round(wpm)}</strong>
-            <span>WPM</span>
-          </div>
-
-          <div>
-            <strong>${Math.round(accuracy)}%</strong>
-            <span>Accuracy</span>
-          </div>
-
-          <div>
-            <strong>${value.length}</strong>
-            <span>Characters</span>
-          </div>
-        `;
-
-        if (value === sample) {
-          active = false;
-          input.disabled = true;
+          if (
+            value === sample
+          ) {
+            active = false;
+            input.disabled =
+              true;
+          }
         }
-      });
+      );
 
       document
-        .querySelector('#typing-reset')
-        ?.addEventListener('click', () => {
-          active = false;
-          input.disabled = true;
-          input.value = '';
+        .querySelector(
+          '#typing-reset'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+            active = false;
 
-          stats.innerHTML = '';
-        });
+            input.disabled =
+              true;
+
+            input.value = '';
+
+            stats.innerHTML =
+              '';
+          }
+        );
     };
 
-    const renderQrTool = async (wifi = false) => {
+    const renderQrTool = async (
+      wifi = false
+    ) => {
       app.innerHTML = `
         <div class="tool-form">
+
           ${
             wifi
               ? `
                 <label>
-                  <span>Wi-Fi network name</span>
-                  ${input('wifi-ssid', 'text', 'Network name')}
+                  <span class="field-title">
+                    Wi-Fi network name
+                  </span>
+
+                  ${input(
+                    'wifi-ssid',
+                    'text',
+                    'Network name'
+                  )}
                 </label>
 
                 <label>
-                  <span>Password</span>
-                  ${input('wifi-password', 'text', 'Wi-Fi password')}
+                  <span class="field-title">
+                    Password
+                  </span>
+
+                  ${input(
+                    'wifi-password',
+                    'text',
+                    'Wi-Fi password'
+                  )}
                 </label>
 
                 <label>
-                  <span>Security</span>
-                  <select id="wifi-security" class="tool-input">
-                    <option value="WPA">WPA/WPA2</option>
-                    <option value="WEP">WEP</option>
-                    <option value="nopass">No password</option>
+                  <span class="field-title">
+                    Security
+                  </span>
+
+                  <select
+                    id="wifi-security"
+                    class="tool-input"
+                  >
+                    <option value="WPA">
+                      WPA/WPA2
+                    </option>
+
+                    <option value="WEP">
+                      WEP
+                    </option>
+
+                    <option value="nopass">
+                      No password
+                    </option>
                   </select>
                 </label>
               `
               : `
                 <label>
-                  <span>Text or URL</span>
-                  ${input('qr-text', 'text', 'https://example.com')}
-                </label>
-              `
-          }
+                  <span class="field-title">
+                    Text or URL
+                  </span>
 
-          <div class="button-row">
-            ${button('Generate QR code', 'generate-qr')}
-          </div>
-
-          <div id="qr-output" class="qr-output"></div>
-        </div>
-      `;
-
-      document
-        .querySelector('#generate-qr')
-        ?.addEventListener('click', async () => {
-          const output =
-            document.querySelector('#qr-output');
-
-          try {
-            const module =
-              await import(
-                'https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm'
-              );
-
-            let value = '';
-
-            if (wifi) {
-              const ssid =
-                document.querySelector('#wifi-ssid')?.value ||
-                '';
-
-              const password =
-                document.querySelector('#wifi-password')?.value ||
-                '';
-
-              const security =
-                document.querySelector('#wifi-security')?.value ||
-                'WPA';
-
-              value =
-                security === 'nopass'
-                  ? `WIFI:T:nopass;S:${ssid};;`
-                  : `WIFI:T:${security};S:${ssid};P:${password};;`;
-            } else {
-              value =
-                document.querySelector('#qr-text')?.value ||
-                '';
-            }
-
-            if (!value) {
-              output.innerHTML =
-                '<p class="error">Enter some content first.</p>';
-              return;
-            }
-
-            const canvas =
-              document.createElement('canvas');
-
-            await module.toCanvas(canvas, value, {
-              width: 300,
-              margin: 2,
-            });
-
-            output.innerHTML = '';
-            output.appendChild(canvas);
-
-            const download =
-              document.createElement('button');
-
-            download.className = 'action-button';
-            download.textContent =
-              'Download QR code';
-
-            download.onclick = () => {
-              canvas.toBlob((blob) => {
-                if (blob) {
-                  downloadBlob(
-                    blob,
-                    'toolatlas-qr-code.png'
-                  );
-                }
-              }, 'image/png');
-            };
-
-            output.appendChild(download);
-          } catch {
-            output.innerHTML = `
-              <p class="error">
-                QR generation could not be loaded. Please check your connection and try again.
-              </p>
-            `;
-          }
-        });
-    };
-
-    const renderBarcodeTool = async () => {
-      app.innerHTML = `
-        <div class="tool-form">
-          <label>
-            <span>Barcode value</span>
-            ${input('barcode-value', 'text', '123456789012')}
-          </label>
-
-          <label>
-            <span>Format</span>
-            <select id="barcode-format" class="tool-input">
-              <option value="CODE128">CODE128</option>
-              <option value="EAN13">EAN-13</option>
-              <option value="UPC">UPC</option>
-            </select>
-          </label>
-
-          <div class="button-row">
-            ${button('Generate barcode', 'generate-barcode')}
-          </div>
-
-          <div id="barcode-output" class="barcode-output"></div>
-        </div>
-      `;
-
-      document
-        .querySelector('#generate-barcode')
-        ?.addEventListener('click', async () => {
-          const output =
-            document.querySelector('#barcode-output');
-
-          try {
-            const module =
-              await import(
-                'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/+esm'
-              );
-
-            const value =
-              document.querySelector('#barcode-value')?.value ||
-              '';
-
-            const format =
-              document.querySelector('#barcode-format')?.value ||
-              'CODE128';
-
-            if (!value) {
-              output.innerHTML =
-                '<p class="error">Enter a barcode value.</p>';
-              return;
-            }
-
-            const svg =
-              document.createElementNS(
-                'http://www.w3.org/2000/svg',
-                'svg'
-              );
-
-            output.innerHTML = '';
-            output.appendChild(svg);
-
-            module.default(svg, value, {
-              format,
-              displayValue: true,
-              margin: 10,
-            });
-
-            const download =
-              document.createElement('button');
-
-            download.className = 'action-button';
-            download.textContent =
-              'Download SVG';
-
-            download.onclick = () => {
-              const serializer =
-                new XMLSerializer();
-
-              const source =
-                serializer.serializeToString(svg);
-
-              const blob = new Blob(
-                [source],
-                {
-                  type: 'image/svg+xml',
-                }
-              );
-
-              downloadBlob(
-                blob,
-                'toolatlas-barcode.svg'
-              );
-            };
-
-            output.appendChild(download);
-          } catch {
-            output.innerHTML = `
-              <p class="error">
-                Barcode generation could not be loaded.
-              </p>
-            `;
-          }
-        });
-    };
-
-    const renderPdfTool = async (mode) => {
-      app.innerHTML = `
-        <div class="tool-form">
-          <label class="file-label">
-            <span>Select PDF file${mode === 'merge-pdf' ? 's' : ''}</span>
-            <input
-              id="pdf-files"
-              type="file"
-              accept="application/pdf,.pdf"
-              ${mode === 'merge-pdf' ? 'multiple' : ''}
-            />
-          </label>
-
-          ${
-            mode === 'split-pdf'
-              ? `
-                <label>
-                  <span>Pages to extract</span>
                   ${input(
-                    'pdf-pages',
+                    'qr-text',
                     'text',
-                    'Example: 1,3,5'
+                    'https://example.com'
                   )}
                 </label>
               `
-              : ''
-          }
-
-          ${
-            mode === 'rotate-pdf'
-              ? `
-                <label>
-                  <span>Rotation</span>
-                  <select id="pdf-rotation" class="tool-input">
-                    <option value="90">90°</option>
-                    <option value="180">180°</option>
-                    <option value="270">270°</option>
-                  </select>
-                </label>
-              `
-              : ''
           }
 
           <div class="button-row">
-            ${button('Process PDF', 'process-pdf')}
+            ${button(
+              'Generate QR code →',
+              'generate-qr'
+            )}
           </div>
 
-          ${resultBox('pdf-result')}
+          <div
+            id="qr-output"
+            class="qr-output"
+          ></div>
+
         </div>
       `;
 
       document
-        .querySelector('#process-pdf')
-        ?.addEventListener('click', async () => {
-          const files =
-            document.querySelector('#pdf-files')?.files;
-
-          const result =
-            document.querySelector('#pdf-result');
-
-          if (!files?.length) {
-            result.innerHTML =
-              '<p class="error">Choose a PDF file first.</p>';
-            return;
-          }
-
-          try {
-            const module =
-              await import(
-                'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+        .querySelector(
+          '#generate-qr'
+        )
+        ?.addEventListener(
+          'click',
+          async () => {
+            const output =
+              document.querySelector(
+                '#qr-output'
               );
 
-            const {
-              PDFDocument,
-              degrees,
-            } = module;
-
-            if (mode === 'merge-pdf') {
-              const outputPdf =
-                await PDFDocument.create();
-
-              for (const file of files) {
-                const bytes =
-                  await file.arrayBuffer();
-
-                const sourcePdf =
-                  await PDFDocument.load(bytes);
-
-                const pages =
-                  await outputPdf.copyPages(
-                    sourcePdf,
-                    sourcePdf.getPageIndices()
-                  );
-
-                pages.forEach((page) =>
-                  outputPdf.addPage(page)
+            try {
+              const module =
+                await import(
+                  'https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm'
                 );
+
+              let value = '';
+
+              if (wifi) {
+                const ssid =
+                  document.querySelector(
+                    '#wifi-ssid'
+                  )?.value || '';
+
+                const password =
+                  document.querySelector(
+                    '#wifi-password'
+                  )?.value || '';
+
+                const security =
+                  document.querySelector(
+                    '#wifi-security'
+                  )?.value ||
+                  'WPA';
+
+                value =
+                  security ===
+                  'nopass'
+                    ? `WIFI:T:nopass;S:${ssid};;`
+                    : `WIFI:T:${security};S:${ssid};P:${password};;`;
+              } else {
+                value =
+                  document.querySelector(
+                    '#qr-text'
+                  )?.value || '';
               }
 
-              const bytes =
-                await outputPdf.save();
+              if (!value) {
+                output.innerHTML =
+                  '<p class="error">Enter some content first.</p>';
+                return;
+              }
 
-              downloadBlob(
-                new Blob([bytes], {
-                  type: 'application/pdf',
-                }),
-                'toolatlas-merged.pdf'
+              const canvas =
+                document.createElement(
+                  'canvas'
+                );
+
+              await module.toCanvas(
+                canvas,
+                value,
+                {
+                  width: 300,
+                  margin: 2,
+                }
               );
 
-              result.innerHTML =
-                '<div class="success"><strong>PDFs merged successfully.</strong></div>';
-
-              return;
-            }
-
-            const file = files[0];
-
-            const source =
-              await PDFDocument.load(
-                await file.arrayBuffer()
-              );
-
-            if (mode === 'split-pdf') {
-              const pageText =
-                document.querySelector('#pdf-pages')?.value ||
+              output.innerHTML =
                 '';
 
-              const indexes = pageText
-                .split(',')
-                .map((value) => Number(value.trim()) - 1)
-                .filter(
-                  (value) =>
-                    Number.isInteger(value) &&
-                    value >= 0 &&
-                    value < source.getPageCount()
-                );
-
-              if (!indexes.length) {
-                throw new Error(
-                  'Enter valid page numbers.'
-                );
-              }
-
-              const outputPdf =
-                await PDFDocument.create();
-
-              const pages =
-                await outputPdf.copyPages(
-                  source,
-                  indexes
-                );
-
-              pages.forEach((page) =>
-                outputPdf.addPage(page)
+              output.appendChild(
+                canvas
               );
 
-              const bytes =
-                await outputPdf.save();
+              const download =
+                document.createElement(
+                  'button'
+                );
 
-              downloadBlob(
-                new Blob([bytes], {
-                  type: 'application/pdf',
-                }),
-                'toolatlas-pages.pdf'
+              download.className =
+                'action-button';
+
+              download.textContent =
+                'Download QR code';
+
+              download.onclick =
+                () => {
+                  canvas.toBlob(
+                    (blob) => {
+                      if (blob) {
+                        downloadBlob(
+                          blob,
+                          'toolatlas-qr-code.png'
+                        );
+                      }
+                    },
+                    'image/png'
+                  );
+                };
+
+              output.appendChild(
+                download
               );
-
-              result.innerHTML =
-                '<div class="success"><strong>Selected pages extracted.</strong></div>';
-
-              return;
+            } catch {
+              output.innerHTML = `
+                <p class="error">
+                  QR generation could not be loaded.
+                  Please check your connection and try again.
+                </p>
+              `;
             }
-
-            if (mode === 'rotate-pdf') {
-              const rotation =
-                Number(
-                  document.querySelector(
-                    '#pdf-rotation'
-                  )?.value || 90
-                );
-
-              for (const page of source.getPages()) {
-                page.setRotation(
-                  degrees(rotation)
-                );
-              }
-
-              const bytes =
-                await source.save();
-
-              downloadBlob(
-                new Blob([bytes], {
-                  type: 'application/pdf',
-                }),
-                'toolatlas-rotated.pdf'
-              );
-
-              result.innerHTML =
-                '<div class="success"><strong>PDF rotated successfully.</strong></div>';
-
-              return;
-            }
-
-            if (mode === 'compress-pdf') {
-              const bytes =
-                await source.save({
-                  useObjectStreams: true,
-                  addDefaultPage: false,
-                });
-
-              downloadBlob(
-                new Blob([bytes], {
-                  type: 'application/pdf',
-                }),
-                'toolatlas-optimized.pdf'
-              );
-
-              result.innerHTML =
-                '<div class="success"><strong>Optimized PDF created.</strong><span>PDF optimization depends on the original document.</span></div>';
-            }
-          } catch (error) {
-            result.innerHTML = `
-              <p class="error">
-                ${escapeHtml(
-                  error?.message ||
-                    'Unable to process this PDF.'
-                )}
-              </p>
-            `;
           }
-        });
+        );
     };
 
-    const renderJpgPdf = async () => {
-      app.innerHTML = `
-        <div class="tool-form">
-          <label class="file-label">
-            <span>Choose JPG images</span>
-            <input
-              id="jpg-files"
-              type="file"
-              accept="image/jpeg,.jpg,.jpeg"
-              multiple
-            />
-          </label>
+    const renderBarcodeTool =
+      async () => {
+        app.innerHTML = `
+          <div class="tool-form">
 
-          <div class="button-row">
-            ${button('Create PDF', 'create-jpg-pdf')}
-          </div>
+            <label>
+              <span class="field-title">
+                Barcode value
+              </span>
 
-          ${resultBox('jpg-pdf-result')}
-        </div>
-      `;
+              ${input(
+                'barcode-value',
+                'text',
+                '123456789012'
+              )}
+            </label>
 
-      document
-        .querySelector('#create-jpg-pdf')
-        ?.addEventListener('click', async () => {
-          const files =
-            document.querySelector('#jpg-files')?.files;
+            <label>
+              <span class="field-title">
+                Format
+              </span>
 
-          const result =
-            document.querySelector('#jpg-pdf-result');
+              <select
+                id="barcode-format"
+                class="tool-input"
+              >
+                <option value="CODE128">
+                  CODE128
+                </option>
 
-          if (!files?.length) {
-            result.innerHTML =
-              '<p class="error">Choose at least one JPG image.</p>';
-            return;
-          }
+                <option value="EAN13">
+                  EAN-13
+                </option>
 
-          try {
-            const module =
-              await import(
-                'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
-              );
+                <option value="UPC">
+                  UPC
+                </option>
+              </select>
+            </label>
 
-            const pdf =
-              await module.PDFDocument.create();
-
-            for (const file of files) {
-              const bytes =
-                new Uint8Array(
-                  await file.arrayBuffer()
-                );
-
-              const image =
-                await pdf.embedJpg(bytes);
-
-              const page =
-                pdf.addPage([
-                  image.width,
-                  image.height,
-                ]);
-
-              page.drawImage(image, {
-                x: 0,
-                y: 0,
-                width: image.width,
-                height: image.height,
-              });
-            }
-
-            const bytes =
-              await pdf.save();
-
-            downloadBlob(
-              new Blob([bytes], {
-                type: 'application/pdf',
-              }),
-              'toolatlas-images.pdf'
-            );
-
-            result.innerHTML =
-              '<div class="success"><strong>PDF created successfully.</strong></div>';
-          } catch (error) {
-            result.innerHTML = `
-              <p class="error">
-                ${escapeHtml(
-                  error?.message ||
-                    'Unable to create the PDF.'
-                )}
-              </p>
-            `;
-          }
-        });
-    };
-
-    const renderTool = async () => {
-      switch (slug) {
-        case 'image-compressor':
-        case 'image-resizer':
-        case 'jpg-to-png':
-        case 'png-to-jpg':
-        case 'webp-to-jpg':
-        case 'remove-exif':
-          renderImageTool(slug);
-          break;
-
-        case 'jpg-to-pdf':
-          await renderJpgPdf();
-          break;
-
-        case 'merge-pdf':
-        case 'split-pdf':
-        case 'rotate-pdf':
-        case 'compress-pdf':
-          await renderPdfTool(slug);
-          break;
-
-        case 'json-formatter':
-        case 'json-validator':
-        case 'base64-encoder-decoder':
-        case 'url-encoder-decoder':
-        case 'regex-tester':
-        case 'word-counter':
-        case 'case-converter':
-        case 'text-cleaner':
-          renderTextTool(slug);
-          break;
-
-        case 'uuid-generator':
-          renderUuidTool();
-          break;
-
-        case 'timestamp-converter':
-          renderTimestampTool();
-          break;
-
-        case 'password-generator':
-          renderPasswordTool();
-          break;
-
-        case 'color-picker':
-          renderColorTool();
-          break;
-
-        case 'cps-test':
-          renderCpsTool();
-          break;
-
-        case 'reaction-time-test':
-          renderReactionTool();
-          break;
-
-        case 'keyboard-test':
-          renderKeyboardTool();
-          break;
-
-        case 'typing-test':
-          renderTypingTool();
-          break;
-
-        case 'qr-code-generator':
-          await renderQrTool(false);
-          break;
-
-        case 'wifi-qr-code':
-          await renderQrTool(true);
-          break;
-
-        case 'barcode-generator':
-          await renderBarcodeTool();
-          break;
-
-        default:
-          app.innerHTML = `
-            <div class="tool-form">
-              <h3>${escapeHtml(tool.name)}</h3>
-              <p>
-                This ToolAtlas utility is being prepared for this browser
-                environment.
-              </p>
+            <div class="button-row">
+              ${button(
+                'Generate barcode →',
+                'generate-barcode'
+              )}
             </div>
-          `;
-      }
-    };
+
+            <div
+              id="barcode-output"
+              class="barcode-output"
+            ></div>
+
+          </div>
+        `;
+
+        document
+          .querySelector(
+            '#generate-barcode'
+          )
+          ?.addEventListener(
+            'click',
+            async () => {
+              const output =
+                document.querySelector(
+                  '#barcode-output'
+                );
+
+              try {
+                const module =
+                  await import(
+                    'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/+esm'
+                  );
+
+                const value =
+                  document.querySelector(
+                    '#barcode-value'
+                  )?.value || '';
+
+                const format =
+                  document.querySelector(
+                    '#barcode-format'
+                  )?.value ||
+                  'CODE128';
+
+                if (!value) {
+                  output.innerHTML =
+                    '<p class="error">Enter a barcode value.</p>';
+                  return;
+                }
+
+                const svg =
+                  document.createElementNS(
+                    'http://www.w3.org/2000/svg',
+                    'svg'
+                  );
+
+                output.innerHTML =
+                  '';
+
+                output.appendChild(
+                  svg
+                );
+
+                module.default(
+                  svg,
+                  value,
+                  {
+                    format,
+                    displayValue:
+                      true,
+                    margin: 10,
+                  }
+                );
+
+                const download =
+                  document.createElement(
+                    'button'
+                  );
+
+                download.className =
+                  'action-button';
+
+                download.textContent =
+                  'Download SVG';
+
+                download.onclick =
+                  () => {
+                    const serializer =
+                      new XMLSerializer();
+
+                    const source =
+                      serializer.serializeToString(
+                        svg
+                      );
+
+                    const blob =
+                      new Blob(
+                        [source],
+                        {
+                          type:
+                            'image/svg+xml',
+                        }
+                      );
+
+                    downloadBlob(
+                      blob,
+                      'toolatlas-barcode.svg'
+                    );
+                  };
+
+                output.appendChild(
+                  download
+                );
+              } catch {
+                output.innerHTML = `
+                  <p class="error">
+                    Barcode generation could not be loaded.
+                  </p>
+                `;
+              }
+            }
+          );
+      };
+
+    const renderPdfTool =
+      async (mode) => {
+        app.innerHTML = `
+          <div class="tool-form">
+
+            <label class="upload-zone">
+              <span class="upload-symbol">↑</span>
+              <strong>
+                Select PDF${mode === 'merge-pdf' ? ' files' : ''}
+              </strong>
+              <small>
+                Files are processed in your browser
+              </small>
+
+              <input
+                id="pdf-files"
+                type="file"
+                accept="application/pdf,.pdf"
+                ${mode === 'merge-pdf' ? 'multiple' : ''}
+              />
+            </label>
+
+            ${
+              mode === 'split-pdf'
+                ? `
+                  <label>
+                    <span class="field-title">
+                      Pages to extract
+                    </span>
+
+                    ${input(
+                      'pdf-pages',
+                      'text',
+                      'Example: 1,3,5'
+                    )}
+                  </label>
+                `
+                : ''
+            }
+
+            ${
+              mode === 'rotate-pdf'
+                ? `
+                  <label>
+                    <span class="field-title">
+                      Rotation
+                    </span>
+
+                    <select
+                      id="pdf-rotation"
+                      class="tool-input"
+                    >
+                      <option value="90">
+                        90°
+                      </option>
+
+                      <option value="180">
+                        180°
+                      </option>
+
+                      <option value="270">
+                        270°
+                      </option>
+                    </select>
+                  </label>
+                `
+                : ''
+            }
+
+            <div class="button-row">
+              ${button(
+                'Process PDF →',
+                'process-pdf'
+              )}
+            </div>
+
+            ${resultBox(
+              'pdf-result'
+            )}
+
+          </div>
+        `;
+
+        document
+          .querySelector(
+            '#process-pdf'
+          )
+          ?.addEventListener(
+            'click',
+            async () => {
+              const files =
+                document.querySelector(
+                  '#pdf-files'
+                )?.files;
+
+              const result =
+                document.querySelector(
+                  '#pdf-result'
+                );
+
+              if (!files?.length) {
+                result.innerHTML =
+                  '<p class="error">Choose a PDF file first.</p>';
+                return;
+              }
+
+              try {
+                const module =
+                  await import(
+                    'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+                  );
+
+                const {
+                  PDFDocument,
+                  degrees,
+                } = module;
+
+                if (
+                  mode ===
+                  'merge-pdf'
+                ) {
+                  const outputPdf =
+                    await PDFDocument.create();
+
+                  for (
+                    const file of files
+                  ) {
+                    const bytes =
+                      await file.arrayBuffer();
+
+                    const sourcePdf =
+                      await PDFDocument.load(
+                        bytes
+                      );
+
+                    const pages =
+                      await outputPdf.copyPages(
+                        sourcePdf,
+                        sourcePdf.getPageIndices()
+                      );
+
+                    pages.forEach(
+                      (page) =>
+                        outputPdf.addPage(
+                          page
+                        )
+                    );
+                  }
+
+                  const bytes =
+                    await outputPdf.save();
+
+                  downloadBlob(
+                    new Blob(
+                      [bytes],
+                      {
+                        type:
+                          'application/pdf',
+                      }
+                    ),
+                    'toolatlas-merged.pdf'
+                  );
+
+                  result.innerHTML =
+                    '<div class="success"><strong>✓ PDFs merged successfully.</strong></div>';
+
+                  return;
+                }
+
+                const file =
+                  files[0];
+
+                const source =
+                  await PDFDocument.load(
+                    await file.arrayBuffer()
+                  );
+
+                if (
+                  mode ===
+                  'split-pdf'
+                ) {
+                  const pageText =
+                    document.querySelector(
+                      '#pdf-pages'
+                    )?.value ||
+                    '';
+
+                  const indexes =
+                    pageText
+                      .split(',')
+                      .map(
+                        (value) =>
+                          Number(
+                            value.trim()
+                          ) - 1
+                      )
+                      .filter(
+                        (value) =>
+                          Number.isInteger(
+                            value
+                          ) &&
+                          value >=
+                            0 &&
+                          value <
+                            source.getPageCount()
+                      );
+
+                  if (
+                    !indexes.length
+                  ) {
+                    throw new Error(
+                      'Enter valid page numbers.'
+                    );
+                  }
+
+                  const outputPdf =
+                    await PDFDocument.create();
+
+                  const pages =
+                    await outputPdf.copyPages(
+                      source,
+                      indexes
+                    );
+
+                  pages.forEach(
+                    (page) =>
+                      outputPdf.addPage(
+                        page
+                      )
+                  );
+
+                  const bytes =
+                    await outputPdf.save();
+
+                  downloadBlob(
+                    new Blob(
+                      [bytes],
+                      {
+                        type:
+                          'application/pdf',
+                      }
+                    ),
+                    'toolatlas-pages.pdf'
+                  );
+
+                  result.innerHTML =
+                    '<div class="success"><strong>✓ Selected pages extracted.</strong></div>';
+
+                  return;
+                }
+
+                if (
+                  mode ===
+                  'rotate-pdf'
+                ) {
+                  const rotation =
+                    Number(
+                      document.querySelector(
+                        '#pdf-rotation'
+                      )?.value ||
+                        90
+                    );
+
+                  for (
+                    const page of source.getPages()
+                  ) {
+                    page.setRotation(
+                      degrees(
+                        rotation
+                      )
+                    );
+                  }
+
+                  const bytes =
+                    await source.save();
+
+                  downloadBlob(
+                    new Blob(
+                      [bytes],
+                      {
+                        type:
+                          'application/pdf',
+                      }
+                    ),
+                    'toolatlas-rotated.pdf'
+                  );
+
+                  result.innerHTML =
+                    '<div class="success"><strong>✓ PDF rotated successfully.</strong></div>';
+
+                  return;
+                }
+
+                if (
+                  mode ===
+                  'compress-pdf'
+                ) {
+                  const bytes =
+                    await source.save(
+                      {
+                        useObjectStreams:
+                          true,
+                        addDefaultPage:
+                          false,
+                      }
+                    );
+
+                  downloadBlob(
+                    new Blob(
+                      [bytes],
+                      {
+                        type:
+                          'application/pdf',
+                      }
+                    ),
+                    'toolatlas-optimized.pdf'
+                  );
+
+                  result.innerHTML =
+                    '<div class="success"><strong>✓ Optimized PDF created.</strong><span>Optimization depends on the original document.</span></div>';
+                }
+              } catch (error) {
+                result.innerHTML = `
+                  <p class="error">
+                    ${escapeHtml(
+                      error?.message ||
+                        'Unable to process this PDF.'
+                    )}
+                  </p>
+                `;
+              }
+            }
+          );
+      };
+
+    const renderJpgPdf =
+      async () => {
+        app.innerHTML = `
+          <div class="tool-form">
+
+            <label class="upload-zone">
+              <span class="upload-symbol">↑</span>
+              <strong>
+                Choose JPG images
+              </strong>
+              <small>
+                Select one or more images
+              </small>
+
+              <input
+                id="jpg-files"
+                type="file"
+                accept="image/jpeg,.jpg,.jpeg"
+                multiple
+              />
+            </label>
+
+            <div class="button-row">
+              ${button(
+                'Create PDF →',
+                'create-jpg-pdf'
+              )}
+            </div>
+
+            ${resultBox(
+              'jpg-pdf-result'
+            )}
+
+          </div>
+        `;
+
+        document
+          .querySelector(
+            '#create-jpg-pdf'
+          )
+          ?.addEventListener(
+            'click',
+            async () => {
+              const files =
+                document.querySelector(
+                  '#jpg-files'
+                )?.files;
+
+              const result =
+                document.querySelector(
+                  '#jpg-pdf-result'
+                );
+
+              if (!files?.length) {
+                result.innerHTML =
+                  '<p class="error">Choose at least one JPG image.</p>';
+                return;
+              }
+
+              try {
+                const module =
+                  await import(
+                    'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+                  );
+
+                const pdf =
+                  await module.PDFDocument.create();
+
+                for (
+                  const file of files
+                ) {
+                  const bytes =
+                    new Uint8Array(
+                      await file.arrayBuffer()
+                    );
+
+                  const image =
+                    await pdf.embedJpg(
+                      bytes
+                    );
+
+                  const page =
+                    pdf.addPage(
+                      [
+                        image.width,
+                        image.height,
+                      ]
+                    );
+
+                  page.drawImage(
+                    image,
+                    {
+                      x: 0,
+                      y: 0,
+                      width:
+                        image.width,
+                      height:
+                        image.height,
+                    }
+                  );
+                }
+
+                const bytes =
+                  await pdf.save();
+
+                downloadBlob(
+                  new Blob(
+                    [bytes],
+                    {
+                      type:
+                        'application/pdf',
+                    }
+                  ),
+                  'toolatlas-images.pdf'
+                );
+
+                result.innerHTML =
+                  '<div class="success"><strong>✓ PDF created successfully.</strong></div>';
+              } catch (error) {
+                result.innerHTML = `
+                  <p class="error">
+                    ${escapeHtml(
+                      error?.message ||
+                        'Unable to create the PDF.'
+                    )}
+                  </p>
+                `;
+              }
+            }
+          );
+      };
+
+    const renderTool =
+      async () => {
+        switch (slug) {
+          case 'image-compressor':
+          case 'image-resizer':
+          case 'jpg-to-png':
+          case 'png-to-jpg':
+          case 'webp-to-jpg':
+          case 'remove-exif':
+            renderImageTool(slug);
+            break;
+
+          case 'jpg-to-pdf':
+            await renderJpgPdf();
+            break;
+
+          case 'merge-pdf':
+          case 'split-pdf':
+          case 'rotate-pdf':
+          case 'compress-pdf':
+            await renderPdfTool(slug);
+            break;
+
+          case 'json-formatter':
+          case 'json-validator':
+          case 'base64-encoder-decoder':
+          case 'url-encoder-decoder':
+          case 'regex-tester':
+          case 'word-counter':
+          case 'case-converter':
+          case 'text-cleaner':
+            renderTextTool(slug);
+            break;
+
+          case 'uuid-generator':
+            renderUuidTool();
+            break;
+
+          case 'timestamp-converter':
+            renderTimestampTool();
+            break;
+
+          case 'password-generator':
+            renderPasswordTool();
+            break;
+
+          case 'color-picker':
+            renderColorTool();
+            break;
+
+          case 'cps-test':
+            renderCpsTool();
+            break;
+
+          case 'reaction-time-test':
+            renderReactionTool();
+            break;
+
+          case 'keyboard-test':
+            renderKeyboardTool();
+            break;
+
+          case 'typing-test':
+            renderTypingTool();
+            break;
+
+          case 'qr-code-generator':
+            await renderQrTool(false);
+            break;
+
+          case 'wifi-qr-code':
+            await renderQrTool(true);
+            break;
+
+          case 'barcode-generator':
+            await renderBarcodeTool();
+            break;
+
+          default:
+            app.innerHTML = `
+              <div class="tool-form">
+                <div class="keyboard-info">
+                  <span class="info-icon">✦</span>
+
+                  <div>
+                    <strong>
+                      ${escapeHtml(
+                        tool.name
+                      )}
+                    </strong>
+
+                    <p>
+                      This ToolAtlas utility is being prepared
+                      for this browser environment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            `;
+        }
+      };
 
     renderTool();
   }
 </script>
 
 <style>
+  :global(body) {
+    background:
+      radial-gradient(
+        circle at 15% 5%,
+        rgba(124, 58, 237, 0.18),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 85% 15%,
+        rgba(6, 182, 212, 0.13),
+        transparent 28%
+      ),
+      #05070d !important;
+
+    color: #f8fafc !important;
+  }
+
   .tool-page {
-    width: min(1100px, calc(100% - 40px));
+    position: relative;
+    isolation: isolate;
+    width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 40px 0 80px;
+    padding: 30px 0 100px;
+    overflow: hidden;
+  }
+
+  .ambient {
+    position: absolute;
+    z-index: -1;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    opacity: 0.28;
+  }
+
+  .ambient-one {
+    top: 100px;
+    left: -260px;
+    background: #7c3aed;
+  }
+
+  .ambient-two {
+    top: 450px;
+    right: -280px;
+    background: #06b6d4;
   }
 
   .breadcrumb {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     align-items: center;
-    margin-bottom: 46px;
-    color: #667085;
-    font-size: 14px;
+    gap: 9px;
+    margin-bottom: 48px;
+    color: #64748b;
+    font-size: 13px;
   }
 
   .breadcrumb a {
-    color: inherit;
+    color: #94a3b8;
     text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   .breadcrumb a:hover {
-    text-decoration: underline;
+    color: #67e8f9;
+  }
+
+  .breadcrumb strong {
+    color: #cbd5e1;
+    font-weight: 600;
   }
 
   .hero {
-    max-width: 850px;
-    margin-bottom: 38px;
+    position: relative;
+    max-width: 900px;
+    margin-bottom: 42px;
   }
 
-  .eyebrow {
-    margin: 0 0 12px;
-    color: #667085;
-    font-size: 13px;
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 18px;
+    padding: 8px 13px;
+    border: 1px solid rgba(103, 232, 249, 0.18);
+    border-radius: 999px;
+    background: rgba(8, 15, 30, 0.72);
+    color: #67e8f9;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    box-shadow:
+      0 0 30px rgba(6, 182, 212, 0.08);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow:
+      0 0 12px rgba(34, 211, 238, 0.9);
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(38px, 7vw, 68px);
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    max-width: 900px;
+    color: #f8fafc;
+    font-size: clamp(42px, 8vw, 82px);
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+    font-weight: 900;
+    text-wrap: balance;
   }
 
   .description {
     max-width: 780px;
-    margin: 22px 0 0;
-    color: #667085;
-    font-size: 18px;
-    line-height: 1.7;
+    margin: 24px 0 0;
+    color: #94a3b8;
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.75;
   }
 
   .trust-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 22px;
+    gap: 9px;
+    margin-top: 25px;
   }
 
   .trust-row span {
-    padding: 7px 11px;
-    border: 1px solid #eaecf0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid rgba(148, 163, 184, 0.13);
     border-radius: 999px;
-    background: #f9fafb;
-    color: #475467;
-    font-size: 13px;
+    background: rgba(15, 23, 42, 0.55);
+    color: #cbd5e1;
+    font-size: 12px;
     font-weight: 650;
+    backdrop-filter: blur(14px);
+  }
+
+  .trust-row b {
+    color: #22d3ee;
   }
 
   .tool-card {
+    position: relative;
     overflow: hidden;
-    border: 1px solid #e4e7ec;
-    border-radius: 24px;
-    background: #fff;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 28px;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.96),
+        rgba(7, 12, 24, 0.97)
+      );
     box-shadow:
-      0 16px 45px rgba(16, 24, 40, 0.06);
+      0 30px 100px rgba(0, 0, 0, 0.42),
+      0 0 70px rgba(124, 58, 237, 0.06);
+    backdrop-filter: blur(20px);
   }
 
-  .tool-heading {
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(34, 211, 238, 0.7),
+        rgba(168, 85, 247, 0.7),
+        transparent
+      );
+  }
+
+  .tool-card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     padding: 24px 28px;
-    border-bottom: 1px solid #eaecf0;
-    background: #fcfcfd;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.11);
+    background: rgba(15, 23, 42, 0.48);
   }
 
-  .tool-heading h2 {
-    margin: 4px 0 0;
-    font-size: 21px;
+  .tool-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .tool-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border: 1px solid rgba(103, 232, 249, 0.16);
+    border-radius: 15px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(34, 211, 238, 0.12),
+        rgba(124, 58, 237, 0.15)
+      );
+    color: #67e8f9;
+    font-size: 19px;
+    font-weight: 900;
+    box-shadow:
+      inset 0 0 25px rgba(124, 58, 237, 0.06);
+  }
+
+  .tool-heading h2,
+  .tool-card-top h2 {
+    margin: 5px 0 0;
+    color: #f8fafc;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
   }
 
   .tool-label {
-    color: #667085;
-    font-size: 11px;
+    color: #64748b;
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
   }
 
   .privacy-badge {
-    padding: 7px 11px;
-    border: 1px solid #d0d5dd;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border: 1px solid rgba(34, 197, 94, 0.16);
     border-radius: 999px;
-    color: #344054;
-    font-size: 12px;
+    background: rgba(22, 101, 52, 0.1);
+    color: #86efac;
+    font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
   }
 
+  .privacy-badge span {
+    font-size: 8px;
+  }
+
   .tool-app {
-    min-height: 300px;
-    padding: 32px;
+    min-height: 330px;
+    padding: 34px;
   }
 
   .loading-state {
-    min-height: 220px;
+    min-height: 250px;
     display: grid;
     place-items: center;
-    color: #667085;
+    align-content: center;
+    gap: 14px;
+    color: #64748b;
+  }
+
+  .loader {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(103, 232, 249, 0.14);
+    border-top-color: #22d3ee;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .tool-form {
     display: grid;
-    gap: 20px;
-    max-width: 850px;
+    gap: 21px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
   .tool-form label {
     display: grid;
-    gap: 8px;
-    color: #344054;
-    font-size: 14px;
+    gap: 9px;
+    color: #cbd5e1;
+    font-size: 13px;
     font-weight: 700;
+  }
+
+  .field-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: #cbd5e1;
+  }
+
+  .field-title strong {
+    color: #67e8f9;
   }
 
   .tool-input,
@@ -2585,45 +3985,110 @@ const meta = toolMeta[slug] || {
   .tool-form select {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #d0d5dd;
-    border-radius: 12px;
-    background: #fff;
-    color: #101828;
+    border: 1px solid rgba(148, 163, 184, 0.17);
+    border-radius: 13px;
+    background: rgba(2, 6, 23, 0.68);
+    color: #f8fafc;
     font: inherit;
     outline: none;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
   }
 
   .tool-input,
   .tool-form select {
-    min-height: 46px;
-    padding: 10px 13px;
+    min-height: 48px;
+    padding: 11px 14px;
   }
 
   .tool-textarea {
-    min-height: 220px;
-    padding: 14px;
+    min-height: 230px;
+    padding: 15px;
     resize: vertical;
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+
+  .tool-input::placeholder,
+  .tool-textarea::placeholder {
+    color: #475569;
   }
 
   .tool-input:focus,
   .tool-textarea:focus,
   .tool-form select:focus {
-    border-color: #98a2b3;
-    box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.06);
+    border-color: rgba(34, 211, 238, 0.55);
+    background: rgba(2, 6, 23, 0.9);
+    box-shadow:
+      0 0 0 3px rgba(34, 211, 238, 0.08),
+      0 0 35px rgba(34, 211, 238, 0.05);
   }
 
-  .file-label {
-    padding: 28px;
-    border: 2px dashed #d0d5dd;
-    border-radius: 18px;
+  .upload-zone {
+    position: relative;
+    display: grid !important;
+    justify-items: center;
+    gap: 9px !important;
+    min-height: 190px;
+    padding: 30px !important;
+    border: 1px dashed rgba(103, 232, 249, 0.3) !important;
+    border-radius: 20px !important;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(34, 211, 238, 0.07),
+        transparent 55%
+      ),
+      rgba(2, 6, 23, 0.45) !important;
+    cursor: pointer;
     text-align: center;
-    background: #fcfcfd;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
   }
 
-  .file-label input {
-    margin-top: 12px;
+  .upload-zone:hover {
+    border-color: rgba(103, 232, 249, 0.65) !important;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(34, 211, 238, 0.11),
+        transparent 60%
+      ),
+      rgba(2, 6, 23, 0.58) !important;
+    transform: translateY(-1px);
+  }
+
+  .upload-zone strong {
+    color: #f8fafc;
+    font-size: 17px;
+  }
+
+  .upload-zone small {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .upload-zone input {
+    margin-top: 8px;
     max-width: 100%;
+    color: #94a3b8;
+  }
+
+  .upload-symbol {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    margin-bottom: 2px;
+    border: 1px solid rgba(34, 211, 238, 0.18);
+    border-radius: 17px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 28px;
   }
 
   .field-grid {
@@ -2641,24 +4106,42 @@ const meta = toolMeta[slug] || {
   .action-button,
   .test-button,
   .reaction-button {
-    border: 0;
+    position: relative;
+    border: 1px solid rgba(103, 232, 249, 0.2);
     border-radius: 12px;
     padding: 12px 18px;
-    background: #101828;
+    background:
+      linear-gradient(
+        135deg,
+        #06b6d4,
+        #7c3aed
+      );
     color: #fff;
     font: inherit;
-    font-weight: 750;
+    font-weight: 800;
     cursor: pointer;
+    box-shadow:
+      0 8px 28px rgba(124, 58, 237, 0.2);
     transition:
-      transform 0.15s ease,
-      opacity 0.15s ease;
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
   }
 
   .action-button:hover,
   .test-button:hover,
   .reaction-button:hover {
-    transform: translateY(-1px);
-    opacity: 0.92;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow:
+      0 12px 34px rgba(34, 211, 238, 0.18),
+      0 8px 30px rgba(124, 58, 237, 0.18);
+  }
+
+  .action-button:active,
+  .test-button:active,
+  .reaction-button:active {
+    transform: translateY(0);
   }
 
   .result-box {
@@ -2667,20 +4150,34 @@ const meta = toolMeta[slug] || {
 
   .success {
     display: grid;
-    gap: 5px;
-    padding: 16px;
-    border: 1px solid #abefc6;
+    gap: 6px;
+    padding: 17px;
+    border: 1px solid rgba(34, 197, 94, 0.2);
     border-radius: 14px;
-    background: #ecfdf3;
-    color: #067647;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(22, 101, 52, 0.16),
+        rgba(6, 78, 59, 0.08)
+      );
+    color: #86efac;
+  }
+
+  .success strong {
+    color: #bbf7d0;
+  }
+
+  .success span {
+    color: #86efac;
+    font-size: 13px;
   }
 
   .error {
-    padding: 14px;
-    border: 1px solid #fecdca;
+    padding: 15px;
+    border: 1px solid rgba(248, 113, 113, 0.2);
     border-radius: 14px;
-    background: #fef3f2;
-    color: #b42318;
+    background: rgba(127, 29, 29, 0.13);
+    color: #fca5a5;
   }
 
   .stats-grid {
@@ -2691,37 +4188,48 @@ const meta = toolMeta[slug] || {
 
   .stats-grid > div {
     display: grid;
-    gap: 4px;
+    gap: 5px;
     padding: 18px;
-    border: 1px solid #eaecf0;
-    border-radius: 14px;
-    background: #fcfcfd;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 15px;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.78),
+        rgba(2, 6, 23, 0.68)
+      );
   }
 
   .stats-grid strong {
+    color: #f8fafc;
     font-size: 20px;
-    color: #101828;
+    word-break: break-word;
   }
 
   .stats-grid span {
-    color: #667085;
-    font-size: 12px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 650;
   }
 
   .checkbox-row {
     display: flex !important;
-    grid-template-columns: none !important;
     align-items: center;
     gap: 9px !important;
   }
 
   .checkbox-row input {
     width: auto;
+    accent-color: #22d3ee;
   }
 
   .checkbox-list {
     display: grid;
     gap: 12px;
+    padding: 17px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 15px;
+    background: rgba(15, 23, 42, 0.38);
   }
 
   .password-result {
@@ -2732,69 +4240,115 @@ const meta = toolMeta[slug] || {
   }
 
   .range-value {
-    color: #475467;
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  .range-value strong {
+    color: #67e8f9;
+  }
+
+  .range-input {
+    width: 100%;
+    accent-color: #22d3ee;
+    cursor: pointer;
+  }
+
+  .color-picker-small {
+    width: 100%;
+    height: 48px;
+    padding: 4px;
+    border: 1px solid rgba(148, 163, 184, 0.17);
+    border-radius: 12px;
+    background: #020617;
+    cursor: pointer;
   }
 
   .color-picker {
     width: 100%;
-    height: 90px;
+    height: 110px;
     padding: 5px;
-    border: 1px solid #d0d5dd;
-    border-radius: 14px;
-    background: #fff;
+    border: 1px solid rgba(148, 163, 184, 0.17);
+    border-radius: 16px;
+    background: #020617;
     cursor: pointer;
   }
 
   .color-preview {
     width: 100%;
-    height: 110px;
-    border-radius: 16px;
-    border: 1px solid #eaecf0;
+    height: 130px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 0 50px rgba(0, 0, 0, 0.18),
+      0 15px 40px rgba(0, 0, 0, 0.2);
   }
 
   .test-panel {
     display: grid;
     justify-items: center;
     gap: 18px;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
   }
 
+  .test-panel > p {
+    color: #64748b;
+  }
+
   .test-number {
-    font-size: clamp(46px, 10vw, 90px);
+    color: #f8fafc;
+    font-size: clamp(52px, 11vw, 100px);
     font-weight: 900;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.07em;
+    text-shadow:
+      0 0 45px rgba(34, 211, 238, 0.13);
   }
 
   .test-button,
   .reaction-button {
-    min-width: 240px;
-    min-height: 120px;
+    min-width: 250px;
+    min-height: 125px;
     font-size: 20px;
   }
 
   .reaction-button.go {
-    background: #067647;
+    border-color: rgba(34, 197, 94, 0.4);
+    background:
+      linear-gradient(
+        135deg,
+        #16a34a,
+        #059669
+      );
+    box-shadow:
+      0 0 55px rgba(34, 197, 94, 0.18);
   }
 
   .key-display {
     display: grid;
     justify-items: center;
-    gap: 8px;
-    min-height: 120px;
+    gap: 9px;
+    min-height: 150px;
     place-content: center;
-    border: 1px solid #eaecf0;
+    border: 1px solid rgba(148, 163, 184, 0.13);
     border-radius: 18px;
-    background: #fcfcfd;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(34, 211, 238, 0.08),
+        transparent 55%
+      ),
+      rgba(2, 6, 23, 0.55);
     text-align: center;
   }
 
   .key-display strong {
-    font-size: 32px;
+    color: #67e8f9;
+    font-size: 34px;
   }
 
   .key-display span {
-    color: #667085;
+    color: #64748b;
   }
 
   .key-history {
@@ -2805,20 +4359,55 @@ const meta = toolMeta[slug] || {
 
   .key-chip {
     padding: 8px 11px;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    background: #fff;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 9px;
+    background: rgba(15, 23, 42, 0.65);
+    color: #cbd5e1;
     font-family: monospace;
+  }
+
+  .keyboard-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid rgba(34, 211, 238, 0.1);
+    border-radius: 15px;
+    background: rgba(34, 211, 238, 0.04);
+  }
+
+  .keyboard-info p {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .info-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 20px;
   }
 
   .typing-target {
     margin: 0;
-    padding: 20px;
-    border: 1px solid #eaecf0;
-    border-radius: 16px;
-    background: #fcfcfd;
+    padding: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 17px;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.7),
+        rgba(2, 6, 23, 0.7)
+      );
+    color: #e2e8f0;
     font-size: 18px;
-    line-height: 1.8;
+    line-height: 1.9;
   }
 
   .qr-output,
@@ -2826,89 +4415,320 @@ const meta = toolMeta[slug] || {
     display: grid;
     justify-items: center;
     gap: 18px;
-    padding: 20px;
+    padding: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 18px;
+    background: rgba(2, 6, 23, 0.38);
   }
 
   .qr-output canvas {
     max-width: 100%;
     height: auto;
-    border: 1px solid #eaecf0;
-    border-radius: 12px;
+    padding: 10px;
+    border-radius: 15px;
+    background: white;
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.25);
   }
 
   .barcode-output svg {
     max-width: 100%;
     height: auto;
+    padding: 15px;
+    border-radius: 12px;
+    background: white;
+  }
+
+  .benefit-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .benefit-strip > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.42);
+  }
+
+  .benefit-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 11px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(34, 211, 238, 0.11),
+        rgba(124, 58, 237, 0.12)
+      );
+    color: #67e8f9;
+    font-weight: 900;
+  }
+
+  .benefit-strip strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: 13px;
+  }
+
+  .benefit-strip small {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 11px;
   }
 
   .content {
-    max-width: 800px;
-    margin: 55px auto 0;
+    max-width: 850px;
+    margin: 75px auto 0;
     line-height: 1.8;
   }
 
-  .content h2 {
-    margin-top: 42px;
-    margin-bottom: 12px;
-    color: #101828;
-    font-size: 25px;
+  .section-kicker {
+    margin-bottom: 10px;
+    color: #22d3ee;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
   }
 
-  .content p,
-  .content li {
-    color: #667085;
+  .content h2 {
+    margin: 0 0 15px;
+    color: #f8fafc;
+    font-size: clamp(25px, 4vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+  }
+
+  .content p {
+    color: #94a3b8;
+  }
+
+  .content-divider {
+    height: 1px;
+    margin: 45px 0;
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(148, 163, 184, 0.14),
+        transparent
+      );
   }
 
   .content ol {
-    padding-left: 22px;
+    display: grid;
+    gap: 12px;
+    margin: 25px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .content li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 17px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.35);
+  }
+
+  .content li > span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    border-radius: 9px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(34, 211, 238, 0.12),
+        rgba(124, 58, 237, 0.16)
+      );
+    color: #67e8f9;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .content li p {
+    margin: 0;
+  }
+
+  .privacy-note {
+    display: flex;
+    gap: 14px;
+    margin-top: 35px;
+    padding: 20px;
+    border: 1px solid rgba(34, 197, 94, 0.12);
+    border-radius: 17px;
+    background: rgba(22, 101, 52, 0.06);
+  }
+
+  .privacy-note > span {
+    font-size: 22px;
+  }
+
+  .privacy-note strong {
+    color: #bbf7d0;
+  }
+
+  .privacy-note p {
+    margin: 5px 0 0;
+    font-size: 13px;
   }
 
   .muted {
-    color: #667085;
+    color: #64748b !important;
   }
 
   pre {
     overflow-x: auto;
     margin: 12px 0 0;
-    padding: 12px;
+    padding: 13px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(2, 6, 23, 0.55);
+    color: #cbd5e1;
     white-space: pre-wrap;
     word-break: break-word;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     .tool-page {
-      width: min(100% - 28px, 1100px);
-      padding-top: 25px;
+      width: min(100% - 22px, 1180px);
+      padding-top: 22px;
     }
 
-    .tool-heading {
+    .hero {
+      margin-bottom: 30px;
+    }
+
+    .tool-card {
+      border-radius: 21px;
+    }
+
+    .tool-card-top {
       align-items: flex-start;
       flex-direction: column;
-      padding: 20px;
+      padding: 19px;
     }
 
     .tool-app {
       padding: 20px;
     }
 
-    .field-grid,
-    .stats-grid {
+    .benefit-strip {
       grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .tool-page {
+      width: calc(100% - 16px);
+      padding-bottom: 60px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 32px;
+      font-size: 12px;
+    }
+
+    h1 {
+      font-size: clamp(39px, 14vw, 62px);
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .trust-row span {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .tool-title-wrap {
+      align-items: flex-start;
+    }
+
+    .privacy-badge {
+      font-size: 10px;
+    }
+
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .action-button,
+    .test-button,
+    .reaction-button {
+      width: 100%;
     }
 
     .password-result {
       grid-template-columns: 1fr;
     }
 
-    .trust-row {
-      display: grid;
+    .test-button,
+    .reaction-button {
+      min-width: 0;
+      min-height: 105px;
+    }
+
+    .content {
+      margin-top: 55px;
+    }
+
+    .content li {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .tool-app {
+      padding: 15px;
+    }
+
+    .stats-grid {
       grid-template-columns: 1fr;
     }
 
-    .trust-row span {
-      text-align: center;
+    .trust-row {
+      grid-template-columns: 1fr;
+    }
+
+    .tool-icon {
+      width: 42px;
+      height: 42px;
+      flex-basis: 42px;
     }
   }
 </style>
