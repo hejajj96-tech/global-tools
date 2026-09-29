@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- English -->
   <url><loc>https://global-tools.hejajj96.workers.dev/en/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/categories/</loc></url>
@@ -7,6 +9,89 @@
   <url><loc>https://global-tools.hejajj96.workers.dev/en/privacy/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/terms/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/contact/</loc></url>
+
+  <!-- Spanish -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/es/contact/</loc></url>
+
+  <!-- French -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/fr/contact/</loc></url>
+
+  <!-- German -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/de/contact/</loc></url>
+
+  <!-- Italian -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/it/contact/</loc></url>
+
+  <!-- Portuguese -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/pt/contact/</loc></url>
+
+  <!-- Arabic -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ar/contact/</loc></url>
+
+  <!-- Turkish -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/tr/contact/</loc></url>
+
+  <!-- Hindi -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/hi/contact/</loc></url>
+
+  <!-- Japanese -->
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/categories/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/about/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/privacy/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/terms/</loc></url>
+  <url><loc>https://global-tools.hejajj96.workers.dev/ja/contact/</loc></url>
+
+  <!-- Tools: English -->
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/image-compressor/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/image-resizer/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/jpg-to-png/</loc></url>
@@ -38,345 +123,4 @@
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/color-picker/</loc></url>
   <url><loc>https://global-tools.hejajj96.workers.dev/en/tools/reaction-time-test/</loc></url>
 
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/es/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/fr/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/de/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/it/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/pt/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ar/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/tr/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/hi/tools/reaction-time-test/</loc></url>
-
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/categories/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/about/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/privacy/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/terms/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/contact/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/image-compressor/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/image-resizer/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/jpg-to-png/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/png-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/webp-to-jpg/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/remove-exif/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/jpg-to-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/merge-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/split-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/rotate-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/compress-pdf/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/json-formatter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/json-validator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/base64-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/url-encoder-decoder/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/uuid-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/regex-tester/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/timestamp-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/word-counter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/case-converter/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/text-cleaner/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/typing-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/cps-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/keyboard-test/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/qr-code-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/wifi-qr-code/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/barcode-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/password-generator/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/color-picker/</loc></url>
-  <url><loc>https://global-tools.hejajj96.workers.dev/ja/tools/reaction-time-test/</loc></url>
 </urlset>
