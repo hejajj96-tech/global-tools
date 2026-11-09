@@ -68,12 +68,31 @@ if (!fs.existsSync(sitemapPath)) {
 
 const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
 
-// Check XML Namespace
-const hasCorrectNs = sitemapContent.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
+// Check XML Declaration & Official Namespace
+const hasXmlDecl = sitemapContent.startsWith('<?xml version="1.0" encoding="UTF-8"?>');
+const hasCorrectNs = sitemapContent.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+const hasClosingUrlset = sitemapContent.trim().endsWith('</urlset>');
+console.log(`Sitemap XML declaration valid: ${hasXmlDecl}`);
 console.log(`Sitemap official namespace valid: ${hasCorrectNs}`);
+console.log(`Sitemap closing </urlset> valid: ${hasClosingUrlset}`);
 
-// Parse URLs
-const locRegex = /<loc>(.*?)<\/loc>/g;
+if (!hasXmlDecl || !hasCorrectNs || !hasClosingUrlset) {
+  console.error('ERROR: Malformed sitemap XML or missing official namespace!');
+  process.exit(1);
+}
+
+// Parse URLs & check tag balance
+const urlOpenCount = (sitemapContent.match(/<url>/g) || []).length;
+const urlCloseCount = (sitemapContent.match(/<\/url>/g) || []).length;
+const locOpenCount = (sitemapContent.match(/<loc>/g) || []).length;
+const locCloseCount = (sitemapContent.match(/<\/loc>/g) || []).length;
+
+if (urlOpenCount !== urlCloseCount || locOpenCount !== locCloseCount || urlOpenCount !== locOpenCount) {
+  console.error(`ERROR: Malformed XML tag balance (<url>: ${urlOpenCount}/${urlCloseCount}, <loc>: ${locOpenCount}/${locCloseCount})`);
+  process.exit(1);
+}
+
+const locRegex = /<loc>([\s\S]*?)<\/loc>/g;
 let match;
 const sitemapUrls = [];
 while ((match = locRegex.exec(sitemapContent)) !== null) {
@@ -82,17 +101,34 @@ while ((match = locRegex.exec(sitemapContent)) !== null) {
 
 console.log(`Total URLs found in sitemap.xml: ${sitemapUrls.length}`);
 
+// Whitespace check
+const whitespaceUrls = sitemapUrls.filter(u => /\s/.test(u));
+if (whitespaceUrls.length > 0) {
+  console.error('ERROR: Sitemap URLs contain whitespace or newlines:', whitespaceUrls.slice(0, 5));
+  process.exit(1);
+}
+
 // Unique check
 const uniqueUrls = new Set(sitemapUrls);
-console.log(`Unique URLs count: ${uniqueUrls.size} (Duplicates: ${sitemapUrls.length - uniqueUrls.size})`);
+const duplicateCount = sitemapUrls.length - uniqueUrls.size;
+console.log(`Unique URLs count: ${uniqueUrls.size} (Duplicates: ${duplicateCount})`);
+if (duplicateCount > 0) {
+  console.error('ERROR: Duplicate URLs detected in sitemap.xml!');
+  process.exit(1);
+}
 
-// Check domain & query params
-const invalidDomainUrls = sitemapUrls.filter(u => !u.startsWith(SITE_URL));
+// Check domain, HTTPS, trailing slash & query params
+const invalidDomainUrls = sitemapUrls.filter(u => !u.startsWith(`${SITE_URL}/`) || !u.endsWith('/'));
 const queryParamUrls = sitemapUrls.filter(u => u.includes('?'));
 const contains404 = sitemapUrls.filter(u => u.includes('404'));
 console.log(`URLs matching production domain (${SITE_URL}): ${sitemapUrls.length - invalidDomainUrls.length}/${sitemapUrls.length}`);
 console.log(`URLs with query parameters: ${queryParamUrls.length}`);
 console.log(`URLs pointing to 404: ${contains404.length}`);
+
+if (invalidDomainUrls.length > 0 || queryParamUrls.length > 0 || contains404.length > 0) {
+  console.error('ERROR: Invalid URLs detected in sitemap.xml!');
+  process.exit(1);
+}
 
 // Check that every sitemap URL maps to an actual HTML file in dist
 let missingHtmlForSitemap = [];
@@ -105,7 +141,14 @@ for (const u of sitemapUrls) {
 }
 console.log(`Sitemap URLs mapping to real dist HTML files: ${sitemapUrls.length - missingHtmlForSitemap.length}/${sitemapUrls.length}`);
 if (missingHtmlForSitemap.length > 0) {
-  console.error('Missing HTML files for sitemap URLs:', missingHtmlForSitemap.slice(0, 5));
+  console.error('ERROR: Missing HTML files for sitemap URLs:', missingHtmlForSitemap.slice(0, 5));
+  process.exit(1);
+}
+
+const indexableHtmlCount = allFiles.filter(f => !f.endsWith('404.html')).length;
+if (sitemapUrls.length !== indexableHtmlCount) {
+  console.error(`ERROR: Sitemap URL count (${sitemapUrls.length}) does not match indexable HTML count (${indexableHtmlCount})!`);
+  process.exit(1);
 }
 
 // 3. TECHNICAL SEO & JSON-LD VALIDATION ON ALL GENERATED HTML
