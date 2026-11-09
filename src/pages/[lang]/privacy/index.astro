@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { langCodes } from '../../../data/i18n';
+import { SITE_URL } from '../../../data/site';
+import { langCodes, getLocale } from '../../../data/i18n';
 
 export function getStaticPaths() {
   return langCodes.map((lang) => ({
@@ -10,77 +11,224 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.props;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/privacy/`;
 
-const siteUrl = 'https://global-tools.pages.dev';
-const canonical = `${siteUrl}/${lang}/privacy/`;
+const breadcrumbs = [
+  { name: loc.breadcrumbHome, url: `/${lang}/` },
+  { name: loc.privacy, url: `/${lang}/privacy/` },
+];
 ---
 
 <Layout
-  title="Privacy Policy — ToolAtlas"
-  description="ToolAtlas privacy policy and information about data processing, analytics, advertising, and user privacy."
+  title={`${loc.privacy} — ToolAtlas`}
+  description={`${loc.privacy} — ToolAtlas: ${loc.privacyDesc}`}
   lang={lang}
   canonical={canonical}
+  breadcrumbs={breadcrumbs}
 >
-  <main class="doc">
-    <h1>Privacy Policy</h1>
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>{loc.breadcrumbHome}</a>
+      <span>›</span>
+      <strong>{loc.privacy}</strong>
+    </nav>
 
-    <p>
-      ToolAtlas is designed to minimize unnecessary data collection. Many tools
-      process data locally in your browser and do not require an account.
-    </p>
+    <header class="hero">
+      <div class="badge">{loc.privacy.toUpperCase()}</div>
+      <h1>{loc.privacy}</h1>
+      <p class="last-updated">{loc.privacyDesc}</p>
+    </header>
 
-    <h2>Files</h2>
+    <div class="content-body">
+      <section class="section-card">
+        <h2>1. Overview and Core Privacy Principle</h2>
+        <p>
+          At ToolAtlas (accessible from <code>https://global-tools.hejajj96.workers.dev/</code>), our highest priority is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected, recorded, and how we handle and protect your data.
+        </p>
+        <p>
+          <strong>Our Core Principle:</strong> ToolAtlas is designed as a browser-first, client-side utility platform. Whenever technically possible, your files, documents, text strings, and calculations are executed entirely within your device's web browser and are <em>never</em> transmitted, uploaded, stored, or processed on remote servers.
+        </p>
+      </section>
 
-    <p>
-      For browser-based file tools, files are intended to remain on your device
-      unless a future feature explicitly states otherwise.
-    </p>
+      <section class="section-card">
+        <h2>2. File and Document Processing</h2>
+        <p>
+          When you use our Image Tools (e.g., Image Compressor, Image Resizer, Format Converters), PDF Tools (e.g., Merge PDF, Split PDF, Rotate PDF), or Text Utilities:
+        </p>
+        <ul>
+          <li>Your files are loaded directly into your local browser memory (RAM) via standard Web APIs such as HTML5 Canvas, File API, and WebAssembly.</li>
+          <li>No copies of your photos, documents, contracts, or text snippets are transferred to our servers or any third-party infrastructure.</li>
+          <li>All processed output files are generated locally and downloaded directly back to your device storage.</li>
+        </ul>
+      </section>
 
-    <h2>Analytics and advertising</h2>
+      <section class="section-card">
+        <h2>3. Passwords and Sensitive Inputs</h2>
+        <p>
+          When using the Password Generator, UUID Generator, Base64 Encoder, or JSON tools:
+        </p>
+        <ul>
+          <li>Random values are generated using your operating system's native cryptographic entropy pool via the browser's <code>crypto.getRandomValues()</code> and <code>crypto.randomUUID()</code> methods.</li>
+          <li>Generated passwords and keys exist strictly in temporary browser memory and are discarded as soon as you navigate away or refresh the tab.</li>
+          <li>ToolAtlas does not log, track, or retain any generated credentials.</li>
+        </ul>
+      </section>
 
-    <p>
-      If analytics or advertising is enabled, this policy will identify the
-      relevant providers, cookies, consent mechanism, and applicable data
-      practices.
-    </p>
+      <section class="section-card">
+        <h2>4. Log Files and Web Hosting</h2>
+        <p>
+          Like most web hosting architectures, our static hosting platform (Cloudflare Workers / Pages) may automatically log standard technical access requests when you visit the website. These logs include internet protocol (IP) addresses, browser user-agent strings, referring/exit pages, and date/time stamps. This technical data is not linked to any personally identifiable information and is used exclusively for site reliability, DDOS mitigation, and performance diagnostics.
+        </p>
+      </section>
 
-    <h2>Contact</h2>
+      <section class="section-card">
+        <h2>5. Cookies and Web Beacons</h2>
+        <p>
+          ToolAtlas does not use persistent cookies for user identification or profiling. Local storage (such as <code>localStorage</code>) may be used strictly to remember your language preference (e.g. English, Spanish, Japanese) across browser sessions.
+        </p>
+      </section>
 
-    <p>
-      For privacy-related questions, please use the Contact page provided on
-      this website.
-    </p>
-  </main>
+      <section class="section-card">
+        <h2>6. Advertising Partners & Google AdSense</h2>
+        <p>
+          ToolAtlas is engineered to support future contextual display advertising via certified advertising partners such as Google AdSense. Third-party ad vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites on the internet.
+        </p>
+        <p>
+          Users may opt out of personalized advertising by visiting Google's <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Ads Settings</a> or by utilizing the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Network Advertising Initiative opt-out page</a>.
+        </p>
+      </section>
+
+      <section class="section-card">
+        <h2>7. GDPR and CCPA Data Subject Rights</h2>
+        <p>
+          Under the General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA), users have rights to access, rectify, or request erasure of personal data. Because ToolAtlas does not require registration, collect email addresses, or store personal documents on servers, we do not maintain personal profiles or databases of user information.
+        </p>
+      </section>
+
+      <section class="section-card">
+        <h2>8. Contact Information</h2>
+        <p>
+          If you have additional questions or require more information about our Privacy Policy, please visit our <a href={`/${lang}/contact/`}>Contact Page</a>.
+        </p>
+      </section>
+    </div>
+  </div>
 </Layout>
 
 <style>
-  .doc {
-    max-width: 760px;
+  .page {
+    width: min(900px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 70px 22px;
-    line-height: 1.8;
+    padding: 34px 0 90px;
   }
 
-  .doc h1 {
-    font-size: 52px;
-    letter-spacing: -0.06em;
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #64748b;
   }
 
-  .doc h2 {
-    margin-top: 40px;
+  .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
   }
 
-  .doc p {
-    color: #667085;
+  .breadcrumb a:hover {
+    color: #22d3ee;
+  }
+
+  .hero {
+    margin-bottom: 45px;
+  }
+
+  .badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  h1 {
+    margin: 16px 0 0;
+    font-size: clamp(36px, 6vw, 54px);
+    letter-spacing: -0.04em;
+    color: #ffffff;
+  }
+
+  .last-updated {
+    margin: 12px 0 0;
+    color: #8d93aa;
+    font-size: 14px;
+  }
+
+  .content-body {
+    display: grid;
+    gap: 24px;
+  }
+
+  .section-card {
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .section-card h2 {
+    margin: 0 0 16px;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .section-card p {
+    margin: 0 0 14px;
+    color: #aab4c5;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .section-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-card ul {
+    margin: 10px 0 16px;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .section-card li {
+    color: #aab4c5;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .section-card code {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #22d3ee;
+    font-size: 13px;
+  }
+
+  .section-card a {
+    color: #22d3ee;
+    text-decoration: underline;
   }
 
   @media (max-width: 640px) {
-    .doc {
-      padding: 44px 18px;
-    }
-
-    .doc h1 {
-      font-size: 38px;
+    .section-card {
+      padding: 20px;
     }
   }
 </style>

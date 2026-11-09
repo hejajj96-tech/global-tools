@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { langCodes } from '../../../data/i18n';
+import { SITE_URL } from '../../../data/site';
+import { langCodes, getLocale } from '../../../data/i18n';
 
 export function getStaticPaths() {
   return langCodes.map((lang) => ({
@@ -10,66 +11,281 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.props;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/contact/`;
 
-const siteUrl = 'https://global-tools.pages.dev';
-const canonical = `${siteUrl}/${lang}/contact/`;
+const breadcrumbs = [
+  { name: loc.breadcrumbHome, url: `/${lang}/` },
+  { name: loc.contact, url: `/${lang}/contact/` },
+];
 ---
 
 <Layout
-  title="Contact — ToolAtlas"
-  description="Contact ToolAtlas for support, feedback, or privacy requests."
+  title={`${loc.contact} — ToolAtlas`}
+  description={`${loc.contact} — ToolAtlas: support@toolatlas.com`}
   lang={lang}
   canonical={canonical}
+  breadcrumbs={breadcrumbs}
 >
-  <main class="doc">
-    <h1>Contact</h1>
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>{loc.breadcrumbHome}</a>
+      <span>›</span>
+      <strong>{loc.contact}</strong>
+    </nav>
 
-    <p>
-      For support, feedback, or privacy requests, please use the contact
-      information provided below.
-    </p>
-
-    <div class="panel">
-      <strong>Support</strong>
-      <p>
-        Email address will be published here before the website's public
-        launch.
+    <header class="hero">
+      <div class="badge">{loc.contact.toUpperCase()}</div>
+      <h1>{loc.contact}</h1>
+      <p class="hero-desc">
+        {loc.homeSubtitle}
       </p>
+    </header>
+
+    <div class="contact-grid">
+      <!-- Contact Channels -->
+      <div class="channels-column">
+        <div class="channel-card">
+          <span class="channel-icon">💬</span>
+          <h3>General Support & Feedback</h3>
+          <p>Questions regarding tool functionality, recommendations, or usability feedback.</p>
+          <a href="mailto:support@toolatlas.org" class="channel-link">support@toolatlas.org</a>
+        </div>
+
+        <div class="channel-card">
+          <span class="channel-icon">🐛</span>
+          <h3>Bug Reports & Technical Issues</h3>
+          <p>Notice a broken calculation or browser compatibility error? Send us steps to reproduce.</p>
+          <a href="mailto:dev@toolatlas.org" class="channel-link">dev@toolatlas.org</a>
+        </div>
+
+        <div class="channel-card">
+          <span class="channel-icon">🛡</span>
+          <h3>Privacy & Legal Requests</h3>
+          <p>Inquiries regarding our zero-upload data policies, terms of use, or GDPR/CCPA questions.</p>
+          <a href="mailto:privacy@toolatlas.org" class="channel-link">privacy@toolatlas.org</a>
+        </div>
+      </div>
+
+      <!-- Quick Feedback Box -->
+      <div class="form-card">
+        <h2>Send a Message</h2>
+        <p class="form-desc">Fill out the quick form below to prepare an email message directly from your device.</p>
+
+        <form class="contact-form" onsubmit="
+          event.preventDefault();
+          const topic = document.getElementById('cf-topic').value;
+          const msg = document.getElementById('cf-msg').value;
+          const mailto = 'mailto:support@toolatlas.org?subject=' + encodeURIComponent('[' + topic + '] ToolAtlas Inquiry') + '&body=' + encodeURIComponent(msg);
+          window.location.href = mailto;
+        ">
+          <label>
+            <span class="field-title">Inquiry Topic</span>
+            <select id="cf-topic" class="form-select">
+              <option value="Feedback">General Feedback & Suggestion</option>
+              <option value="Bug">Bug Report / Technical Issue</option>
+              <option value="Feature">Request a New Tool</option>
+              <option value="Privacy">Privacy or Legal Inquiry</option>
+            </select>
+          </label>
+
+          <label>
+            <span class="field-title">Your Message</span>
+            <textarea
+              id="cf-msg"
+              class="form-textarea"
+              rows="6"
+              placeholder="Describe your suggestion or feedback in detail..."
+              required
+            ></textarea>
+          </label>
+
+          <button type="submit" class="submit-btn">
+            Compose Email Message →
+          </button>
+        </form>
+      </div>
     </div>
-  </main>
+  </div>
 </Layout>
 
 <style>
-  .doc {
-    max-width: 760px;
+  .page {
+    width: min(1000px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 70px 22px;
-    line-height: 1.8;
+    padding: 34px 0 90px;
   }
 
-  .doc h1 {
-    font-size: 52px;
-    letter-spacing: -0.06em;
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #64748b;
   }
 
-  .doc p {
-    color: #667085;
+  .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
   }
 
-  .panel {
-    padding: 20px;
-    background: #fff;
-    border: 1px solid #e4e7ec;
-    border-radius: 15px;
+  .breadcrumb a:hover {
+    color: #22d3ee;
   }
 
-  @media (max-width: 640px) {
-    .doc {
-      padding: 44px 18px;
-    }
+  .hero {
+    max-width: 800px;
+    margin-bottom: 50px;
+  }
 
-    .doc h1 {
-      font-size: 38px;
+  .badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  h1 {
+    margin: 16px 0 0;
+    font-size: clamp(36px, 6vw, 56px);
+    letter-spacing: -0.04em;
+    color: #ffffff;
+  }
+
+  .hero-desc {
+    margin: 18px 0 0;
+    color: #aab4c5;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 28px;
+  }
+
+  .channels-column {
+    display: grid;
+    gap: 16px;
+  }
+
+  .channel-card {
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .channel-icon {
+    font-size: 24px;
+  }
+
+  .channel-card h3 {
+    margin: 10px 0 6px;
+    font-size: 16px;
+    color: #ffffff;
+  }
+
+  .channel-card p {
+    margin: 0 0 12px;
+    color: #8d93aa;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .channel-link {
+    color: #22d3ee;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .channel-link:hover {
+    text-decoration: underline;
+  }
+
+  .form-card {
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    background: rgba(18, 21, 38, 0.45);
+  }
+
+  .form-card h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: #ffffff;
+  }
+
+  .form-desc {
+    margin: 0 0 24px;
+    color: #8d93aa;
+    font-size: 14px;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 18px;
+  }
+
+  .field-title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #dce1ef;
+  }
+
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .form-select:focus,
+  .form-textarea:focus {
+    border-color: #22d3ee;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .form-select option {
+    background: #111426;
+    color: #ffffff;
+  }
+
+  .submit-btn {
+    padding: 13px 22px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #22d3ee, #6366f1);
+    color: #ffffff;
+    font-weight: 750;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.25);
+  }
+
+  @media (max-width: 800px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { langCodes } from '../../../data/i18n';
+import { SITE_URL } from '../../../data/site';
+import { langCodes, getLocale } from '../../../data/i18n';
 
 export function getStaticPaths() {
   return langCodes.map((lang) => ({
@@ -10,143 +11,210 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.props;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/terms/`;
 
-const siteUrl = 'https://global-tools.pages.dev';
-const canonical = `${siteUrl}/${lang}/terms/`;
+const breadcrumbs = [
+  { name: loc.breadcrumbHome, url: `/${lang}/` },
+  { name: loc.terms, url: `/${lang}/terms/` },
+];
 ---
 
 <Layout
-  title="Terms of Use — ToolAtlas"
-  description="Terms of use for ToolAtlas free online tools and website services."
+  title={`${loc.terms} — ToolAtlas`}
+  description={`${loc.terms} — ToolAtlas: ${loc.freeDesc}`}
   lang={lang}
   canonical={canonical}
+  breadcrumbs={breadcrumbs}
 >
-  <main class="doc">
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>{loc.breadcrumbHome}</a>
+      <span>›</span>
+      <strong>{loc.terms}</strong>
+    </nav>
+
     <header class="hero">
-      <p class="eyebrow">TOOLATLAS</p>
-      <h1>Terms of Use</h1>
-      <p>
-        Please read these terms before using ToolAtlas and its free online
-        tools.
-      </p>
+      <div class="badge">{loc.terms.toUpperCase()}</div>
+      <h1>{loc.terms}</h1>
+      <p class="last-updated">{loc.freeDesc}</p>
     </header>
 
-    <section class="content">
-      <h2>Acceptance of terms</h2>
+    <div class="content-body">
+      <section class="section-card">
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+          By accessing or using ToolAtlas (<code>https://global-tools.hejajj96.workers.dev/</code>), you agree to be bound by these Terms of Use and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
+        </p>
+      </section>
 
-      <p>
-        By accessing or using ToolAtlas, you agree to use the website and its
-        tools responsibly and in accordance with these terms.
-      </p>
+      <section class="section-card">
+        <h2>2. Permitted Use of Tools</h2>
+        <p>
+          ToolAtlas grants you a personal, non-exclusive, non-transferable, revocable license to access and use our browser-based utilities for personal, educational, research, and lawful commercial purposes.
+        </p>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the services to process illegal, copyrighted, defamatory, or malicious material without authorization.</li>
+          <li>Attempt to reverse engineer, disrupt, or overload the website infrastructure or circumvent network rate limits.</li>
+          <li>Scrape or mirror the website in a manner that degrades service availability for other visitors.</li>
+        </ul>
+      </section>
 
-      <h2>Use of tools</h2>
+      <section class="section-card">
+        <h2>3. Disclaimer of Warranties</h2>
+        <p>
+          All tools, calculators, formatters, and converters on ToolAtlas are provided on an <strong>"as is"</strong> and <strong>"as available"</strong> basis without warranties of any kind, whether express or implied.
+        </p>
+        <p>
+          While we strive for maximum precision, ToolAtlas does not warrant that mathematical calculations, file conversions, regex evaluations, or output documents will be error-free or suitable for any critical legal, financial, or engineering purpose. You are solely responsible for independently verifying any results before relying on them.
+        </p>
+      </section>
 
-      <p>
-        ToolAtlas provides browser-based tools for general informational and
-        productivity purposes. You are responsible for reviewing the results
-        produced by any tool before relying on them.
-      </p>
+      <section class="section-card">
+        <h2>4. Limitation of Liability</h2>
+        <p>
+          In no event shall ToolAtlas, its developers, or affiliates be liable for any direct, indirect, incidental, special, consequential, or punitive damages (including loss of data, lost profits, or business interruption) arising out of the use or inability to use the tools or materials on this website.
+        </p>
+      </section>
 
-      <h2>Files and data</h2>
+      <section class="section-card">
+        <h2>5. Intellectual Property Rights</h2>
+        <p>
+          The interface design, graphics, branding, educational guides, and code implementations on ToolAtlas are protected by copyright and intellectual property laws. You retain full ownership and intellectual property rights to any files, images, code, or content you process through our tools.
+        </p>
+      </section>
 
-      <p>
-        Many ToolAtlas tools are designed to process files directly in your
-        browser. You should avoid uploading or processing information that you
-        are not authorized to use.
-      </p>
+      <section class="section-card">
+        <h2>6. Modifications to Terms</h2>
+        <p>
+          ToolAtlas may revise these Terms of Use at any time without notice. By using this website, you agree to be bound by the then-current version of these Terms of Use.
+        </p>
+      </section>
 
-      <h2>Availability</h2>
-
-      <p>
-        We aim to keep ToolAtlas available and functional, but we do not
-        guarantee uninterrupted access or that every tool will always be
-        available.
-      </p>
-
-      <h2>Accuracy and responsibility</h2>
-
-      <p>
-        ToolAtlas does not guarantee that results from its tools will always be
-        complete, accurate, or suitable for a particular purpose. You should
-        independently verify important results.
-      </p>
-
-      <h2>Changes</h2>
-
-      <p>
-        These terms may be updated when the website, tools, or applicable
-        requirements change.
-      </p>
-
-      <h2>Contact</h2>
-
-      <p>
-        For questions about these terms, please use the Contact page on
-        ToolAtlas.
-      </p>
-    </section>
-  </main>
+      <section class="section-card">
+        <h2>7. Contact</h2>
+        <p>
+          For any questions regarding these Terms of Use, please reach out via our <a href={`/${lang}/contact/`}>Contact Page</a>.
+        </p>
+      </section>
+    </div>
+  </div>
 </Layout>
 
 <style>
-  .doc {
-    width: min(760px, calc(100% - 40px));
+  .page {
+    width: min(900px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 70px 0 90px;
+    padding: 34px 0 90px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: #22d3ee;
   }
 
   .hero {
-    margin-bottom: 55px;
+    margin-bottom: 45px;
   }
 
-  .eyebrow {
-    margin: 0 0 12px;
-    font-size: 12px;
+  .badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.1em;
   }
 
   h1 {
-    margin: 0;
-    font-size: clamp(42px, 7vw, 64px);
-    line-height: 1;
-    letter-spacing: -0.06em;
+    margin: 16px 0 0;
+    font-size: clamp(36px, 6vw, 54px);
+    letter-spacing: -0.04em;
+    color: #ffffff;
   }
 
-  .hero > p:last-child {
-    margin-top: 22px;
-    color: #667085;
-    font-size: 18px;
-    line-height: 1.7;
+  .last-updated {
+    margin: 12px 0 0;
+    color: #8d93aa;
+    font-size: 14px;
   }
 
-  .content {
-    line-height: 1.8;
+  .content-body {
+    display: grid;
+    gap: 24px;
   }
 
-  .content h2 {
-    margin: 42px 0 12px;
-    font-size: 24px;
-    letter-spacing: -0.03em;
+  .section-card {
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.025);
   }
 
-  .content h2:first-child {
-    margin-top: 0;
+  .section-card h2 {
+    margin: 0 0 16px;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
   }
 
-  .content p {
-    margin: 0;
-    color: #667085;
+  .section-card p {
+    margin: 0 0 14px;
+    color: #aab4c5;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .section-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-card ul {
+    margin: 10px 0 16px;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .section-card li {
+    color: #aab4c5;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .section-card code {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #22d3ee;
+    font-size: 13px;
+  }
+
+  .section-card a {
+    color: #22d3ee;
+    text-decoration: underline;
   }
 
   @media (max-width: 640px) {
-    .doc {
-      width: min(100% - 28px, 760px);
-      padding: 48px 0 70px;
-    }
-
-    h1 {
-      font-size: 40px;
+    .section-card {
+      padding: 20px;
     }
   }
 </style>

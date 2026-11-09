@@ -1,0 +1,593 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE_URL } from '../../../data/site';
+import { langCodes, getLocale } from '../../../data/i18n';
+import { tools } from '../../../data/tools';
+import { categoriesData, type Category } from '../../../data/categories';
+import { getGuidesByCategory } from '../../../data/guides';
+import { getToolLocalizedInfo } from '../../../data/toolTranslations';
+
+export function getStaticPaths() {
+  const paths = [];
+
+  for (const lang of langCodes) {
+    for (const category of categoriesData) {
+      paths.push({
+        params: {
+          lang,
+          slug: category.slug,
+        },
+        props: {
+          lang,
+          category,
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  lang: string;
+  category: Category;
+}
+
+const { lang, category } = Astro.props;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/categories/${category.slug}/`;
+
+const categoryTools = tools.filter((t) => t.categorySlug === category.slug);
+const categoryGuides = getGuidesByCategory(category.name);
+
+const localizedName = loc.categoryLabels[category.slug] || category.name;
+const localizedDesc = loc.categoryDescriptions[category.slug] || category.description;
+
+const breadcrumbs = [
+  { name: loc.breadcrumbHome, url: `/${lang}/` },
+  { name: loc.breadcrumbCategories, url: `/${lang}/categories/` },
+  { name: localizedName, url: `/${lang}/categories/${category.slug}/` },
+];
+
+const title = `${localizedName} — ${loc.freeOnlineTools} | ToolAtlas`;
+---
+
+<Layout
+  title={title}
+  description={`${localizedName}: ${localizedDesc} ${loc.categoryTaglineSuffix}`}
+  lang={lang}
+  canonical={canonical}
+  breadcrumbs={breadcrumbs}
+  faqItems={category.faqs}
+>
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>{loc.breadcrumbHome}</a>
+      <span>›</span>
+      <a href={`/${lang}/categories/`}>{loc.breadcrumbCategories}</a>
+      <span>›</span>
+      <strong>{localizedName}</strong>
+    </nav>
+
+    <header class="hero">
+      <div class="cat-badge">
+        <span class="cat-icon">{category.icon}</span>
+        <span>{loc.aboutCategory.toUpperCase()} {localizedName.toUpperCase()}</span>
+      </div>
+
+      <h1>{localizedName}</h1>
+      <p class="tagline">{category.tagline}</p>
+      <p class="desc">{localizedDesc}</p>
+
+      <div class="trust-row">
+        <span><b>✓</b> {categoryTools.length} {loc.functionalToolsCount}</span>
+        <span><b>✓</b> {loc.oneHundredPercentBrowser}</span>
+        <span><b>✓</b> {loc.noFileUploads}</span>
+        <span><b>✓</b> {loc.noAccountRequired}</span>
+      </div>
+    </header>
+
+    <!-- Tools in this Category -->
+    <section class="section" aria-labelledby="cat-tools-title">
+      <div class="section-head">
+        <h2 id="cat-tools-title">{loc.availableCategoryTools}: {localizedName} ({categoryTools.length})</h2>
+        <p>{loc.selectToolLaunch}</p>
+      </div>
+
+      <div class="tools-grid">
+        {
+          categoryTools.map((tool) => {
+            const toolLoc = getToolLocalizedInfo(tool.slug, lang);
+            return (
+              <a href={`/${lang}/tools/${tool.slug}/`} class="tool-card">
+                <span class="tool-icon">{tool.icon}</span>
+                <div class="tool-info">
+                  <h3>{toolLoc.name}</h3>
+                  <p>{toolLoc.description}</p>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <!-- Deep Category Overview -->
+    <section class="overview-section">
+      <div class="overview-content">
+        <h2>{loc.aboutCategory} {localizedName}</h2>
+        <p>{category.overview}</p>
+
+        <h3>{loc.keyAdvantages}</h3>
+        <ul class="highlights-list">
+          {category.highlights.map((item) => (
+            <li>
+              <span class="bullet">✦</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- AdSense Placement -->
+    <div class="ad-slot" aria-label={loc.advertisement}>
+      <span class="ad-label">{loc.advertisement}</span>
+      <div class="ad-placeholder">
+        <small>Ad space reserved for Google AdSense compliance</small>
+      </div>
+    </div>
+
+    <!-- Related Educational Guides -->
+    {
+      categoryGuides.length > 0 && (
+        <section class="section" aria-labelledby="cat-guides-title">
+          <div class="section-head">
+            <h2 id="cat-guides-title">Helpful Guides for {localizedName}</h2>
+            <p>Step-by-step tutorials and technical explanations.</p>
+          </div>
+
+          <div class="guides-grid">
+            {categoryGuides.map((guide) => (
+              <a href={`/${lang}/guides/${guide.slug}/`} class="guide-card">
+                <span class="guide-time">{guide.readingTime}</span>
+                <h3>{guide.title}</h3>
+                <p>{guide.description}</p>
+                <span class="read-more">{loc.readGuide}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Category FAQs -->
+    {
+      category.faqs.length > 0 && (
+        <section class="section faq-section" aria-labelledby="faq-title">
+          <div class="section-head">
+            <h2 id="faq-title">{loc.faqs}</h2>
+            <p>Common questions about using our {localizedName}.</p>
+          </div>
+
+          <div class="faq-list">
+            {category.faqs.map((faq) => (
+              <details class="faq-item">
+                <summary>
+                  <strong>{faq.question}</strong>
+                  <span class="faq-toggle">+</span>
+                </summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Other Categories Navigation -->
+    <section class="other-cats-section">
+      <div class="section-head">
+        <h2>Other Tool Categories</h2>
+      </div>
+
+      <div class="other-chips">
+        {
+          categoriesData
+            .filter((c) => c.slug !== category.slug)
+            .map((c) => {
+              const name = loc.categoryLabels[c.slug] || c.name;
+              return (
+                <a href={`/${lang}/categories/${c.slug}/`} class="chip">
+                  {c.icon} {name} →
+                </a>
+              );
+            })
+        }
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 34px 0 90px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: #22d3ee;
+  }
+
+  .hero {
+    max-width: 840px;
+    margin-bottom: 55px;
+  }
+
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .cat-icon {
+    font-size: 14px;
+  }
+
+  h1 {
+    margin: 16px 0 0;
+    font-size: clamp(38px, 6vw, 64px);
+    letter-spacing: -0.05em;
+    color: #ffffff;
+  }
+
+  .tagline {
+    margin: 8px 0 0;
+    color: #67e8f9;
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .desc {
+    margin: 16px 0 0;
+    color: #94a3b8;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 26px;
+    font-size: 13px;
+    color: #aab4c5;
+  }
+
+  .trust-row b {
+    color: #34d399;
+  }
+
+  .section {
+    margin-top: 65px;
+  }
+
+  .section-head {
+    margin-bottom: 24px;
+  }
+
+  .section-head h2 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+  }
+
+  .section-head p {
+    margin: 6px 0 0;
+    color: #8d93aa;
+    font-size: 15px;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .tool-card {
+    display: grid;
+    grid-template-columns: 44px 1fr 16px;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .tool-card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .tool-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #111426;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #22d3ee;
+    font-weight: 800;
+  }
+
+  .tool-info h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #ffffff;
+  }
+
+  .tool-info p {
+    margin: 4px 0 0;
+    color: #8d93aa;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .arrow {
+    color: #6366f1;
+    font-weight: 800;
+  }
+
+  .overview-section {
+    margin-top: 70px;
+    padding: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background: rgba(18, 21, 38, 0.4);
+  }
+
+  .overview-content h2 {
+    margin: 0 0 16px;
+    font-size: 26px;
+    color: #ffffff;
+  }
+
+  .overview-content p {
+    color: #aab4c5;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0 0 24px;
+  }
+
+  .overview-content h3 {
+    margin: 24px 0 14px;
+    font-size: 18px;
+    color: #67e8f9;
+  }
+
+  .highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .highlights-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .bullet {
+    color: #22d3ee;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .guide-card {
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .guide-card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .guide-time {
+    font-size: 11px;
+    color: #22d3ee;
+    font-weight: 700;
+  }
+
+  .guide-card h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .guide-card p {
+    margin: 0;
+    color: #8d93aa;
+    font-size: 13px;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .read-more {
+    color: #22d3ee;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .faq-item {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+    padding: 16px 20px;
+  }
+
+  .faq-item[open] {
+    border-color: rgba(34, 211, 238, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    font-size: 15px;
+    user-select: none;
+  }
+
+  .faq-toggle {
+    color: #22d3ee;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .faq-item p {
+    margin: 12px 0 0;
+    color: #aab4c5;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .other-cats-section {
+    margin-top: 70px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .other-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .chip {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 650;
+    transition: all 0.2s ease;
+  }
+
+  .chip:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(34, 211, 238, 0.1);
+    color: #ffffff;
+  }
+
+  .ad-slot {
+    margin: 50px 0;
+    padding: 18px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .ad-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  .ad-placeholder {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+  }
+
+  @media (max-width: 960px) {
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .guides-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page {
+      padding: 24px 0 60px;
+    }
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+    .guides-grid {
+      grid-template-columns: 1fr;
+    }
+    .overview-section {
+      padding: 22px;
+    }
+  }
+</style>

@@ -1,0 +1,8 @@
+{
+  "name": "Global Tools Platform",
+  "description": "Fast, private, browser-based utilities for everyday tasks, file conversion, and developer workflows.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

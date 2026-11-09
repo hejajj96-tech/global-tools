@@ -1,0 +1,263 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE_URL } from '../../../data/site';
+import { langCodes, getLocale } from '../../../data/i18n';
+import { guidesData } from '../../../data/guides';
+import { categoriesData } from '../../../data/categories';
+
+export function getStaticPaths() {
+  return langCodes.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+
+const { lang } = Astro.props;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/guides/`;
+
+const breadcrumbs = [
+  { name: loc.breadcrumbHome, url: `/${lang}/` },
+  { name: loc.breadcrumbGuides, url: `/${lang}/guides/` },
+];
+---
+
+<Layout
+  title={`${loc.allGuides} — ToolAtlas`}
+  description="In-depth tutorials, technical guides, image compression benchmarks, PDF editing tips, and developer conversion walkthroughs from ToolAtlas."
+  lang={lang}
+  canonical={canonical}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`/${lang}/`}>{loc.breadcrumbHome}</a>
+      <span>›</span>
+      <strong>{loc.breadcrumbGuides}</strong>
+    </nav>
+
+    <header class="hero">
+      <div class="badge">EDUCATIONAL GUIDES & TUTORIALS</div>
+      <h1>{loc.allGuides}</h1>
+      <p>
+        Master technical concepts behind our digital utilities. Learn how browser-based image compression works,
+        understand RFC 4122 UUID entropy, decode Base64 data URIs, and benchmark typing speed metrics.
+      </p>
+    </header>
+
+    <div class="guides-list">
+      {
+        guidesData.map((guide) => (
+          <article class="guide-item">
+            <div class="guide-meta">
+              <span class="cat-tag">{guide.category}</span>
+              <span class="time-tag">{guide.readingTime}</span>
+              <span class="date-tag">{guide.publishDate}</span>
+            </div>
+
+            <h2>
+              <a href={`/${lang}/guides/${guide.slug}/`}>{guide.title}</a>
+            </h2>
+
+            <p class="guide-intro">{guide.intro}</p>
+
+            <div class="guide-footer">
+              <a href={`/${lang}/guides/${guide.slug}/`} class="read-btn">
+                {loc.readGuide}
+              </a>
+              <a href={`/${lang}/tools/${guide.relatedToolSlug}/`} class="tool-link">
+                Launch related tool →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- AdSense Slot -->
+    <div class="ad-slot" aria-label={loc.advertisement}>
+      <span class="ad-label">{loc.advertisement}</span>
+      <div class="ad-placeholder">
+        <small>Ad space reserved for Google AdSense compliance</small>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 34px 0 90px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: #22d3ee;
+  }
+
+  .hero {
+    max-width: 820px;
+    margin-bottom: 45px;
+  }
+
+  .badge {
+    display: inline-flex;
+    padding: 5px 12px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  h1 {
+    margin: 16px 0 0;
+    font-size: clamp(38px, 6vw, 64px);
+    letter-spacing: -0.05em;
+    color: #ffffff;
+  }
+
+  .hero p {
+    margin: 16px 0 0;
+    color: #94a3b8;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .guides-list {
+    display: grid;
+    gap: 24px;
+  }
+
+  .guide-item {
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.025);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .cat-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+    font-weight: 700;
+  }
+
+  .time-tag,
+  .date-tag {
+    color: #64748b;
+  }
+
+  .guide-item h2 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+  }
+
+  .guide-item h2 a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .guide-item h2 a:hover {
+    color: #22d3ee;
+  }
+
+  .guide-intro {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .guide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .read-btn {
+    color: #22d3ee;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .tool-link {
+    color: #6366f1;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .tool-link:hover {
+    color: #ffffff;
+  }
+
+  .ad-slot {
+    margin: 60px 0 20px;
+    padding: 18px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .ad-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  .ad-placeholder {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+  }
+
+  @media (max-width: 640px) {
+    .page {
+      padding: 24px 0 60px;
+    }
+    .guide-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+</style>

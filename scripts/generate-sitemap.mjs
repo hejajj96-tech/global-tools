@@ -49,10 +49,37 @@ const TOOLS = [
   'reaction-time-test',
 ];
 
+const CATEGORIES = [
+  'image-tools',
+  'pdf-tools',
+  'developer-tools',
+  'text-tools',
+  'typing-and-tests',
+  'qr-tools',
+  'security-tools',
+  'design-tools',
+];
+
+const GUIDES = [
+  'how-to-compress-images-without-losing-quality',
+  'how-to-merge-pdf-files-online',
+  'how-to-convert-jpg-to-pdf',
+  'json-formatting-and-validation-guide',
+  'base64-encoding-explained',
+  'understanding-uuid-v4',
+  'wifi-qr-code-guide',
+  'word-counter-and-reading-time',
+  'how-to-generate-strong-passwords',
+  'how-to-measure-typing-speed-wpm',
+  'how-to-clean-and-format-messy-text',
+  'unix-timestamps-and-epoch-time',
+];
+
 const STATIC_PAGES = [
   '',
   'tools/',
   'categories/',
+  'guides/',
   'about/',
   'privacy/',
   'terms/',
@@ -76,13 +103,25 @@ const siteUrl = normalizeSiteUrl(SITE_URL);
 
 const urls = [];
 
+// 1. Root Homepage
+urls.push(`${siteUrl}/`);
+
+// 2. Multilingual Static, Category, Tool, and Guide Pages
 for (const language of LANGUAGES) {
   for (const page of STATIC_PAGES) {
     urls.push(`${siteUrl}/${language}/${page}`);
   }
 
+  for (const category of CATEGORIES) {
+    urls.push(`${siteUrl}/${language}/categories/${category}/`);
+  }
+
   for (const tool of TOOLS) {
     urls.push(`${siteUrl}/${language}/tools/${tool}/`);
+  }
+
+  for (const guide of GUIDES) {
+    urls.push(`${siteUrl}/${language}/guides/${guide}/`);
   }
 }
 
@@ -95,7 +134,9 @@ if (uniqueUrls.length !== urls.length) {
 }
 
 const expectedUrlCount =
-  LANGUAGES.length * (STATIC_PAGES.length + TOOLS.length);
+  1 +
+  LANGUAGES.length *
+    (STATIC_PAGES.length + CATEGORIES.length + TOOLS.length + GUIDES.length);
 
 if (uniqueUrls.length !== expectedUrlCount) {
   throw new Error(
@@ -112,8 +153,16 @@ for (const url of uniqueUrls) {
     throw new Error('Sitemap validation failed: placeholder domain detected');
   }
 
+  if (url.includes('global-tools.pages.dev')) {
+    throw new Error('Sitemap validation failed: old staging domain detected');
+  }
+
   if (url.startsWith('http://')) {
     throw new Error(`Sitemap validation failed: HTTP URL detected: ${url}`);
+  }
+
+  if (!url.endsWith('/')) {
+    throw new Error(`Sitemap validation failed: missing trailing slash: ${url}`);
   }
 }
 
@@ -137,11 +186,7 @@ if (!xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')) {
   throw new Error('Sitemap validation failed: missing XML declaration');
 }
 
-if (
-  !xml.includes(
-    'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
-  )
-) {
+if (!xml.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')) {
   throw new Error('Sitemap validation failed: missing sitemap namespace');
 }
 
@@ -149,20 +194,19 @@ const publicDir = resolve(process.cwd(), 'public');
 const outputPath = resolve(publicDir, 'sitemap.xml');
 
 await mkdir(publicDir, { recursive: true });
-
 await writeFile(outputPath, xml, 'utf8');
 
 console.log('========================================');
-console.log('Global Tools Sitemap');
+console.log('Global Tools / ToolAtlas Sitemap Generator');
 console.log('========================================');
 console.log(`Site: ${siteUrl}`);
 console.log(`Languages: ${LANGUAGES.length}`);
-console.log(`Tools: ${TOOLS.length}`);
 console.log(`Static pages per language: ${STATIC_PAGES.length}`);
-console.log(`URLs per language: ${STATIC_PAGES.length + TOOLS.length}`);
-console.log(`Total URLs: ${uniqueUrls.length}`);
+console.log(`Categories per language: ${CATEGORIES.length}`);
+console.log(`Tools per language: ${TOOLS.length}`);
+console.log(`Guides per language: ${GUIDES.length}`);
+console.log(`Total canonical URLs: ${uniqueUrls.length}`);
 console.log(`Output: ${outputPath}`);
 console.log('========================================');
-
 console.log('Sitemap validation: PASSED');
 console.log('Sitemap generation: PASSED');

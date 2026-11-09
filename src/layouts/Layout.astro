@@ -1,64 +1,98 @@
 ---
 import '../styles/global.css';
+import { SITE_URL, SITE_NAME, LANGUAGES } from '../data/site';
+import { getLocale } from '../data/i18n';
 
-const siteUrl = 'https://global-tools.hejajj96.workers.dev';
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface ArticleMeta {
+  title: string;
+  description: string;
+  publishDate: string;
+  author?: string;
+}
+
+export interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+  canonical?: string;
+  noindex?: boolean;
+  webApplication?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  faqItems?: FaqItem[];
+  article?: ArticleMeta;
+}
 
 const {
-  title = 'ToolAtlas',
-  description = 'Free online tools for everyday work.',
+  title = `${SITE_NAME} — Free Online Tools`,
+  description = 'Free, fast, browser-based online tools for images, PDFs, developers, text, QR codes, and everyday digital productivity.',
   lang = 'en',
-  canonical = `${siteUrl}/${lang}/`,
+  canonical = `${SITE_URL}/${lang}/`,
   noindex = false,
-  webApplication = false
+  webApplication = false,
+  breadcrumbs = [],
+  faqItems = [],
+  article,
 } = Astro.props;
 
-const languages = [
-  'en',
-  'es',
-  'fr',
-  'de',
-  'it',
-  'pt',
-  'ar',
-  'tr',
-  'hi',
-  'ja'
-];
+const locale = getLocale(lang);
 
-const cleanUrl = (url: string) => {
-  return url
-    .replace('https://global-tools.pages.dev', siteUrl)
-    .replace('https://YOUR-DOMAIN.com', siteUrl)
-    .replace(/([^:]\/)\/+/g, '$1');
-};
+// Clean up canonical
+const cleanCanonical = canonical
+  .replace('https://global-tools.pages.dev', SITE_URL)
+  .replace('https://YOUR-DOMAIN.com', SITE_URL)
+  .replace(/([^:]\/)\/+/g, '$1');
 
-const cleanCanonical = cleanUrl(canonical);
+let currentPath = '';
+try {
+  currentPath = new URL(cleanCanonical).pathname;
+} catch {
+  currentPath = `/${lang}/`;
+}
 
-const currentPath = new URL(cleanCanonical).pathname;
+// Generate exact reciprocal hreflang links
+const isRoot = currentPath === '/' || currentPath === '';
 
-const translatedAlternates = languages.map((language) => {
-  const path = currentPath.replace(
-    new RegExp(`^/${lang}(?=/|$)`),
-    `/${language}`
-  );
-
+const translatedAlternates = LANGUAGES.map((language) => {
+  let path = '';
+  if (isRoot) {
+    path = `/${language}/`;
+  } else {
+    path = currentPath.replace(new RegExp(`^/${lang}(?=/|$)`), `/${language}`);
+    if (!path.startsWith(`/${language}`)) {
+      path = `/${language}${currentPath}`;
+    }
+  }
+  if (!path.endsWith('/')) {
+    path = `${path}/`;
+  }
   return {
     lang: language,
-    href: cleanUrl(`${siteUrl}${path}`)
+    href: `${SITE_URL}${path}`,
   };
 });
 
-const xDefault =
-  translatedAlternates.find((item) => item.lang === 'en')?.href ||
-  `${siteUrl}/en/`;
+const xDefault = isRoot
+  ? `${SITE_URL}/en/`
+  : translatedAlternates.find((item) => item.lang === 'en')?.href || `${SITE_URL}/en/`;
 
+// Structured Data Schemas
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'ToolAtlas',
-  url: siteUrl,
+  name: SITE_NAME,
+  url: SITE_URL,
   description,
-  inLanguage: lang
+  inLanguage: lang,
 };
 
 const applicationSchema = webApplication
@@ -69,206 +103,170 @@ const applicationSchema = webApplication
       url: cleanCanonical,
       applicationCategory: 'UtilitiesApplication',
       operatingSystem: 'Any',
-      browserRequirements: 'Requires a modern web browser',
+      browserRequirements: 'Requires modern web browser with JavaScript enabled',
       isAccessibleForFree: true,
-      inLanguage: lang
+      inLanguage: lang,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    }
+  : null;
+
+const breadcrumbsSchema =
+  breadcrumbs && breadcrumbs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((crumb, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: crumb.name,
+          item: crumb.url.startsWith('http') ? crumb.url : `${SITE_URL}${crumb.url}`,
+        })),
+      }
+    : null;
+
+const faqSchema =
+  faqItems && faqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+
+const articleSchema = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title,
+      description: article.description,
+      datePublished: article.publishDate,
+      inLanguage: lang,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': cleanCanonical,
+      },
+      author: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
     }
   : null;
 ---
 
 <!doctype html>
-<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+<html lang={lang} dir={locale.dir}>
   <head>
     <meta charset="UTF-8" />
-
-    <meta
-      name="google-site-verification"
-      content="QYadnpR-zqV0v5eyf2IsFG-DbYOMsXPgLvbsjwi-FuE"
-    />
-
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-site-verification" content="QYadnpR-zqV0v5eyf2IsFG-DbYOMsXPgLvbsjwi-FuE" />
 
     <title>{title}</title>
-
-    <meta
-      name="description"
-      content={description}
-    />
-
+    <meta name="description" content={description} />
     <meta
       name="robots"
-      content={
-        noindex
-          ? 'noindex,follow'
-          : 'index,follow,max-image-preview:large'
-      }
+      content={noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large'}
     />
 
-    <link
-      rel="canonical"
-      href={cleanCanonical}
-    />
+    <link rel="canonical" href={cleanCanonical} />
+    <meta name="theme-color" content="#070812" />
+    <meta name="application-name" content={SITE_NAME} />
 
-    <meta
-      name="theme-color"
-      content="#080b12"
-    />
+    <!-- OpenGraph Tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={cleanCanonical} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content={lang} />
 
-    <meta
-      name="application-name"
-      content="ToolAtlas"
-    />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
 
-    <meta
-      property="og:title"
-      content={title}
-    />
+    <!-- Reciprocal Hreflang Tags -->
+    {
+      translatedAlternates.map((item) => (
+        <link rel="alternate" hreflang={item.lang} href={item.href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
 
-    <meta
-      property="og:description"
-      content={description}
-    />
-
-    <meta
-      property="og:url"
-      content={cleanCanonical}
-    />
-
-    <meta
-      property="og:type"
-      content="website"
-    />
-
-    <meta
-      property="og:site_name"
-      content="ToolAtlas"
-    />
-
-    <meta
-      property="og:locale"
-      content={lang}
-    />
-
-    <meta
-      name="twitter:card"
-      content="summary"
-    />
-
-    <meta
-      name="twitter:title"
-      content={title}
-    />
-
-    <meta
-      name="twitter:description"
-      content={description}
-    />
-
-    <link
-      rel="icon"
-      href="data:,"
-    />
-
-    {translatedAlternates.map((item) => (
-      <link
-        rel="alternate"
-        hreflang={item.lang}
-        href={item.href}
-      />
-    ))}
-
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={xDefault}
-    />
-
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify(websiteSchema)}
-    />
-
-    {applicationSchema && (
-      <script
-        type="application/ld+json"
-        set:html={JSON.stringify(applicationSchema)}
-      />
-    )}
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    {applicationSchema && <script type="application/ld+json" set:html={JSON.stringify(applicationSchema)} />}
+    {breadcrumbsSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} />}
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+    {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
   </head>
 
   <body>
     <header class="site-header">
       <div class="header-inner">
-        <a
-          class="brand"
-          href={`/${lang}/`}
-          aria-label="ToolAtlas home"
-        >
+        <a class="brand" href={`/${lang}/`} aria-label={`${SITE_NAME} home`}>
           <span class="brand-icon">T</span>
           <span>
             Tool<span class="brand-muted">Atlas</span>
           </span>
         </a>
 
-        <nav
-          class="main-nav"
-          aria-label="Main navigation"
-        >
-          <a href={`/${lang}/tools/`}>
-            Tools
-          </a>
-
-          <a href={`/${lang}/categories/`}>
-            Categories
-          </a>
-
-          <a href={`/${lang}/about/`}>
-            About
-          </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href={`/${lang}/tools/`}>{locale.tools}</a>
+          <a href={`/${lang}/categories/`}>{locale.categories}</a>
+          <a href={`/${lang}/guides/`}>{locale.guides}</a>
+          <a href={`/${lang}/about/`}>{locale.about}</a>
         </nav>
 
         <div class="header-actions">
-          <label
-            class="sr-only"
-            for="language-selector"
-          >
-            Language
-          </label>
-
+          <label class="sr-only" for="language-selector">Language</label>
           <select
             id="language-selector"
-            aria-label="Language"
+            aria-label="Language selector"
             onchange="
               const target = this.value;
               const path = window.location.pathname;
-              const translated = path.replace(/^\/[^/]+/, '/' + target);
-              window.location.href = translated;
+              const parts = path.split('/').filter(Boolean);
+              if (parts.length > 0) {
+                parts[0] = target;
+                window.location.href = '/' + parts.join('/') + '/';
+              } else {
+                window.location.href = '/' + target + '/';
+              }
             "
           >
-            {languages.map((language) => (
-              <option
-                value={language}
-                selected={language === lang}
-              >
-                {language.toUpperCase()}
-              </option>
-            ))}
+            {
+              LANGUAGES.map((language) => (
+                <option value={language} selected={language === lang}>
+                  {language.toUpperCase()}
+                </option>
+              ))
+            }
           </select>
 
-          <a
-            class="header-button"
-            href={`/${lang}/tools/`}
-          >
-            Explore tools
+          <a class="header-button" href={`/${lang}/tools/`}>
+            {locale.exploreTools}
           </a>
         </div>
       </div>
     </header>
 
-    <main>
+    <main id="main-content">
       <slot />
     </main>
 
@@ -277,78 +275,40 @@ const applicationSchema = webApplication
         <div class="footer-info">
           <div class="footer-brand">
             <span class="brand-icon small">T</span>
-            <strong>ToolAtlas</strong>
+            <strong>{SITE_NAME}</strong>
           </div>
-
           <p>
-            Fast, privacy-first online tools for everyday work.
-            Built to process data locally whenever technically possible.
+            Fast, privacy-first online tools for everyday productivity, development, and conversion.
+            All processing executes directly inside your browser memory without cloud file uploads.
           </p>
         </div>
 
-        <nav
-          class="footer-links"
-          aria-label="Footer navigation"
-        >
-          <a href={`/${lang}/tools/`}>
-            Tools
-          </a>
-
-          <a href={`/${lang}/privacy/`}>
-            Privacy
-          </a>
-
-          <a href={`/${lang}/terms/`}>
-            Terms
-          </a>
-
-          <a href={`/${lang}/contact/`}>
-            Contact
-          </a>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href={`/${lang}/tools/`}>{locale.tools}</a>
+          <a href={`/${lang}/categories/`}>{locale.categories}</a>
+          <a href={`/${lang}/guides/`}>{locale.guides}</a>
+          <a href={`/${lang}/about/`}>{locale.about}</a>
+          <a href={`/${lang}/privacy/`}>{locale.privacy}</a>
+          <a href={`/${lang}/terms/`}>{locale.terms}</a>
+          <a href={`/${lang}/contact/`}>{locale.contact}</a>
         </nav>
       </div>
 
       <div class="footer-bottom">
-        <span>
-          © {new Date().getFullYear()} ToolAtlas
-        </span>
-
-        <span>
-          Free online tools
-        </span>
+        <span>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</span>
+        <span>Privacy-first, client-side digital utility platform.</span>
       </div>
     </footer>
   </body>
 </html>
 
 <style>
-  :global(html) {
-    background: #080b12;
-  }
-
-  :global(body) {
-    margin: 0;
-    background:
-      radial-gradient(
-        circle at 10% 0%,
-        rgba(0, 229, 255, 0.08),
-        transparent 28%
-      ),
-      radial-gradient(
-        circle at 90% 10%,
-        rgba(124, 58, 237, 0.1),
-        transparent 30%
-      ),
-      #080b12;
-    color: #f8fafc;
-  }
-
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(8, 11, 18, 0.9);
+    background: rgba(7, 8, 18, 0.92);
     backdrop-filter: blur(18px);
   }
 
@@ -380,16 +340,10 @@ const applicationSchema = webApplication
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: linear-gradient(
-      135deg,
-      #00e5ff,
-      #7c3aed
-    );
+    background: linear-gradient(135deg, #22d3ee, #6366f1, #a855f7);
     color: #ffffff;
     font-weight: 900;
-    box-shadow:
-      0 0 22px rgba(0, 229, 255, 0.25),
-      0 0 28px rgba(124, 58, 237, 0.18);
+    box-shadow: 0 0 22px rgba(34, 211, 238, 0.28);
   }
 
   .brand-icon.small {
@@ -433,50 +387,46 @@ const applicationSchema = webApplication
   #language-selector {
     min-height: 38px;
     padding: 0 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
     outline: none;
+    cursor: pointer;
   }
 
   .header-button {
     min-height: 38px;
-    padding: 0 15px;
+    padding: 0 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: linear-gradient(
-      135deg,
-      #00c6ff,
-      #7c3aed
-    );
+    background: linear-gradient(135deg, #22d3ee, #6366f1);
     color: #ffffff;
     text-decoration: none;
     font-size: 13px;
     font-weight: 800;
-    box-shadow:
-      0 8px 26px rgba(0, 198, 255, 0.14);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.18);
   }
 
   .site-footer {
     margin-top: 80px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(3, 6, 12, 0.8);
+    background: rgba(4, 5, 12, 0.95);
   }
 
   .footer-inner {
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 42px 0 30px;
+    padding: 48px 0 32px;
     display: flex;
     justify-content: space-between;
     gap: 40px;
   }
 
   .footer-info {
-    max-width: 470px;
+    max-width: 480px;
   }
 
   .footer-brand {
@@ -484,6 +434,7 @@ const applicationSchema = webApplication
     align-items: center;
     gap: 10px;
     font-size: 17px;
+    color: #ffffff;
   }
 
   .footer-info p {
@@ -496,7 +447,7 @@ const applicationSchema = webApplication
   .footer-links {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 20px;
     flex-wrap: wrap;
   }
 

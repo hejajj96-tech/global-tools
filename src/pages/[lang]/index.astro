@@ -1,7 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { tools, categories } from '../../data/tools';
-import { languages, langCodes } from '../../data/i18n';
+import { SITE_URL } from '../../data/site';
+import { tools } from '../../data/tools';
+import { categoriesData } from '../../data/categories';
+import { guidesData } from '../../data/guides';
+import { languages, langCodes, getLocale } from '../../data/i18n';
+import { getToolLocalizedInfo } from '../../data/toolTranslations';
 
 export function getStaticPaths() {
   return langCodes.map((lang) => ({
@@ -11,166 +15,280 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.props;
-const i = languages[lang];
-
-const siteUrl = 'https://global-tools.pages.dev';
-const canonical = `${siteUrl}/${lang}/`;
+const loc = getLocale(lang);
+const canonical = `${SITE_URL}/${lang}/`;
 ---
 
 <Layout
-  title={`ToolAtlas — ${i.home}`}
-  description={i.home}
+  title={`${loc.homeTitle} — ToolAtlas`}
+  description={loc.homeLead}
   lang={lang}
   canonical={canonical}
 >
-  <main>
+  <div class="page">
     <section class="hero">
-      <div class="container hero-inner">
-        <div class="pill">FREE · NO SIGNUP · PRIVACY-FIRST</div>
+      <div class="badge">{loc.freeCheck.toUpperCase()} · {loc.noRegCheck.toUpperCase()} · {loc.privacyFirstCheck.toUpperCase()}</div>
 
-        <h1>
-          ToolAtlas<br />
-          <span>{i.home}</span>
-        </h1>
+      <h1>
+        ToolAtlas<br />
+        <span>{loc.homeTitle}</span>
+      </h1>
 
-        <p class="lead">
-          {lang === 'en'
-            ? 'Compress files, work with PDFs, format code, create QR codes and test your skills — directly in your browser.'
-            : i.home}
-        </p>
+      <p class="hero-desc">{loc.homeLead}</p>
 
+      <div class="actions">
         <a class="btn primary" href={`/${lang}/tools/`}>
-          {i.tools}
+          {loc.allTools} ({tools.length})
+        </a>
+        <a class="btn secondary" href={`/${lang}/categories/`}>
+          {loc.allCategories}
+        </a>
+        <a class="btn secondary" href={`/${lang}/guides/`}>
+          {loc.allGuides}
         </a>
       </div>
     </section>
 
-    <section class="container section">
-      <h2>{i.popular}</h2>
+    <!-- Popular Tools -->
+    <section class="section" aria-labelledby="popular-tools-title">
+      <div class="section-head">
+        <h2 id="popular-tools-title">{loc.popular}</h2>
+        <p>{loc.homeSubtitle}</p>
+      </div>
 
       <div class="grid">
-        {tools.slice(0, 12).map((t) => (
-          <a class="card" href={`/${lang}/tools/${t.slug}/`}>
-            <span class="icon">{t.icon}</span>
+        {
+          tools.slice(0, 12).map((t) => {
+            const toolLoc = getToolLocalizedInfo(t.slug, lang);
+            return (
+              <a class="card" href={`/${lang}/tools/${t.slug}/`}>
+                <span class="icon">{t.icon}</span>
+                <div class="card-info">
+                  <h3>{toolLoc.name}</h3>
+                  <p>{toolLoc.description}</p>
+                  <em>{loc.categoryLabels[t.categorySlug] || t.category}</em>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+            );
+          })
+        }
+      </div>
 
-            <div>
-              <h3>{t.name}</h3>
-              <p>{t.description}</p>
-            </div>
-
-            <span class="arrow">→</span>
-          </a>
-        ))}
+      <div class="view-all-row">
+        <a href={`/${lang}/tools/`} class="btn secondary">
+          {loc.viewAll} ({tools.length} {loc.tools}) →
+        </a>
       </div>
     </section>
 
-    <section class="categories-section">
-      <div class="container section">
-        <h2>{i.categories}</h2>
+    <!-- AdSense Placement 1 -->
+    <div class="ad-slot" aria-label={loc.advertisement}>
+      <span class="ad-label">{loc.advertisement}</span>
+      <div class="ad-placeholder">
+        <small>Ad space reserved for Google AdSense compliance</small>
+      </div>
+    </div>
 
-        <div class="cats">
-          {categories.map((category) => (
-            <a class="cat" href={`/${lang}/categories/`}>
-              <b>{category}</b>
-              <span>
-                {tools.filter((t) => t.category === category).length} tools →
-              </span>
+    <!-- Browse Categories -->
+    <section class="section categories-section" aria-labelledby="cat-title">
+      <div class="section-head">
+        <h2 id="cat-title">{loc.categories}</h2>
+        <p>Browse tools organized by workflow and technology.</p>
+      </div>
+
+      <div class="cats-grid">
+        {
+          categoriesData.map((cat) => {
+            const catTools = tools.filter((t) => t.categorySlug === cat.slug);
+            const localizedCatName = loc.categoryLabels[cat.slug] || cat.name;
+            const localizedCatDesc = loc.categoryDescriptions[cat.slug] || cat.description;
+            return (
+              <a class="cat-card" href={`/${lang}/categories/${cat.slug}/`}>
+                <div class="cat-top">
+                  <span class="cat-icon">{cat.icon}</span>
+                  <span class="badge-count">{catTools.length} {loc.tools}</span>
+                </div>
+                <h3>{localizedCatName}</h3>
+                <p>{localizedCatDesc}</p>
+                <span class="cat-link">{loc.exploreTools} →</span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <!-- Educational Guides Hub -->
+    <section class="section" aria-labelledby="guides-title">
+      <div class="section-head">
+        <h2 id="guides-title">{loc.relatedGuides}</h2>
+        <p>In-depth technical guides, conversion formulas, and privacy tutorials.</p>
+      </div>
+
+      <div class="guides-grid">
+        {
+          guidesData.slice(0, 6).map((guide) => (
+            <a class="guide-card" href={`/${lang}/guides/${guide.slug}/`}>
+              <span class="guide-badge">{guide.category}</span>
+              <h3>{guide.title}</h3>
+              <p>{guide.description}</p>
+              <div class="guide-footer">
+                <span>{guide.readingTime}</span>
+                <span class="read-link">{loc.readGuide}</span>
+              </div>
             </a>
-          ))}
-        </div>
+          ))
+        }
+      </div>
+
+      <div class="view-all-row">
+        <a href={`/${lang}/guides/`} class="btn secondary">
+          {loc.allGuides} ({guidesData.length}) →
+        </a>
       </div>
     </section>
 
-    <section class="container section">
+    <!-- Why Choose ToolAtlas -->
+    <section class="section" aria-labelledby="why-title">
       <div class="panel">
-        <h2>{i.why}</h2>
+        <h2 id="why-title">{loc.why}</h2>
 
         <div class="features">
-          <div>
-            <b>⚡ {i.free}</b>
-            <p>Simple browser-first tools with no account required.</p>
+          <div class="feature-item">
+            <span class="feature-icon">⚡</span>
+            <div>
+              <h3>{loc.free}</h3>
+              <p>{loc.freeDesc}</p>
+            </div>
           </div>
 
-          <div>
-            <b>🔒 {i.private}</b>
-            <p>Files stay on your device for supported operations.</p>
+          <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <div>
+              <h3>{loc.private}</h3>
+              <p>{loc.privateDesc}</p>
+            </div>
           </div>
 
-          <div>
-            <b>📱 {i.mobile}</b>
-            <p>Designed for phones, tablets and desktop computers.</p>
+          <div class="feature-item">
+            <span class="feature-icon">📱</span>
+            <div>
+              <h3>{loc.mobile}</h3>
+              <p>{loc.mobileDesc}</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </Layout>
 
 <style>
-  .hero {
-    padding: 80px 0 55px;
-    background: linear-gradient(180deg, #fff, #f7f9fc);
-  }
-
-  .container {
-    width: min(1180px, calc(100% - 44px));
+  .page {
+    width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
+    padding: 60px 0 90px;
   }
 
-  .hero-inner {
-    text-align: center;
+  .hero {
+    max-width: 860px;
+    margin-bottom: 60px;
   }
 
-  .pill {
+  .badge {
     display: inline-flex;
-    padding: 7px 11px;
-    border: 1px solid #e4e7ec;
+    padding: 6px 13px;
+    border: 1px solid rgba(34, 211, 238, 0.22);
     border-radius: 999px;
-    background: #fff;
-    font-size: 12px;
+    background: rgba(34, 211, 238, 0.08);
+    color: #67e8f9;
+    font-size: 11px;
     font-weight: 800;
+    letter-spacing: 0.1em;
   }
 
   h1 {
-    margin: 22px 0 0;
-    font-size: clamp(44px, 8vw, 82px);
-    line-height: 0.98;
-    letter-spacing: -0.06em;
+    margin: 20px 0 0;
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    color: #ffffff;
   }
 
   h1 span {
-    color: #667085;
+    color: #94a3b8;
   }
 
-  .lead {
-    max-width: 680px;
-    margin: 28px auto;
-    color: #667085;
-    font-size: 18px;
-    line-height: 1.6;
+  .hero-desc {
+    max-width: 720px;
+    margin: 24px 0 0;
+    color: #aab4c5;
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 34px;
   }
 
   .btn {
-    display: inline-block;
-    padding: 13px 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 22px;
     border-radius: 12px;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 750;
+    font-size: 15px;
+    transition: all 0.2s ease;
   }
 
   .primary {
-    background: #101828;
-    color: #fff;
+    background: linear-gradient(135deg, #22d3ee, #6366f1);
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.22);
+  }
+
+  .primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(34, 211, 238, 0.32);
+  }
+
+  .secondary {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+  }
+
+  .secondary:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(34, 211, 238, 0.35);
   }
 
   .section {
-    padding-top: 55px;
-    padding-bottom: 55px;
+    margin-top: 75px;
   }
 
-  h2 {
+  .section-head {
+    margin-bottom: 28px;
+  }
+
+  .section-head h2 {
+    margin: 0;
     font-size: 32px;
     letter-spacing: -0.04em;
+    color: #ffffff;
+  }
+
+  .section-head p {
+    margin: 8px 0 0;
+    color: #94a3b8;
+    font-size: 16px;
   }
 
   .grid {
@@ -181,119 +299,300 @@ const canonical = `${siteUrl}/${lang}/`;
 
   .card {
     display: grid;
-    grid-template-columns: 46px 1fr 15px;
-    gap: 13px;
-    padding: 17px;
-    background: #fff;
-    border: 1px solid #e4e7ec;
-    border-radius: 16px;
+    grid-template-columns: 46px 1fr 16px;
+    gap: 14px;
+    align-items: center;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
     text-decoration: none;
     color: inherit;
+    transition: all 0.2s ease;
   }
 
   .card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(255, 255, 255, 0.06);
     transform: translateY(-2px);
   }
 
   .icon {
     width: 46px;
     height: 46px;
-    background: #101828;
-    color: #fff;
-    border-radius: 12px;
     display: grid;
     place-items: center;
+    border-radius: 12px;
+    background: #111426;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #22d3ee;
     font-weight: 800;
   }
 
-  .card h3 {
-    margin: 2px 0 5px;
+  .card-info h3 {
+    margin: 0;
     font-size: 16px;
+    color: #ffffff;
   }
 
-  .card p {
-    margin: 0;
-    color: #667085;
+  .card-info p {
+    margin: 4px 0 0;
+    color: #8d93aa;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.4;
+  }
+
+  .card-info em {
+    display: inline-block;
+    margin-top: 6px;
+    color: #22d3ee;
+    font-size: 11px;
+    font-style: normal;
   }
 
   .arrow {
-    align-self: center;
+    color: #6366f1;
+    font-weight: 800;
   }
 
-  .categories-section {
-    background: #fff;
-    border-block: 1px solid #eaecf0;
+  .view-all-row {
+    margin-top: 24px;
+    text-align: center;
   }
 
-  .cats {
+  .cats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 16px;
   }
 
-  .cat {
-    padding: 20px;
-    background: #f8fafc;
-    border: 1px solid #eaecf0;
-    border-radius: 15px;
+  .cat-card {
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    text-decoration: none;
-    color: inherit;
+    gap: 12px;
+    transition: all 0.2s ease;
   }
 
-  .cat span {
-    color: #667085;
+  .cat-card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .cat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cat-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(99, 102, 241, 0.2));
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    font-size: 18px;
+  }
+
+  .badge-count {
+    font-size: 11px;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
+  .cat-card h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .cat-card p {
+    margin: 0;
+    color: #8d93aa;
     font-size: 13px;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .cat-link {
+    color: #22d3ee;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .guide-card {
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .guide-card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .guide-badge {
+    align-self: flex-start;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .guide-card h3 {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .guide-card p {
+    margin: 0;
+    color: #8d93aa;
+    font-size: 13px;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .guide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #667085;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .read-link {
+    color: #22d3ee;
+    font-weight: 700;
   }
 
   .panel {
-    padding: 32px;
-    border: 1px solid #e4e7ec;
-    border-radius: 20px;
-    background: #fff;
+    padding: 38px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(18, 21, 38, 0.5);
+  }
+
+  .panel h2 {
+    margin: 0 0 30px;
+    font-size: 28px;
+    color: #ffffff;
   }
 
   .features {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 28px;
   }
 
-  .features p {
-    color: #667085;
+  .feature-item {
+    display: flex;
+    gap: 16px;
+  }
+
+  .feature-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .feature-item h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #ffffff;
+  }
+
+  .feature-item p {
+    margin: 6px 0 0;
+    color: #8d93aa;
+    font-size: 14px;
     line-height: 1.6;
   }
 
-  @media (max-width: 800px) {
-    .grid,
+  /* AdSense placeholder */
+  .ad-slot {
+    margin: 50px 0;
+    padding: 18px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .ad-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  .ad-placeholder {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .cats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .guides-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
     .features {
       grid-template-columns: 1fr;
     }
-
-    .cats {
-      grid-template-columns: 1fr 1fr;
-    }
   }
 
-  @media (max-width: 520px) {
-    .container {
-      width: min(100% - 28px, 1180px);
+  @media (max-width: 640px) {
+    .page {
+      padding: 40px 0 60px;
     }
-
-    .hero {
-      padding-top: 55px;
-    }
-
-    .cats {
+    .grid {
       grid-template-columns: 1fr;
     }
-
+    .cats-grid {
+      grid-template-columns: 1fr;
+    }
+    .guides-grid {
+      grid-template-columns: 1fr;
+    }
     .panel {
-      padding: 22px;
+      padding: 24px;
     }
   }
 </style>
